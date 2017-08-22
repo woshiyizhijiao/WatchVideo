@@ -2,6 +2,7 @@ package com.wsyzj.watchvideo.widget;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,7 @@ public class BaseTitleView extends LinearLayout {
 
     private Context mContext;
     private View base_layout;
+    private Toolbar tooBar;
 
     public BaseTitleView(Context context) {
         super(context);
@@ -39,6 +41,7 @@ public class BaseTitleView extends LinearLayout {
         mContext = context;
         setOrientation(LinearLayout.VERTICAL);
         base_layout = LayoutInflater.from(mContext).inflate(R.layout.widget_base_title_view, null);
+        tooBar = (Toolbar) base_layout.findViewById(R.id.tooBar);
         addView(base_layout);
     }
 }

@@ -11,6 +11,8 @@ import com.wsyzj.watchvideo.base.mvp.BasePresenter;
 import com.wsyzj.watchvideo.base.mvp.IView;
 import com.wsyzj.watchvideo.widget.BaseTitleView;
 
+import butterknife.ButterKnife;
+
 
 /**
  * @author: wsyzj
@@ -51,6 +53,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         View contentView = View.inflate(this, contentView(), null);
         LinearLayout.LayoutParams contetnView_lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         parentView.addView(contentView, contetnView_lp);
+        ButterKnife.bind(this);
     }
 
     /**

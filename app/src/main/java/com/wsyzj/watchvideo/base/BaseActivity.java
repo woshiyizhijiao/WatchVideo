@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.gyf.barlibrary.ImmersionBar;
+import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.base.mvp.BasePresenter;
 import com.wsyzj.watchvideo.base.mvp.IView;
 import com.wsyzj.watchvideo.widget.BaseTitleView;
@@ -21,16 +23,28 @@ import butterknife.ButterKnife;
  */
 public abstract class BaseActivity<P extends BasePresenter> extends AppCompatActivity implements IView {
 
+    private ImmersionBar mImmersionBar;
     private P mPresenter;
     public BaseTitleView baseTitleView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initImmersionBar();
         createPresenter();
         layout();
         initViews();
         initDatas(savedInstanceState);
+    }
+
+    /**
+     * 初始化沉浸式
+     */
+    private void initImmersionBar() {
+        mImmersionBar = ImmersionBar.with(this);
+        mImmersionBar.statusBarColor(R.color.colorPrimaryDark);
+        mImmersionBar.fitsSystemWindows(true);
+        mImmersionBar.init();
     }
 
     /**
@@ -71,6 +85,9 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         super.onDestroy();
         if (mPresenter != null) {
             mPresenter.detachView();
+        }
+        if (mImmersionBar != null) {
+            mImmersionBar.destroy();
         }
     }
 

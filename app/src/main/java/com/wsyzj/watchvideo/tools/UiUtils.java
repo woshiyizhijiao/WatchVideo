@@ -17,7 +17,7 @@ public class UiUtils {
      * @return 返回颜色值
      */
     public static int getColor(int colorId) {
-        return BaseApp.getBaseApp().getResources().getColor(colorId);
+        return BaseApp.getApp().getResources().getColor(colorId);
     }
 
     /**
@@ -25,6 +25,6 @@ public class UiUtils {
      * @return 获取一个试图
      */
     public static View inflate(int resource) {
-        return View.inflate(BaseApp.getBaseApp(), resource, null);
+        return View.inflate(BaseApp.getApp(), resource, null);
     }
 }

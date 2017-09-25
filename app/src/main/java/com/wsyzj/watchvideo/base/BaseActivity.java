@@ -48,6 +48,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     }
 
     /**
+     *
      * 设置统一的标题布局
      */
     private void layout() {

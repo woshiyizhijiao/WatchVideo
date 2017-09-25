@@ -1,6 +1,8 @@
 package com.wsyzj.watchvideo.base.mvp;
 
 
+import io.reactivex.disposables.CompositeDisposable;
+
 /**
  * @author: wsyzj
  * @date: 2017-03-18 10:07
@@ -10,6 +12,8 @@ public class BasePresenter<V extends IView, M extends IModel> implements IPresen
 
     protected V mView;
     protected M mModel;
+
+    private CompositeDisposable mCompositeDisposable;
 
     @Override
     public void attachView(V view) {

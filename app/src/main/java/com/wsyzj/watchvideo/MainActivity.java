@@ -4,27 +4,32 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.widget.Toast;
 
 import com.tbruyelle.rxpermissions2.RxPermissions;
-import com.wsyzj.watchvideo.base.BaseActivity;
-import com.wsyzj.watchvideo.base.mvp.BasePresenter;
-import com.wsyzj.watchvideo.business.main.MainContract;
-import com.wsyzj.watchvideo.business.main.MainPresenter;
-import com.wsyzj.watchvideo.tools.IntentUtils;
-import com.wsyzj.watchvideo.widget.BasePullToRefreshView;
+import com.wsyzj.watchvideo.common.base.BaseActivity;
+import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
+import com.wsyzj.watchvideo.common.business.adapter.TestAdapter;
+import com.wsyzj.watchvideo.common.business.bean.Music;
+import com.wsyzj.watchvideo.common.business.main.MainContract;
+import com.wsyzj.watchvideo.common.business.main.MainPresenter;
+import com.wsyzj.watchvideo.common.tools.IntentUtils;
+import com.wsyzj.watchvideo.common.widget.BasePullToRefreshView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 
-public class MainActivity extends BaseActivity implements MainContract.View {
+public class MainActivity extends BaseActivity implements MainContract.View, SwipeRefreshLayout.OnRefreshListener {
 
     @BindView(R.id.pull_to_refresh)
     BasePullToRefreshView pull_to_refresh;
 
     private MainPresenter mPresenter;
-
 
     @Override
     protected BasePresenter presenter() {
@@ -39,18 +44,13 @@ public class MainActivity extends BaseActivity implements MainContract.View {
 
     @Override
     protected void initViews() {
-
+        pull_to_refresh.setOnRefreshListener(this);
     }
 
     @Override
     protected void initDatas(Bundle savedInstanceState) {
-        pull_to_refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                Toast.makeText(MainActivity.this, "刷新了", Toast.LENGTH_SHORT).show();
-            }
-        });
         getPermissions();
+        testData();
     }
 
     /**
@@ -94,5 +94,23 @@ public class MainActivity extends BaseActivity implements MainContract.View {
 
         builder.setCancelable(false);
         builder.show();
+    }
+
+    @Override
+    public void onRefresh() {
+        Toast.makeText(MainActivity.this, "刷新了", Toast.LENGTH_SHORT).show();
+    }
+
+    private void testData() {
+        List<Music> musics = new ArrayList<>();
+        for (int x = 0; x < 10; x++) {
+            Music music = new Music("我是一坨焦", "http://musicdata.baidu.com/data2/pic/3b9383fd29bbf5ff3dd2b2e66fbf19be/559880021/559880021.jpg@s_1,w_90,h_90",
+                    "http://musicdata.baidu.com/data2/lrc/74da30df7989ef0957094446e178d602/557893656/557893656.lrc");
+            musics.add(music);
+        }
+
+        TestAdapter adapter = new TestAdapter(this, R.layout.test_adapter, musics);
+        pull_to_refresh.setAdapter(adapter);
+        pull_to_refresh.setLayoutManager(new LinearLayoutManager(this));
     }
 }

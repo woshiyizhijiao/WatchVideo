@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.wsyzj.watchvideo.R;
 
 /**
@@ -16,9 +17,15 @@ import com.wsyzj.watchvideo.R;
  * @date: 2017-08-22 22:33
  * @comment: 下拉刷新
  */
-public class BasePullToRefreshView extends LinearLayout {
+public class BasePullToRefreshView extends LinearLayout implements BaseQuickAdapter.RequestLoadMoreListener {
     private SwipeRefreshLayout swipe_refresh;
     private RecyclerView recycler;
+
+    private BaseQuickAdapter.RequestLoadMoreListener mRequestLoadMoreListener;
+
+    public void setRequestLoadMoreListener(BaseQuickAdapter.RequestLoadMoreListener requestLoadMoreListener) {
+        mRequestLoadMoreListener = requestLoadMoreListener;
+    }
 
     public BasePullToRefreshView(Context context) {
         super(context);
@@ -68,8 +75,10 @@ public class BasePullToRefreshView extends LinearLayout {
      *
      * @param adapter
      */
-    public void setAdapter(RecyclerView.Adapter adapter) {
+    public void setAdapter(BaseQuickAdapter adapter) {
         recycler.setAdapter(adapter);
+        adapter.setLoadMoreView(new BaseLoadMoreView());
+        adapter.setOnLoadMoreListener(this, recycler);
     }
 
     /**
@@ -79,5 +88,12 @@ public class BasePullToRefreshView extends LinearLayout {
      */
     public void setLayoutManager(RecyclerView.LayoutManager layoutManager) {
         recycler.setLayoutManager(layoutManager);
+    }
+
+    @Override
+    public void onLoadMoreRequested() {
+        if (mRequestLoadMoreListener != null) {
+            mRequestLoadMoreListener.onLoadMoreRequested();
+        }
     }
 }

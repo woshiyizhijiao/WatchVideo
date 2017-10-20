@@ -6,4 +6,8 @@
     <string name="main_quit">退出</string>
     <string name="main_get_permission">"权限申请"</string>
     <string name="main_uit">退出</string>
+    <string name="unknown">未知</string>
+
+    <string name="widget_base_load_more_state_loading">粪力加载中...</string>
+
 </resources>

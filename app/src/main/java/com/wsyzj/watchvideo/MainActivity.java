@@ -5,8 +5,9 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.widget.Toast;
+import android.view.View;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.wsyzj.watchvideo.common.base.BaseActivity;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
@@ -15,6 +16,7 @@ import com.wsyzj.watchvideo.common.business.bean.Music;
 import com.wsyzj.watchvideo.common.business.main.MainContract;
 import com.wsyzj.watchvideo.common.business.main.MainPresenter;
 import com.wsyzj.watchvideo.common.tools.IntentUtils;
+import com.wsyzj.watchvideo.common.tools.LogUtils;
 import com.wsyzj.watchvideo.common.widget.BasePullToRefreshView;
 
 import java.util.ArrayList;
@@ -24,12 +26,14 @@ import butterknife.BindView;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 
-public class MainActivity extends BaseActivity implements MainContract.View, SwipeRefreshLayout.OnRefreshListener {
+public class MainActivity extends BaseActivity implements MainContract.View, SwipeRefreshLayout.OnRefreshListener, BaseQuickAdapter.OnItemClickListener, BaseQuickAdapter.RequestLoadMoreListener {
 
     @BindView(R.id.pull_to_refresh)
     BasePullToRefreshView pull_to_refresh;
 
     private MainPresenter mPresenter;
+    private TestAdapter mAdapter;
+    private List<Music> mMusics;
 
     @Override
     protected BasePresenter presenter() {
@@ -45,6 +49,7 @@ public class MainActivity extends BaseActivity implements MainContract.View, Swi
     @Override
     protected void initViews() {
         pull_to_refresh.setOnRefreshListener(this);
+        pull_to_refresh.setRequestLoadMoreListener(this);
     }
 
     @Override
@@ -98,19 +103,29 @@ public class MainActivity extends BaseActivity implements MainContract.View, Swi
 
     @Override
     public void onRefresh() {
-        Toast.makeText(MainActivity.this, "刷新了", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(MainActivity.this, "刷新了", Toast.LENGTH_SHORT).show();
     }
 
     private void testData() {
-        List<Music> musics = new ArrayList<>();
+        mMusics = new ArrayList<>();
         for (int x = 0; x < 10; x++) {
-            Music music = new Music("我是一坨焦", "http://musicdata.baidu.com/data2/pic/3b9383fd29bbf5ff3dd2b2e66fbf19be/559880021/559880021.jpg@s_1,w_90,h_90",
-                    "http://musicdata.baidu.com/data2/lrc/74da30df7989ef0957094446e178d602/557893656/557893656.lrc");
-            musics.add(music);
+            Music music = new Music();
+            mMusics.add(music);
         }
 
-        TestAdapter adapter = new TestAdapter(this, R.layout.test_adapter, musics);
-        pull_to_refresh.setAdapter(adapter);
+        mAdapter = new TestAdapter(this, R.layout.test_adapter, mMusics);
+        pull_to_refresh.setAdapter(mAdapter);
         pull_to_refresh.setLayoutManager(new LinearLayoutManager(this));
+        mAdapter.setOnItemClickListener(this);
+    }
+
+    @Override
+    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+        Music music = mMusics.get(position);
+    }
+
+    @Override
+    public void onLoadMoreRequested() {
+        LogUtils.e("加载到底部了");
     }
 }

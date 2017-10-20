@@ -3,13 +3,10 @@ package com.wsyzj.watchvideo.common.business.adapter;
 import android.content.Context;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
-import android.widget.ImageView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.common.business.bean.Music;
-import com.wsyzj.watchvideo.common.http.ImageLoader;
 
 import java.util.List;
 
@@ -29,7 +26,7 @@ public class TestAdapter extends BaseQuickAdapter<Music, BaseViewHolder> {
 
     @Override
     protected void convert(BaseViewHolder helper, Music item) {
-        helper.setText(R.id.tv_name, item.name);
-        ImageLoader.with(mContext, item.url, R.drawable.default_cover, R.drawable.default_cover, (ImageView) helper.getView(R.id.img_cover));
+//        helper.setText(R.id.tv_name, item.name);
+//        ImageLoader.with(mContext, item.url, R.drawable.default_cover, R.drawable.default_cover, (ImageView) helper.getView(R.id.img_cover));
     }
 }

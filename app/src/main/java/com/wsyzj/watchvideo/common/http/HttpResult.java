@@ -6,7 +6,7 @@ package com.wsyzj.watchvideo.common.http;
  * @param <T>
  */
 public class HttpResult<T> {
-    public String msg;
-    public int retCode;
+//    public String msg;
+//    public int retCode;
     public T result;
 }

@@ -44,4 +44,12 @@ public class BaseTitleView extends LinearLayout {
         tooBar = (Toolbar) base_layout.findViewById(R.id.tooBar);
         addView(base_layout);
     }
+
+    /**
+     * 隐藏
+     */
+    public View hide() {
+        base_layout.setVisibility(View.GONE);
+        return base_layout;
+    }
 }

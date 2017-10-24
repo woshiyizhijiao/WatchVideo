@@ -47,6 +47,8 @@ public class BasePullToRefreshView extends LinearLayout implements BaseQuickAdap
         View view = LayoutInflater.from(context).inflate(R.layout.widget_base_pull_to_refresh, null);
         swipe_refresh = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
         recycler = (RecyclerView) view.findViewById(R.id.recycler);
+
+//        swipe_refresh.setRefreshing(true);
         addView(view);
     }
 
@@ -90,10 +92,29 @@ public class BasePullToRefreshView extends LinearLayout implements BaseQuickAdap
         recycler.setLayoutManager(layoutManager);
     }
 
+    /**
+     * 下拉刷新监听
+     */
     @Override
     public void onLoadMoreRequested() {
         if (mRequestLoadMoreListener != null) {
             mRequestLoadMoreListener.onLoadMoreRequested();
+        }
+    }
+
+    /**
+     * 设置下班之后的监听
+     */
+    public void setLoadMoreState(int totalCount, int currentCount) {
+        swipe_refresh.setRefreshing(false);
+        RecyclerView.Adapter adapter = recycler.getAdapter();
+        if (adapter != null && adapter instanceof BaseQuickAdapter) {
+            BaseQuickAdapter quickAdapter = (BaseQuickAdapter) adapter;
+            if (totalCount > currentCount) {
+                quickAdapter.loadMoreComplete();
+            } else {
+                quickAdapter.loadMoreEnd();
+            }
         }
     }
 }

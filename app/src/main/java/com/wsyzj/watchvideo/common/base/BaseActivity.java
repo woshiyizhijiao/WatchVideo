@@ -11,6 +11,7 @@ import com.gyf.barlibrary.ImmersionBar;
 import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
 import com.wsyzj.watchvideo.common.base.mvp.IView;
+import com.wsyzj.watchvideo.common.tools.ToastUtils;
 import com.wsyzj.watchvideo.common.widget.BaseTitleView;
 
 import butterknife.ButterKnife;
@@ -23,9 +24,10 @@ import butterknife.ButterKnife;
  */
 public abstract class BaseActivity<P extends BasePresenter> extends AppCompatActivity implements IView {
 
-    private ImmersionBar mImmersionBar;
     private P mPresenter;
+    public ImmersionBar mImmersionBar;
     public BaseTitleView baseTitleView;
+    public BaseProgressDialog mBaseDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,7 +42,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     /**
      * 初始化沉浸式
      */
-    private void initImmersionBar() {
+    protected void initImmersionBar() {
         mImmersionBar = ImmersionBar.with(this);
         mImmersionBar.statusBarColor(R.color.colorPrimaryDark);
         mImmersionBar.fitsSystemWindows(true);
@@ -48,7 +50,6 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     }
 
     /**
-     *
      * 设置统一的标题布局
      */
     private void layout() {
@@ -84,12 +85,47 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (mBaseDialog != null) {
+            mBaseDialog.dismiss();
+            mBaseDialog = null;
+        }
         if (mPresenter != null) {
             mPresenter.detachView();
         }
         if (mImmersionBar != null) {
             mImmersionBar.destroy();
         }
+    }
+
+    /**
+     * 显示progress
+     */
+    @Override
+    public void showProgress() {
+        if (mBaseDialog == null) {
+            mBaseDialog = new BaseProgressDialog(this);
+        }
+        mBaseDialog.show();
+    }
+
+    /**
+     * 隐藏progress
+     */
+    @Override
+    public void dismissProgress() {
+        if (mBaseDialog != null && mBaseDialog.isShowing()) {
+            mBaseDialog.dismiss();
+        }
+    }
+
+    /**
+     * mvp 显示toast
+     *
+     * @param message
+     */
+    @Override
+    public void showToast(String message) {
+        ToastUtils.showToast(message);
     }
 
     protected abstract P presenter();

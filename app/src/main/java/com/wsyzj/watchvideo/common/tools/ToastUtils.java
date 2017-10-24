@@ -13,13 +13,13 @@ public class ToastUtils {
     public static Toast mToast;
 
     /**
-     * @param msg
+     * @param message
      */
-    public static void showToast(String msg) {
+    public static void showToast(String message) {
         if (mToast == null) {
             mToast = Toast.makeText(BaseApp.getApp(), "", Toast.LENGTH_SHORT);
         }
-        mToast.setText(msg);
+        mToast.setText(message);
         mToast.show();
     }
 }

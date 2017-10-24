@@ -7,4 +7,10 @@ package com.wsyzj.watchvideo.common.base.mvp;
  */
 public interface IView {
 
+    void showProgress();
+
+    void dismissProgress();
+
+    void showToast(String message);
+
 }

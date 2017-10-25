@@ -27,7 +27,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     private P mPresenter;
     public ImmersionBar mImmersionBar;
     public BaseTitleView baseTitleView;
-    public BaseProgressDialog mBaseDialog;
+    private BaseProgressDialog mBaseDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,8 +35,8 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         initImmersionBar();
         createPresenter();
         layout();
-        initViews();
-        initDatas(savedInstanceState);
+        initView();
+        initData(savedInstanceState);
     }
 
     /**
@@ -132,8 +132,8 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
 
     protected abstract int contentView();                               // 创建布局
 
-    protected abstract void initViews();                                // 初始化控件
+    protected abstract void initView();                                // 初始化控件
 
-    protected abstract void initDatas(Bundle savedInstanceState);       // 初始化数据
+    protected abstract void initData(Bundle savedInstanceState);       // 初始化数据
 
 }

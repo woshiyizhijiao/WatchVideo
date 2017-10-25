@@ -38,12 +38,12 @@ public class SplashActivity extends BaseActivity {
     }
 
     @Override
-    protected void initViews() {
+    protected void initView() {
 
     }
 
     @Override
-    protected void initDatas(Bundle savedInstanceState) {
+    protected void initData(Bundle savedInstanceState) {
         enterMain();
     }
 

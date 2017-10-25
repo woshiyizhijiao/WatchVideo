@@ -23,6 +23,7 @@ public class MainPresenter extends BasePresenter<MainContract.View, MainContract
     private MainContract.Model mModel;
 
     private int mPage = 1;
+    public int mCurrentPos;
     private List<Music.SongListBean> mSongs = new ArrayList<>();
 
     public MainPresenter(MainContract.View view) {
@@ -81,6 +82,7 @@ public class MainPresenter extends BasePresenter<MainContract.View, MainContract
      */
     @Override
     public void getMusicPlayPath(String songid) {
+        mView.showProgress();
         mModel.getMusicPlayPath(songid)
                 .subscribeWith(new Observer<Song>() {
                     @Override
@@ -103,8 +105,36 @@ public class MainPresenter extends BasePresenter<MainContract.View, MainContract
 
                     @Override
                     public void onComplete() {
-
+                        mView.dismissProgress();
                     }
                 });
+    }
+
+    /**
+     * 上一首
+     */
+    @Override
+    public void previous() {
+        if (mCurrentPos != 0) {
+            mCurrentPos = mCurrentPos - 1;
+        } else {
+            mCurrentPos = mSongs.size() - 1;
+        }
+        Music.SongListBean bean = mSongs.get(mCurrentPos);
+        getMusicPlayPath(bean.song_id);
+    }
+
+    /**
+     * 下一首
+     */
+    @Override
+    public void next() {
+        if (mCurrentPos == mSongs.size() - 1) {
+            mCurrentPos = 0;
+        } else {
+            mCurrentPos++;
+        }
+        Music.SongListBean bean = mSongs.get(mCurrentPos);
+        getMusicPlayPath(bean.song_id);
     }
 }

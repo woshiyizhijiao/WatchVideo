@@ -27,6 +27,7 @@
             android:orientation="vertical">
 
             <SeekBar
+                android:id="@+id/sb_progress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
@@ -50,10 +51,11 @@
                         android:src="@drawable/shadowed_circle_green"/>
 
                     <ImageView
+                        android:id="@+id/img_player_state"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/btn_playback_pause"/>
+                        android:src="@drawable/btn_playback_play"/>
 
                 </FrameLayout>
 

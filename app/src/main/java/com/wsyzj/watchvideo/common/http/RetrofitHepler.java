@@ -2,7 +2,7 @@ package com.wsyzj.watchvideo.common.http;
 
 
 import com.wsyzj.watchvideo.common.base.BaseApp;
-import com.wsyzj.watchvideo.common.tools.Constant;
+import com.wsyzj.watchvideo.common.tools.Constants;
 
 import java.io.File;
 import java.util.concurrent.TimeUnit;
@@ -44,7 +44,7 @@ public class RetrofitHepler {
                 .build();
 
         mRetrofit = new Retrofit.Builder()
-                .baseUrl(Constant.BASE_URL)
+                .baseUrl(Constants.BASE_URL)
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())

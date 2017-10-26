@@ -3,12 +3,21 @@ package com.wsyzj.watchvideo;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.view.View;
 
+import com.google.gson.Gson;
 import com.wsyzj.watchvideo.common.base.BaseActivity;
 import com.wsyzj.watchvideo.common.base.BaseFragment;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
 import com.wsyzj.watchvideo.common.business.adapter.VpAdapter;
 import com.wsyzj.watchvideo.common.business.fragment.MusicFragment;
+import com.wsyzj.watchvideo.common.http.BaseEntity;
+import com.wsyzj.watchvideo.common.http.BaseRetrofit;
+import com.wsyzj.watchvideo.common.http.BaseRxSchedulers;
+import com.wsyzj.watchvideo.common.http.BaseSubscriber;
+import com.wsyzj.watchvideo.common.http.RetrofitApi;
+import com.wsyzj.watchvideo.common.test.City;
+import com.wsyzj.watchvideo.common.tools.LogUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,5 +91,20 @@ public class MainActivity extends BaseActivity implements TabLayout.OnTabSelecte
     @Override
     public void onTabReselected(TabLayout.Tab tab) {
 
+    }
+
+    public void test(View view) {
+        BaseRetrofit
+                .getInstance()
+                .create(RetrofitApi.class)
+                .region()
+                .compose(BaseRxSchedulers.<BaseEntity<City>>io_main(this))
+                .subscribeWith(new BaseSubscriber<City>() {
+                    @Override
+                    public void onSuccess(City data) {
+                        Gson gson = new Gson();
+                        LogUtils.e(" 我是一坨焦 " + gson.toJson(data));
+                    }
+                });
     }
 }

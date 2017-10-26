@@ -10,9 +10,11 @@ import android.view.ViewGroup;
 
 import com.wsyzj.watchvideo.common.base.mvp.IPresenter;
 import com.wsyzj.watchvideo.common.base.mvp.IView;
+import com.wsyzj.watchvideo.common.http.BaseRetrofit;
 import com.wsyzj.watchvideo.common.tools.ToastUtils;
 
 import butterknife.ButterKnife;
+import io.reactivex.disposables.Disposable;
 
 /**
  * @author: wsyzj
@@ -35,6 +37,11 @@ public abstract class BaseFragment<P extends IPresenter> extends Fragment implem
     @Override
     public void onDestroy() {
         super.onDestroy();
+        BaseRetrofit.clear(mActivity.getPackageName() + "." + getClass().getSimpleName());
+        if (mBaseDialog != null) {
+            mBaseDialog.dismiss();
+            mBaseDialog = null;
+        }
         if (mPresenter != null) {
             mPresenter.detachView();
         }
@@ -110,6 +117,16 @@ public abstract class BaseFragment<P extends IPresenter> extends Fragment implem
     @Override
     public void showToast(String message) {
         ToastUtils.showToast(message);
+    }
+
+    /**
+     * 网络请求进行统一管理
+     *
+     * @param disposable
+     */
+    @Override
+    public void addDisposable(Disposable disposable) {
+        BaseRetrofit.add(mActivity.getPackageName() + "." + getClass().getSimpleName(), disposable);
     }
 
     protected abstract P presenter();          // 使用mvp模式加载

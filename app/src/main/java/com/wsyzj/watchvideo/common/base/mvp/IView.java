@@ -1,5 +1,7 @@
 package com.wsyzj.watchvideo.common.base.mvp;
 
+import io.reactivex.disposables.Disposable;
+
 /**
  * @author: wsyzj
  * @date: 2017-03-18 10:09
@@ -13,4 +15,5 @@ public interface IView {
 
     void showToast(String message);
 
+    void addDisposable(Disposable disposable);
 }

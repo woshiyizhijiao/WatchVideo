@@ -11,10 +11,12 @@ import com.gyf.barlibrary.ImmersionBar;
 import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
 import com.wsyzj.watchvideo.common.base.mvp.IView;
+import com.wsyzj.watchvideo.common.http.BaseRetrofit;
 import com.wsyzj.watchvideo.common.tools.ToastUtils;
 import com.wsyzj.watchvideo.common.widget.BaseTitleView;
 
 import butterknife.ButterKnife;
+import io.reactivex.disposables.Disposable;
 
 
 /**
@@ -85,6 +87,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        BaseRetrofit.clear(getPackageName() + "." + getClass().getSimpleName());
         if (mBaseDialog != null) {
             mBaseDialog.dismiss();
             mBaseDialog = null;
@@ -126,6 +129,16 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     @Override
     public void showToast(String message) {
         ToastUtils.showToast(message);
+    }
+
+    /**
+     * 网络请求进行统一管理
+     *
+     * @param disposable
+     */
+    @Override
+    public void addDisposable(Disposable disposable) {
+        BaseRetrofit.add(getPackageName() + "." + getClass().getSimpleName(), disposable);
     }
 
     protected abstract P presenter();

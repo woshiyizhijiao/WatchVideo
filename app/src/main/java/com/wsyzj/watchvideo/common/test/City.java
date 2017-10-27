@@ -26,6 +26,16 @@ public class City extends BaseEntity {
     public List<MeetpicBean> meetpic;
     public List<RecommendBean> recommend;
 
+    @Override
+    public String toString() {
+        return "City{" +
+                "hotProducts=" + hotProducts +
+                ", indexshow=" + indexshow +
+                ", meetpic=" + meetpic +
+                ", recommend=" + recommend +
+                '}';
+    }
+
     public static class HotProductsBean {
         /**
          * app_proimgurl : 20160727/bb33e39ac5624141adaadcab26812173.jpg
@@ -102,5 +112,19 @@ public class City extends BaseEntity {
         public String proid;
         public String proname;
         public String protable;
+
+        @Override
+        public String toString() {
+            return "RecommendBean{" +
+                    "app_proimgurl='" + app_proimgurl + '\'' +
+                    ", description='" + description + '\'' +
+                    ", originalprice=" + originalprice +
+                    ", price=" + price +
+                    ", pro_alias='" + pro_alias + '\'' +
+                    ", proid='" + proid + '\'' +
+                    ", proname='" + proname + '\'' +
+                    ", protable='" + protable + '\'' +
+                    '}';
+        }
     }
 }

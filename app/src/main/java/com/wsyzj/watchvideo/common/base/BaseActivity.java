@@ -29,7 +29,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     private P mPresenter;
     public ImmersionBar mImmersionBar;
     public BaseTitleView baseTitleView;
-    private BaseProgressDialog mBaseDialog;
+    public BaseProgressDialog mBaseDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

@@ -13,5 +13,5 @@ public class BaseEntity<T> implements Serializable{
     public int code;
     public String msg;
 
-    public T t;
+    public T data;
 }

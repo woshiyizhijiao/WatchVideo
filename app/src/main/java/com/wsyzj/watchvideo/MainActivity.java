@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import io.reactivex.Flowable;
 
 public class MainActivity extends BaseActivity implements TabLayout.OnTabSelectedListener {
 
@@ -94,7 +95,7 @@ public class MainActivity extends BaseActivity implements TabLayout.OnTabSelecte
     }
 
     public void test(View view) {
-        BaseRetrofit
+        BaseSubscriber<City> baseSubscriber = BaseRetrofit
                 .getInstance()
                 .create(RetrofitApi.class)
                 .region()
@@ -102,9 +103,9 @@ public class MainActivity extends BaseActivity implements TabLayout.OnTabSelecte
                 .subscribeWith(new BaseSubscriber<City>() {
                     @Override
                     public void onSuccess(City data) {
-                        Gson gson = new Gson();
-                        LogUtils.e(gson.toJson(data));
+                        LogUtils.e(data.msg);
                     }
                 });
+        addDisposable(baseSubscriber);
     }
 }

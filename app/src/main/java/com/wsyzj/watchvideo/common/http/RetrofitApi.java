@@ -26,6 +26,6 @@ public interface RetrofitApi {
     Observable<Song> getMusicPlayPath(@Header("User-Agent") String userAgent, @Query("method") String method, @Query("songid") String songid);
 
     // 城市数据
-    @GET("/api/v1/common/region")
+    @GET("api/v1/common/region")
     Flowable<BaseEntity<City>> region();
 }

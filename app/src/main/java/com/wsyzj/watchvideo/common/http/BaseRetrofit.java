@@ -41,15 +41,11 @@ public class BaseRetrofit {
             }
 //            okHttpBuilder.addInterceptor(new HeaderInterceptor());
 //            okHttpBuilder.addInterceptor(new ParamsInterceptor());
-            //设置网络连接失败时自动重试
-            okHttpBuilder.retryOnConnectionFailure(true);
-            //设置连接超时
-            okHttpBuilder.connectTimeout(5, TimeUnit.SECONDS);
-            //设置写超时
-            okHttpBuilder.writeTimeout(10, TimeUnit.SECONDS);
-            //设置读超时
-            okHttpBuilder.readTimeout(10, TimeUnit.SECONDS);
 
+//            okHttpBuilder.retryOnConnectionFailure(true);           //设置网络连接失败时自动重试
+            okHttpBuilder.connectTimeout(5, TimeUnit.SECONDS);      //设置连接超时
+            okHttpBuilder.writeTimeout(10, TimeUnit.SECONDS);       //设置写超时
+            okHttpBuilder.readTimeout(10, TimeUnit.SECONDS);        //设置读超时
 
             Retrofit.Builder retrofitBuilder = new Retrofit.Builder();
             retrofitBuilder.baseUrl(Constants.PATH);

@@ -103,7 +103,7 @@ public class MainActivity extends BaseActivity implements TabLayout.OnTabSelecte
                     @Override
                     public void onSuccess(City data) {
                         Gson gson = new Gson();
-                        LogUtils.e(" 我是一坨焦 " + gson.toJson(data));
+                        LogUtils.e(gson.toJson(data));
                     }
                 });
     }

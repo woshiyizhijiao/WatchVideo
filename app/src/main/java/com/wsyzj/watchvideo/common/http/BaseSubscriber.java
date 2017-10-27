@@ -1,6 +1,7 @@
 package com.wsyzj.watchvideo.common.http;
 
 import com.wsyzj.watchvideo.common.tools.Constants;
+import com.wsyzj.watchvideo.common.tools.LogUtils;
 import com.wsyzj.watchvideo.common.tools.ToastUtils;
 
 import java.net.ConnectException;
@@ -20,7 +21,7 @@ public abstract class BaseSubscriber<T> extends DisposableSubscriber<BaseEntity<
     @Override
     public void onNext(BaseEntity<T> tBaseEntity) {
         if (tBaseEntity.code == Constants.NET_CODE_SUCCESS) {
-            onSuccess(tBaseEntity.data);
+            onSuccess(tBaseEntity.t);
         } else {
             ToastUtils.showToast(tBaseEntity.msg);
         }
@@ -46,5 +47,5 @@ public abstract class BaseSubscriber<T> extends DisposableSubscriber<BaseEntity<
 
     }
 
-    public abstract void onSuccess(T data);
+    public abstract void onSuccess(T t);
 }

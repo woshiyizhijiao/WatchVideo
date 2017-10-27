@@ -7,11 +7,11 @@ package com.wsyzj.watchvideo.common.tools;
  */
 
 public class Constants {
-    public static String PATH = "http://demo.ecapp.cc/mec";
+    public static String PATH = "http://demo.ecapp.cc/mec/";
     // 网络请求地址
     public static final String BASE_URL = "http://tingapi.ting.baidu.com/";
     // 网络请求相关变量
-    public static final int NET_CODE_SUCCESS = 0;
+    public static final int NET_CODE_SUCCESS = 10000;
     public static final int NET_CODE_ERROR = 1;
     public static final int NET_CODE_CONNECT = 400;
     public static final int NET_CODE_UNKNOWN_HOST = 401;

@@ -8,6 +8,6 @@
     <string name="main_uit">退出</string>
     <string name="unknown">未知</string>
 
-    <string name="widget_base_load_more_state_loading">粪力加载中...</string>
+    <string name="widget_base_load_more_state_loading">使劲加载中</string>
 
 </resources>

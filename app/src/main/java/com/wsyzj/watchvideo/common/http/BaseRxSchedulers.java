@@ -1,9 +1,8 @@
 package com.wsyzj.watchvideo.common.http;
 
+import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 
-import com.wsyzj.watchvideo.common.base.BaseProgressDialog;
 import com.wsyzj.watchvideo.common.tools.NetUtils;
 
 import org.reactivestreams.Publisher;
@@ -28,11 +27,8 @@ public class BaseRxSchedulers {
 
     /**
      * 基本请求
-     *
-     * @param <T>
-     * @return
      */
-    public static <T> FlowableTransformer<T, T> io_main(final Context context) {
+    public static <T extends BaseEntity> FlowableTransformer<T, T> io_main(final Context context) {
         return new FlowableTransformer<T, T>() {
             @Override
             public Publisher<T> apply(@NonNull Flowable<T> upstream) {
@@ -52,14 +48,9 @@ public class BaseRxSchedulers {
     }
 
     /**
-     * 携带进度条的请求
-     *
-     * @param context
-     * @param progressDialog
-     * @param <T>
-     * @return
+     * 带进度条的请求
      */
-    public static <T> FlowableTransformer<T, T> io_main(final Context context, final BaseProgressDialog progressDialog) {
+    public static <T> FlowableTransformer<T, T> io_main(final Context context, final ProgressDialog dialog) {
         return new FlowableTransformer<T, T>() {
             @Override
             public Publisher<T> apply(@NonNull Flowable<T> upstream) {
@@ -72,15 +63,10 @@ public class BaseRxSchedulers {
                                 if (!NetUtils.isConnected(context)) {
                                     subscription.cancel();
                                 } else {
-                                    if (progressDialog != null) {
-                                        progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                                            @Override
-                                            public void onCancel(DialogInterface dialogInterface) {
-                                                subscription.cancel();
-                                            }
-                                        });
+                                    //启动进度显示，取消进度时会取消请求
+                                    if (dialog != null) {
+                                        dialog.show();
                                     }
-                                    progressDialog.show();
                                 }
                             }
                         })

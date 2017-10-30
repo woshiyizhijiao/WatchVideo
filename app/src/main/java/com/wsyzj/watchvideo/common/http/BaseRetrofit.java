@@ -33,7 +33,7 @@ public class BaseRetrofit {
 
         private static Retrofit getRetrofit() {
             OkHttpClient.Builder okHttpBuilder = new OkHttpClient.Builder();
-            //debug模式添加log信息拦截
+
             if (BaseApp.isDebug) {
                 HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
                 interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -43,15 +43,15 @@ public class BaseRetrofit {
 //            okHttpBuilder.addInterceptor(new ParamsInterceptor());
 
 //            okHttpBuilder.retryOnConnectionFailure(true);           //设置网络连接失败时自动重试
-            okHttpBuilder.connectTimeout(5, TimeUnit.SECONDS);      //设置连接超时
-            okHttpBuilder.writeTimeout(10, TimeUnit.SECONDS);       //设置写超时
-            okHttpBuilder.readTimeout(10, TimeUnit.SECONDS);        //设置读超时
+            okHttpBuilder.connectTimeout(12, TimeUnit.SECONDS);       //设置连接超时
+            okHttpBuilder.writeTimeout(12, TimeUnit.SECONDS);         //设置写超时
+            okHttpBuilder.readTimeout(12, TimeUnit.SECONDS);          //设置读超时
 
             Retrofit.Builder retrofitBuilder = new Retrofit.Builder();
-            retrofitBuilder.baseUrl(Constants.PATH);
-            retrofitBuilder.client(okHttpBuilder.build());
-            retrofitBuilder.addCallAdapterFactory(RxJava2CallAdapterFactory.create());
             retrofitBuilder.addConverterFactory(GsonConverterFactory.create());
+            retrofitBuilder.addCallAdapterFactory(RxJava2CallAdapterFactory.create());
+            retrofitBuilder.client(okHttpBuilder.build());
+            retrofitBuilder.baseUrl(Constants.PATH);
             return retrofitBuilder.build();
         }
     }

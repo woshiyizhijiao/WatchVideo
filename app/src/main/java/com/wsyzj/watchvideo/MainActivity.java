@@ -10,6 +10,13 @@ import com.wsyzj.watchvideo.common.base.BaseFragment;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
 import com.wsyzj.watchvideo.common.business.adapter.VpAdapter;
 import com.wsyzj.watchvideo.common.business.fragment.MusicFragment;
+import com.wsyzj.watchvideo.common.http.BaseEntity;
+import com.wsyzj.watchvideo.common.http.BaseRetrofit;
+import com.wsyzj.watchvideo.common.http.BaseRetrofitApi;
+import com.wsyzj.watchvideo.common.http.BaseRxSchedulers;
+import com.wsyzj.watchvideo.common.http.BaseSubscriber;
+import com.wsyzj.watchvideo.common.test.City;
+import com.wsyzj.watchvideo.common.tools.LogUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,18 +92,18 @@ public class MainActivity extends BaseActivity implements TabLayout.OnTabSelecte
 
     }
 
-    public void test(View view) {
-//        BaseSubscriber<City> baseSubscriber = BaseRetrofit
-//                .getInstance()
-//                .create(BaseRetrofitApi.class)
-//                .region()
-//                .compose(BaseRxSchedulers.<BaseEntity<City>>io_main(this))
-//                .subscribeWith(new BaseSubscriber<City>() {
-//                    @Override
-//                    public void onSuccess(City city) {
-//                        LogUtils.e(city.code + city.msg);
-//                    }
-//                });
-//        addDisposable(baseSubscriber);
+    public void onClick(View view) {
+        BaseSubscriber<City> baseSubscriber = BaseRetrofit
+                .getInstance()
+                .create(BaseRetrofitApi.class)
+                .region()
+                .compose(BaseRxSchedulers.<BaseEntity<City>>io_main(this))
+                .subscribeWith(new BaseSubscriber<City>() {
+                    @Override
+                    public void onSuccess(City city) {
+                        LogUtils.e(city.getData().get(0).getBIANMA());
+                    }
+                });
+        addDisposable(baseSubscriber);
     }
 }

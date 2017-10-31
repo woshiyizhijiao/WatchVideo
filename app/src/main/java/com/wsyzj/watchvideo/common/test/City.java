@@ -1,7 +1,5 @@
 package com.wsyzj.watchvideo.common.test;
 
-import com.wsyzj.watchvideo.common.http.BaseEntity;
-
 import java.util.List;
 
 /**
@@ -11,7 +9,7 @@ import java.util.List;
  * @date: 2016-11-21 12:25
  * @comment: 城市数据
  */
-public class City extends BaseEntity {
+public class City {
 
 
     /**

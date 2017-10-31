@@ -1,7 +1,12 @@
 package com.wsyzj.watchvideo.common.business.fragment;
 
+import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.media.MediaPlayer;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,9 +23,9 @@ import com.wsyzj.watchvideo.common.business.bean.Music;
 import com.wsyzj.watchvideo.common.business.bean.Song;
 import com.wsyzj.watchvideo.common.business.mvp.MusicContract;
 import com.wsyzj.watchvideo.common.business.mvp.MusicPresenter;
+import com.wsyzj.watchvideo.common.business.service.PlayMusicService;
 import com.wsyzj.watchvideo.common.widget.BasePullToRefreshView;
 
-import java.io.IOException;
 import java.util.List;
 
 import butterknife.BindView;
@@ -33,8 +38,7 @@ import butterknife.OnClick;
  */
 
 public class MusicFragment extends BaseFragment implements MusicContract.View, SwipeRefreshLayout.OnRefreshListener, BaseQuickAdapter.OnItemClickListener,
-        BaseQuickAdapter.RequestLoadMoreListener, SeekBar.OnSeekBarChangeListener, MediaPlayer.OnCompletionListener {
-
+        BaseQuickAdapter.RequestLoadMoreListener, SeekBar.OnSeekBarChangeListener {
     private static final int UPDATE_SONG_PROGRESS_TIME = 500;   // 更新音乐进度的时间
     private static final int MSG_CHANGED_MEDIA_PROGRESS = 101;  // 监听音乐播放进度
 
@@ -49,14 +53,15 @@ public class MusicFragment extends BaseFragment implements MusicContract.View, S
 
     private MusicPresenter mPresenter;
     private MusicAdapter mAdapter;
-    private MediaPlayer mMediaPlayer = new MediaPlayer();
+    private Intent mPlayMusicService;
+    private boolean mIsRegister;
 
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case MSG_CHANGED_MEDIA_PROGRESS:
-                    int currentPosition = mMediaPlayer.getCurrentPosition();
+                    int currentPosition = mPlayMusicBinder.getCurrentPosition();
                     sb_progress.setProgress(currentPosition / 1000);
                     mHandler.sendEmptyMessageDelayed(MSG_CHANGED_MEDIA_PROGRESS, UPDATE_SONG_PROGRESS_TIME);
                     break;
@@ -65,6 +70,7 @@ public class MusicFragment extends BaseFragment implements MusicContract.View, S
             }
         }
     };
+    private PlayMusicService.PlayMusicBinder mPlayMusicBinder;
 
     @Override
     protected BasePresenter presenter() {
@@ -82,23 +88,51 @@ public class MusicFragment extends BaseFragment implements MusicContract.View, S
         pull_to_refresh.setOnRefreshListener(this);
         pull_to_refresh.setRequestLoadMoreListener(this);
         sb_progress.setOnSeekBarChangeListener(this);
-        mMediaPlayer.setOnCompletionListener(this);
     }
 
     @Override
     public void initData() {
+        initPlayMusicService();
         mPresenter.getMusicList(true);
     }
-
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         mHandler.removeMessages(MSG_CHANGED_MEDIA_PROGRESS);
-        mMediaPlayer.reset();
-        mMediaPlayer.release();
-        mMediaPlayer = null;
+        if (mIsRegister) {
+            mActivity.unbindService(mConn);
+        }
     }
+
+    /**
+     * 开启音乐的服务
+     */
+    private void initPlayMusicService() {
+        mPlayMusicService = new Intent(mActivity, PlayMusicService.class);
+        mActivity.startService(mPlayMusicService);
+        mActivity.bindService(mPlayMusicService, mConn, Activity.BIND_AUTO_CREATE);
+    }
+
+    private ServiceConnection mConn = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            mPlayMusicBinder = (PlayMusicService.PlayMusicBinder) service;
+            mIsRegister = true;
+            mPlayMusicBinder.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    mPresenter.next();
+                }
+            });
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+
+        }
+    };
+
 
     /**
      * 设置音乐列表数据
@@ -166,19 +200,8 @@ public class MusicFragment extends BaseFragment implements MusicContract.View, S
     public void setSongInfo(Song song) {
         sb_progress.setMax(song.bitrate.file_duration);
         sb_progress.setProgress(0);
-        play(song.bitrate.file_link);
-    }
-
-    private void play(String path) {
-        try {
-            mMediaPlayer.reset();
-            mMediaPlayer.setDataSource(path);
-            mMediaPlayer.prepare();
-            mMediaPlayer.start();
-            mHandler.sendEmptyMessageDelayed(MSG_CHANGED_MEDIA_PROGRESS, UPDATE_SONG_PROGRESS_TIME);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        mPlayMusicBinder.play(song.bitrate.file_link);
+        mHandler.sendEmptyMessageDelayed(MSG_CHANGED_MEDIA_PROGRESS, UPDATE_SONG_PROGRESS_TIME);
     }
 
     /**
@@ -186,12 +209,12 @@ public class MusicFragment extends BaseFragment implements MusicContract.View, S
      */
     @OnClick(R.id.frame_player)
     public void player() {
-        if (mMediaPlayer.isPlaying()) {
-            mMediaPlayer.pause();
+        if (mPlayMusicBinder.isPlaying()) {
+            mPlayMusicBinder.pause();
             img_player_state.setImageResource(R.drawable.btn_playback_pause);
             mHandler.removeMessages(MSG_CHANGED_MEDIA_PROGRESS);
         } else {
-            mMediaPlayer.start();
+            mPlayMusicBinder.start();
             img_player_state.setImageResource(R.drawable.btn_playback_play);
             mHandler.sendEmptyMessageDelayed(MSG_CHANGED_MEDIA_PROGRESS, UPDATE_SONG_PROGRESS_TIME);
         }
@@ -223,7 +246,6 @@ public class MusicFragment extends BaseFragment implements MusicContract.View, S
     @Override
     public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
 
-
     }
 
     @Override
@@ -234,16 +256,6 @@ public class MusicFragment extends BaseFragment implements MusicContract.View, S
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
         int progress = seekBar.getProgress();
-        mMediaPlayer.seekTo(progress * 1000);
-    }
-
-    /**
-     * 播放完成
-     *
-     * @param mediaPlayer
-     */
-    @Override
-    public void onCompletion(MediaPlayer mediaPlayer) {
-        mPresenter.next();
+        mPlayMusicBinder.seekTo(progress * 1000);
     }
 }

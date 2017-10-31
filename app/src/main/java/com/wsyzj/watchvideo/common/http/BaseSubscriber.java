@@ -19,11 +19,11 @@ public abstract class BaseSubscriber<T> extends DisposableSubscriber<BaseEntity<
 
     @Override
     public void onNext(BaseEntity<T> baseEntity) {
-//        if (baseEntity.code == Constants.NET_CODE_SUCCESS) {
-//            onSuccess(baseEntity.result);
-//        } else {
-//            ToastUtils.showToast(baseEntity.msg);
-//        }
+        if (baseEntity.getCode() == Constants.NET_CODE_SUCCESS) {
+            onSuccess(baseEntity.getResult());
+        } else {
+            ToastUtils.showToast(baseEntity.getMsg());
+        }
     }
 
     @Override

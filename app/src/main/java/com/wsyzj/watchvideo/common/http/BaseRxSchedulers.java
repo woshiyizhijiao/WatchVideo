@@ -28,7 +28,7 @@ public class BaseRxSchedulers {
     /**
      * 基本请求
      */
-    public static <T extends BaseEntity> FlowableTransformer<T, T> io_main(final Context context) {
+    public static <T> FlowableTransformer<T, T> io_main(final Context context) {
         return new FlowableTransformer<T, T>() {
             @Override
             public Publisher<T> apply(@NonNull Flowable<T> upstream) {

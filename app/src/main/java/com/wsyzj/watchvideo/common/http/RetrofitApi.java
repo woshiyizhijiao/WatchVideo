@@ -3,6 +3,7 @@ package com.wsyzj.watchvideo.common.http;
 
 import com.wsyzj.watchvideo.common.business.bean.Music;
 import com.wsyzj.watchvideo.common.business.bean.Song;
+import com.wsyzj.watchvideo.common.test.City;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;
@@ -22,4 +23,7 @@ public interface RetrofitApi {
 
     @GET("v1/restserver/ting/")
     Observable<Song> getMusicPlayPath(@Header("User-Agent") String userAgent, @Query("method") String method, @Query("songid") String songid);
+
+    @GET("api/v1/common/index")
+    Observable<BaseEntity<City>> region();
 }

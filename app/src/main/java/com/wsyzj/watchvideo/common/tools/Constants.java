@@ -7,7 +7,7 @@ package com.wsyzj.watchvideo.common.tools;
  */
 
 public class Constants {
-    public static String PATH = "http://demo.ecapp.cc/mec/";
+    public static String PATH = "http://demo.ecapp.cc/mec//";
     // 网络请求地址
     public static final String BASE_URL = "http://tingapi.ting.baidu.com/";
     // 网络请求相关变量

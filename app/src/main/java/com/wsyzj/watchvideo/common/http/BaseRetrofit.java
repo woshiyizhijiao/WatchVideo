@@ -24,36 +24,40 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class BaseRetrofit {
     private static ArrayMap<String, CompositeDisposable> mNetManager = new ArrayMap<>();
 
-    public static Retrofit getInstance() {
-        return Instance.retrofit;
+    private static OkHttpClient getOkHttpClient() {
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        if (BaseApp.isDebug) {
+            HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+            interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+            builder.addInterceptor(interceptor);
+        }
+        builder.connectTimeout(12, TimeUnit.SECONDS);       //设置连接超时
+        builder.writeTimeout(12, TimeUnit.SECONDS);         //设置写超时
+        builder.readTimeout(12, TimeUnit.SECONDS);          //设置读超时
+        return builder.build();
     }
 
-    private static class Instance {
-        private static Retrofit retrofit = getRetrofit();
+    private static BaseRetrofitApi getBaseRetrofitApi(String baseUrl) {
+        Retrofit.Builder builder = new Retrofit.Builder();
+        builder.addConverterFactory(GsonConverterFactory.create());
+        builder.addCallAdapterFactory(RxJava2CallAdapterFactory.create());
+        builder.client(getOkHttpClient());
+        builder.baseUrl(baseUrl);
+        BaseRetrofitApi api = builder.build().create(BaseRetrofitApi.class);
+        return api;
+    }
 
-        private static Retrofit getRetrofit() {
-            OkHttpClient.Builder okHttpBuilder = new OkHttpClient.Builder();
+    /**
+     * 获取音频api
+     *
+     * @return
+     */
+    public static BaseRetrofitApi musicApi() {
+        return getBaseRetrofitApi(Constants.MUSIC_URL);
+    }
 
-            if (BaseApp.isDebug) {
-                HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-                interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-                okHttpBuilder.addInterceptor(interceptor);
-            }
-//            okHttpBuilder.addInterceptor(new HeaderInterceptor());
-//            okHttpBuilder.addInterceptor(new ParamsInterceptor());
-
-//            okHttpBuilder.retryOnConnectionFailure(true);           //设置网络连接失败时自动重试
-            okHttpBuilder.connectTimeout(12, TimeUnit.SECONDS);       //设置连接超时
-            okHttpBuilder.writeTimeout(12, TimeUnit.SECONDS);         //设置写超时
-            okHttpBuilder.readTimeout(12, TimeUnit.SECONDS);          //设置读超时
-
-            Retrofit.Builder retrofitBuilder = new Retrofit.Builder();
-            retrofitBuilder.addConverterFactory(GsonConverterFactory.create());
-            retrofitBuilder.addCallAdapterFactory(RxJava2CallAdapterFactory.create());
-            retrofitBuilder.client(okHttpBuilder.build());
-            retrofitBuilder.baseUrl(Constants.PATH);
-            return retrofitBuilder.build();
-        }
+    public static BaseRetrofitApi kaiYanApi() {
+        return getBaseRetrofitApi(Constants.KAIYAN_URL);
     }
 
     /**

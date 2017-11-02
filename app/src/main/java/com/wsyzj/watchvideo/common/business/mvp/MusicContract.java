@@ -5,13 +5,10 @@ import com.wsyzj.watchvideo.common.base.mvp.IPresenter;
 import com.wsyzj.watchvideo.common.base.mvp.IView;
 import com.wsyzj.watchvideo.common.business.bean.Music;
 import com.wsyzj.watchvideo.common.business.bean.Song;
-import com.wsyzj.watchvideo.common.http.BaseEntity;
-import com.wsyzj.watchvideo.common.test.City;
 
 import java.util.List;
 
 import io.reactivex.Flowable;
-import io.reactivex.Observable;
 
 
 /**
@@ -32,11 +29,9 @@ public class MusicContract {
     }
 
     public interface Model extends IModel {
-        Observable<Music> getMusicList(int page);
+        Flowable<Music> getMusicList(int page);
 
-        Observable<Song> getMusicPlayPath(String songid);
-
-        Flowable<BaseEntity<List<City>>> getRegion();
+        Flowable<Song> getMusicPlayPath(String songid);
     }
 
     interface Presenter extends IPresenter<View> {
@@ -47,7 +42,5 @@ public class MusicContract {
         void previous();
 
         void next();
-
-        void getRegion();
     }
 }

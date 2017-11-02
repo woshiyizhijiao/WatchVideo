@@ -48,7 +48,7 @@ public class BasePullToRefreshView extends LinearLayout implements BaseQuickAdap
         swipe_refresh = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
         recycler = (RecyclerView) view.findViewById(R.id.recycler);
 
-//        swipe_refresh.setRefreshing(true);
+        swipe_refresh.setRefreshing(true);
         addView(view);
     }
 
@@ -57,8 +57,17 @@ public class BasePullToRefreshView extends LinearLayout implements BaseQuickAdap
      *
      * @param refreshing
      */
-    public void setRefreshing(boolean refreshing) {
-        swipe_refresh.setRefreshing(refreshing);
+    public void setRefreshing(final boolean refreshing) {
+        if (refreshing) {
+            swipe_refresh.setRefreshing(refreshing);
+        } else {
+            swipe_refresh.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    swipe_refresh.setRefreshing(refreshing);
+                }
+            }, 1000);
+        }
     }
 
     /**
@@ -105,16 +114,26 @@ public class BasePullToRefreshView extends LinearLayout implements BaseQuickAdap
     /**
      * 设置下班之后的监听
      */
-    public void setLoadMoreState(int totalCount, int currentCount) {
+    public void setLoadMoreState(int totalCount) {
         swipe_refresh.setRefreshing(false);
         RecyclerView.Adapter adapter = recycler.getAdapter();
         if (adapter != null && adapter instanceof BaseQuickAdapter) {
             BaseQuickAdapter quickAdapter = (BaseQuickAdapter) adapter;
-            if (totalCount > currentCount) {
+            int itemCount = quickAdapter.getItemCount();
+            if (totalCount > itemCount) {
                 quickAdapter.loadMoreComplete();
             } else {
                 quickAdapter.loadMoreEnd();
             }
         }
+    }
+
+    /**
+     * 获取recycler的实例
+     *
+     * @return
+     */
+    public RecyclerView getRecycler() {
+        return recycler;
     }
 }

@@ -93,7 +93,6 @@ public class MusicFragment extends BaseFragment implements MusicContract.View, S
     @Override
     public void initData() {
         initPlayMusicService();
-        mPresenter.getRegion();
         mPresenter.getMusicList(true);
     }
 
@@ -133,7 +132,6 @@ public class MusicFragment extends BaseFragment implements MusicContract.View, S
 
         }
     };
-
 
     /**
      * 设置音乐列表数据
@@ -182,7 +180,7 @@ public class MusicFragment extends BaseFragment implements MusicContract.View, S
      */
     @Override
     public void setLoadMoreState(int totalCount, int currentCount) {
-        pull_to_refresh.setLoadMoreState(totalCount, currentCount);
+        pull_to_refresh.setLoadMoreState(totalCount);
     }
 
     @Override

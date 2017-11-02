@@ -17,6 +17,17 @@ public class ImageLoader {
      * 加载图片
      *
      * @param context
+     * @param path      图片路径
+     * @param imageView ImageView
+     */
+    public static void with(Context context, String path, ImageView imageView) {
+        Glide.with(context).load(path).into(imageView);
+    }
+
+    /**
+     * 加载图片
+     *
+     * @param context
      * @param path        图片路径
      * @param placeholder 加载中的图片
      * @param errorResIs  加载失败图片

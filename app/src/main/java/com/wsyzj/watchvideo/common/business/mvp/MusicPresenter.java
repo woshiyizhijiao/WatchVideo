@@ -1,19 +1,12 @@
 package com.wsyzj.watchvideo.common.business.mvp;
 
-import com.google.gson.Gson;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
 import com.wsyzj.watchvideo.common.business.bean.Music;
 import com.wsyzj.watchvideo.common.business.bean.Song;
-import com.wsyzj.watchvideo.common.http.BaseSubscriber;
-import com.wsyzj.watchvideo.common.test.City;
-import com.wsyzj.watchvideo.common.tools.LogUtils;
+import com.wsyzj.watchvideo.common.http.BaseTSubscriber;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import io.reactivex.Observer;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.disposables.Disposable;
 
 /**
  * @author: wsyzj
@@ -44,22 +37,18 @@ public class MusicPresenter extends BasePresenter<MusicContract.View, MusicContr
         } else {
             mPage++;
         }
-
-        mModel.getMusicList(mPage)
-                .subscribeWith(new Observer<Music>() {
+        BaseTSubscriber<Music> baseTSubscriber = mModel
+                .getMusicList(mPage)
+                .subscribeWith(new BaseTSubscriber<Music>() {
                     @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(@NonNull Music music) {
+                    public void onSuccess(Object data) {
+                        Music music = (Music) data;
                         List<Music.SongListBean> song_list = music.song_list;
                         if (song_list != null) {
                             if (isRefresh) {
-                                mSongs = music.song_list;
+                                mSongs = song_list;
                             } else {
-                                mSongs.addAll(music.song_list);
+                                mSongs.addAll(song_list);
                             }
                             mView.setMusicList(mSongs);
                         } else {
@@ -67,17 +56,8 @@ public class MusicPresenter extends BasePresenter<MusicContract.View, MusicContr
                         }
                         mView.setRefreshing(false);
                     }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-                        mView.showToast("获取音乐列表失败，请重试");
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
                 });
+        mView.addDisposable(baseTSubscriber);
     }
 
     /**
@@ -87,27 +67,13 @@ public class MusicPresenter extends BasePresenter<MusicContract.View, MusicContr
     public void getMusicPlayPath(String songid) {
         mView.showProgress();
         mModel.getMusicPlayPath(songid)
-                .subscribeWith(new Observer<Song>() {
+                .subscribeWith(new BaseTSubscriber<Song>() {
                     @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(@NonNull Song song) {
+                    public void onSuccess(Object data) {
+                        Song song = (Song) data;
                         if (song != null) {
                             mView.setSongInfo(song);
                         }
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-                        e.printStackTrace();
-                        mView.showToast("获取歌曲链接失败，请重试");
-                    }
-
-                    @Override
-                    public void onComplete() {
                         mView.dismissProgress();
                     }
                 });
@@ -139,20 +105,5 @@ public class MusicPresenter extends BasePresenter<MusicContract.View, MusicContr
         }
         Music.SongListBean bean = mSongs.get(mCurrentPos);
         getMusicPlayPath(bean.song_id);
-    }
-
-    /**
-     * 测试城市数据
-     */
-    @Override
-    public void getRegion() {
-        BaseSubscriber<List<City>> baseSubscriber = mModel.getRegion()
-                .subscribeWith(new BaseSubscriber<List<City>>() {
-                    @Override
-                    public void onSuccess(List<City> data) {
-                        LogUtils.e("返回的数据" + new Gson().toJson(data));
-                    }
-                });
-        mView.addDisposable(baseSubscriber);
     }
 }

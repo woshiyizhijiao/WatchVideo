@@ -93,6 +93,7 @@ public class MusicFragment extends BaseFragment implements MusicContract.View, S
     @Override
     public void initData() {
         initPlayMusicService();
+        mPresenter.getRegion();
         mPresenter.getMusicList(true);
     }
 

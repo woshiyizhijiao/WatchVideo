@@ -3,6 +3,7 @@ package com.wsyzj.watchvideo.common.http;
 import android.app.ProgressDialog;
 import android.content.Context;
 
+import com.wsyzj.watchvideo.common.base.BaseApp;
 import com.wsyzj.watchvideo.common.tools.NetUtils;
 
 import org.reactivestreams.Publisher;
@@ -28,7 +29,7 @@ public class BaseRxSchedulers {
     /**
      * 基本请求
      */
-    public static <T> FlowableTransformer<T, T> io_main(final Context context) {
+    public static <T> FlowableTransformer<T, T> io_main() {
         return new FlowableTransformer<T, T>() {
             @Override
             public Publisher<T> apply(@NonNull Flowable<T> upstream) {
@@ -37,7 +38,7 @@ public class BaseRxSchedulers {
                         .doOnSubscribe(new Consumer<Subscription>() {
                             @Override
                             public void accept(@NonNull Subscription subscription) throws Exception {
-                                if (!NetUtils.isConnected(context)) {
+                                if (!NetUtils.isConnected(BaseApp.getApp())) {
                                     subscription.cancel();
                                 }
                             }

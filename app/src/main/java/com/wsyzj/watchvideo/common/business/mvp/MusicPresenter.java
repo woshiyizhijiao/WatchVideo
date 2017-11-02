@@ -1,8 +1,12 @@
 package com.wsyzj.watchvideo.common.business.mvp;
 
+import com.google.gson.Gson;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
 import com.wsyzj.watchvideo.common.business.bean.Music;
 import com.wsyzj.watchvideo.common.business.bean.Song;
+import com.wsyzj.watchvideo.common.http.BaseSubscriber;
+import com.wsyzj.watchvideo.common.test.City;
+import com.wsyzj.watchvideo.common.tools.LogUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -135,5 +139,20 @@ public class MusicPresenter extends BasePresenter<MusicContract.View, MusicContr
         }
         Music.SongListBean bean = mSongs.get(mCurrentPos);
         getMusicPlayPath(bean.song_id);
+    }
+
+    /**
+     * 测试城市数据
+     */
+    @Override
+    public void getRegion() {
+        BaseSubscriber<List<City>> baseSubscriber = mModel.getRegion()
+                .subscribeWith(new BaseSubscriber<List<City>>() {
+                    @Override
+                    public void onSuccess(List<City> data) {
+                        LogUtils.e("返回的数据" + new Gson().toJson(data));
+                    }
+                });
+        mView.addDisposable(baseSubscriber);
     }
 }

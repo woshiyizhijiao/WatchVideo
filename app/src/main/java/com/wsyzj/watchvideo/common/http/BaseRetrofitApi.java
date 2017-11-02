@@ -14,6 +14,6 @@ import retrofit2.http.GET;
 public interface BaseRetrofitApi {
 
     @GET("api/v1/common/region")
-    Flowable<BaseEntity<List<City>>> region();
+    Flowable<BaseEntity<List<City>>> getRegion();
 
 }

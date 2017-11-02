@@ -4,9 +4,17 @@ import android.os.Build;
 
 import com.wsyzj.watchvideo.common.business.bean.Music;
 import com.wsyzj.watchvideo.common.business.bean.Song;
+import com.wsyzj.watchvideo.common.http.BaseEntity;
+import com.wsyzj.watchvideo.common.http.BaseRetrofit;
+import com.wsyzj.watchvideo.common.http.BaseRetrofitApi;
+import com.wsyzj.watchvideo.common.http.BaseRxSchedulers;
 import com.wsyzj.watchvideo.common.http.RetrofitHepler;
 import com.wsyzj.watchvideo.common.http.RxSchedulers;
+import com.wsyzj.watchvideo.common.test.City;
 
+import java.util.List;
+
+import io.reactivex.Flowable;
 import io.reactivex.Observable;
 
 /**
@@ -16,7 +24,7 @@ import io.reactivex.Observable;
  */
 public class MusicModel implements MusicContract.Model {
 
-
+    @Override
     public Observable<Music> getMusicList(int page) {
         return RetrofitHepler
                 .getInstance()
@@ -32,6 +40,15 @@ public class MusicModel implements MusicContract.Model {
                 .getRetrofitApi()
                 .getMusicPlayPath(getUserAgent(), "baidu.ting.song.play", songid)
                 .compose(RxSchedulers.<Song>test());
+    }
+
+    @Override
+    public Flowable<BaseEntity<List<City>>> getRegion() {
+        return BaseRetrofit
+                .getInstance()
+                .create(BaseRetrofitApi.class)
+                .getRegion()
+                .compose(BaseRxSchedulers.<BaseEntity<List<City>>>io_main());
     }
 
     private String getUserAgent() {

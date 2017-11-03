@@ -16,8 +16,8 @@ public class KaiYanModel implements KaiYanContract.Model {
     @Override
     public Flowable<KaiYan> getKaiYanList() {
         return BaseRetrofit
-                .kaiYanApi()
-                .getKaiYanList()
+                .videoApi()
+                .getVideoList()
                 .compose(BaseRxSchedulers.<KaiYan>io_main());
     }
 }

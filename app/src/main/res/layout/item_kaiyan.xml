@@ -1,19 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
-              android:layout_height="300dp"
+              android:layout_height="260dp"
               android:layout_marginTop="5dp"
               android:orientation="vertical">
 
     <cn.jzvd.JZVideoPlayerStandard
         android:id="@+id/jzVideoPlayer"
         android:layout_width="match_parent"
-        android:layout_height="260dp"/>
+        android:layout_height="220dp"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="39dp">
 
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:text="作者"
+            android:textColor="@color/c666666"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/tv_praiseTimes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:drawableLeft="@drawable/ic_like_normal_thumb"
+            android:drawablePadding="5dp"
+            android:gravity="center"
+            android:text="100"/>
 
     </RelativeLayout>
 

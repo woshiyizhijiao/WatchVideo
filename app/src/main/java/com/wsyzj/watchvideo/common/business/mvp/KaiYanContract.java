@@ -17,7 +17,7 @@ import io.reactivex.Flowable;
 public class KaiYanContract {
 
     public interface View extends IView {
-        void setKaiYanList(List<KaiYan.ItemListBean> itemList);
+        void setVideoList(List<KaiYan.DataListBean> itemList);
 
         void setRefreshing(boolean refreshing);
     }

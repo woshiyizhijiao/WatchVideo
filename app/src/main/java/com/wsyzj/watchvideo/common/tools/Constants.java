@@ -9,7 +9,7 @@ package com.wsyzj.watchvideo.common.tools;
 public class Constants {
     // 网络请求地址
     public static final String MUSIC_URL = "http://tingapi.ting.baidu.com/";
-    public static final String KAIYAN_URL = "http://baobab.kaiyanapp.com/";
+    public static final String VIDEO_URL = "http://app.pearvideo.com/clt/jsp/v2/";
 
     // 网络请求相关变量
     public static final int NET_CODE_SUCCESS = 10000;

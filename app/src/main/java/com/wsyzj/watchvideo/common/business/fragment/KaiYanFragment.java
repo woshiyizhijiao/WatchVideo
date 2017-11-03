@@ -8,7 +8,7 @@ import android.view.View;
 import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.common.base.BaseFragment;
 import com.wsyzj.watchvideo.common.base.mvp.IPresenter;
-import com.wsyzj.watchvideo.common.business.adapter.KaiYanAdapter;
+import com.wsyzj.watchvideo.common.business.adapter.VideoAdapter;
 import com.wsyzj.watchvideo.common.business.bean.KaiYan;
 import com.wsyzj.watchvideo.common.business.mvp.KaiYanContract;
 import com.wsyzj.watchvideo.common.business.mvp.KaiYanPresenter;
@@ -22,7 +22,7 @@ import cn.jzvd.JZVideoPlayer;
 /**
  * author : 焦洋
  * time   : 2017/11/2  12:17
- * desc   : 开眼视频
+ * desc   :
  */
 public class KaiYanFragment extends BaseFragment implements KaiYanContract.View, SwipeRefreshLayout.OnRefreshListener, RecyclerView.OnChildAttachStateChangeListener {
 
@@ -30,7 +30,7 @@ public class KaiYanFragment extends BaseFragment implements KaiYanContract.View,
     BasePullToRefreshView pull_to_refresh;
 
     private KaiYanPresenter mPresenter;
-    private KaiYanAdapter mKaiYanAdapter;
+    private VideoAdapter mKaiYanAdapter;
 
     @Override
     protected IPresenter presenter() {
@@ -52,12 +52,6 @@ public class KaiYanFragment extends BaseFragment implements KaiYanContract.View,
     @Override
     public void initData() {
         mPresenter.getKaiYanList();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        JZVideoPlayer.releaseAllVideos();
     }
 
     /**
@@ -84,9 +78,9 @@ public class KaiYanFragment extends BaseFragment implements KaiYanContract.View,
      * @param itemList
      */
     @Override
-    public void setKaiYanList(List<KaiYan.ItemListBean> itemList) {
+    public void setVideoList(List<KaiYan.DataListBean> itemList) {
         if (mKaiYanAdapter == null) {
-            mKaiYanAdapter = new KaiYanAdapter(mActivity, R.layout.item_kaiyan, itemList);
+            mKaiYanAdapter = new VideoAdapter(mActivity, R.layout.item_kaiyan, itemList);
             pull_to_refresh.setLayoutManager(new LinearLayoutManager(mActivity));
             pull_to_refresh.setAdapter(mKaiYanAdapter);
         } else {

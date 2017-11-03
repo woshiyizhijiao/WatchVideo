@@ -15,7 +15,7 @@ public class KaiYanPresenter extends BasePresenter<KaiYanContract.View, KaiYanCo
 
     private KaiYanContract.View mView;
     private KaiYanContract.Model mModel;
-    private List<KaiYan.ItemListBean> mDatas;
+    private List<KaiYan.DataListBean> mDatas;
 
     public KaiYanPresenter(KaiYanContract.View view) {
         mView = view;
@@ -32,8 +32,8 @@ public class KaiYanPresenter extends BasePresenter<KaiYanContract.View, KaiYanCo
                     @Override
                     public void onSuccess(Object data) {
                         KaiYan kaiYan = (KaiYan) data;
-                        mDatas = kaiYan.itemList;
-                        mView.setKaiYanList(mDatas);
+                        mDatas = kaiYan.dataList;
+                        mView.setVideoList(mDatas);
                         mView.setRefreshing(false);
                     }
                 });

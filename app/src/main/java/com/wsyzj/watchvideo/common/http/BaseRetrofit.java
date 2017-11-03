@@ -56,8 +56,8 @@ public class BaseRetrofit {
         return getBaseRetrofitApi(Constants.MUSIC_URL);
     }
 
-    public static BaseRetrofitApi kaiYanApi() {
-        return getBaseRetrofitApi(Constants.KAIYAN_URL);
+    public static BaseRetrofitApi videoApi() {
+        return getBaseRetrofitApi(Constants.VIDEO_URL);
     }
 
     /**

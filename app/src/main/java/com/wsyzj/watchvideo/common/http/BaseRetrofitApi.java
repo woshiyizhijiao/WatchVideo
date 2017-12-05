@@ -3,11 +3,13 @@ package com.wsyzj.watchvideo.common.http;
 import com.wsyzj.watchvideo.common.business.bean.KaiYan;
 import com.wsyzj.watchvideo.common.business.bean.Music;
 import com.wsyzj.watchvideo.common.business.bean.Song;
+import com.wsyzj.watchvideo.common.business.bean.WeChatChoiceness;
 
 import io.reactivex.Flowable;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
+import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 /**
@@ -61,4 +63,15 @@ public interface BaseRetrofitApi {
     })
     @GET("home.jsp?lastLikeIds=1063871%2C1063985%2C1064069%2C1064123%2C1064078%2C1064186%2C1062372%2C1064164%2C1064081%2C1064176%2C1064070%2C1064019")
     Flowable<KaiYan> getVideoList();
+
+    /**
+     * 获取微信精选数据
+     *
+     * @param pno
+     * @param ps
+     * @param key
+     * @return
+     */
+    @POST("query")
+    Flowable<WeChatChoiceness> wechatChoiceness(@Query("pno") int pno, @Query("ps") int ps, @Query("key") String key);
 }

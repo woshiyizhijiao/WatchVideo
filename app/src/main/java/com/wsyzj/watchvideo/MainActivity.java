@@ -10,6 +10,7 @@ import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
 import com.wsyzj.watchvideo.common.business.adapter.VpAdapter;
 import com.wsyzj.watchvideo.common.business.fragment.KaiYanFragment;
 import com.wsyzj.watchvideo.common.business.fragment.MusicFragment;
+import com.wsyzj.watchvideo.common.business.fragment.WeChatChoicenessFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,7 @@ public class MainActivity extends BaseActivity implements TabLayout.OnTabSelecte
     @BindView(R.id.viewPager)
     ViewPager viewPager;
 
-    private String[] mTabs = {"视频", "音乐"};
+    private String[] mTabs = {"微信精选", "视频", "音乐",};
 
     @Override
     protected BasePresenter presenter() {
@@ -79,6 +80,7 @@ public class MainActivity extends BaseActivity implements TabLayout.OnTabSelecte
      */
     private void initVpData() {
         List<BaseFragment> fragments = new ArrayList<>();
+        fragments.add(new WeChatChoicenessFragment());
         fragments.add(new KaiYanFragment());
         fragments.add(new MusicFragment());
 

@@ -14,4 +14,6 @@
     <color name="cdddddd">#dddddd</color>
     <color name="c333333">#333333</color>
     <color name="c666666">#666666</color>
+
+    <color name="c20000000">#40000000</color>
 </resources>

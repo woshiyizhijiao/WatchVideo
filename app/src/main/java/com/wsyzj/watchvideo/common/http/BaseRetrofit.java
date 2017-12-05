@@ -56,8 +56,22 @@ public class BaseRetrofit {
         return getBaseRetrofitApi(Constants.MUSIC_URL);
     }
 
+    /**
+     * 视频api
+     *
+     * @return
+     */
     public static BaseRetrofitApi videoApi() {
         return getBaseRetrofitApi(Constants.VIDEO_URL);
+    }
+
+    /**
+     * 微信精选
+     *
+     * @return
+     */
+    public static BaseRetrofitApi wechatChoiceness() {
+        return getBaseRetrofitApi(Constants.WECHAT_CHOICENESS_URL);
     }
 
     /**

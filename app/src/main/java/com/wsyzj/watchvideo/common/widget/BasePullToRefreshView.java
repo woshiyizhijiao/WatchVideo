@@ -112,7 +112,7 @@ public class BasePullToRefreshView extends LinearLayout implements BaseQuickAdap
     }
 
     /**
-     * 设置下班之后的监听
+     * 设置下拉之后的监听
      */
     public void setLoadMoreState(int totalCount) {
         swipe_refresh.setRefreshing(false);

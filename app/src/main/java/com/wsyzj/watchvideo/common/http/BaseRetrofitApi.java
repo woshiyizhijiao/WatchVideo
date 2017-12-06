@@ -2,6 +2,8 @@ package com.wsyzj.watchvideo.common.http;
 
 import com.wsyzj.watchvideo.common.business.bean.KaiYan;
 import com.wsyzj.watchvideo.common.business.bean.Music;
+import com.wsyzj.watchvideo.common.business.bean.News;
+import com.wsyzj.watchvideo.common.business.bean.NewsTitle;
 import com.wsyzj.watchvideo.common.business.bean.Song;
 import com.wsyzj.watchvideo.common.business.bean.WeChatChoiceness;
 
@@ -74,4 +76,24 @@ public interface BaseRetrofitApi {
      */
     @POST("query")
     Flowable<WeChatChoiceness> wechatChoiceness(@Query("pno") int pno, @Query("ps") int ps, @Query("key") String key);
+
+    /**
+     * 获取所有的新闻标题
+     *
+     * @param appkey
+     * @return
+     */
+    @POST("channel")
+    Flowable<NewsTitle> getNewsTitle(@Query("appkey") String appkey);
+
+    /**
+     * 每个新闻标题下的数据
+     *
+     * @param channel
+     * @param start
+     * @param num
+     * @return
+     */
+    @POST("get")
+    Flowable<News> getNewsListByTitle(@Query("channel") String channel, @Query("start") int start, @Query("num") int num, @Query("appkey") String appkey);
 }

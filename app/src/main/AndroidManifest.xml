@@ -31,6 +31,15 @@
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:screenOrientation="portrait"/>
 
+        // 新闻
+        <activity
+            android:name=".common.business.activity.NewsActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:screenOrientation="portrait"/>
+
+        // WebView
+        <activity android:name=".common.business.activity.WebViewActivity"/>
+
         // 音乐播放服务
         <service android:name=".common.business.service.PlayMusicService"/>
 

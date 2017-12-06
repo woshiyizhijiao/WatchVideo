@@ -1,6 +1,7 @@
 package com.wsyzj.watchvideo.common.http;
 
-import com.wsyzj.watchvideo.common.tools.Constants;
+import com.wsyzj.watchvideo.common.tools.Constant;
+import com.wsyzj.watchvideo.common.tools.LogUtils;
 import com.wsyzj.watchvideo.common.tools.ToastUtils;
 
 import java.net.ConnectException;
@@ -29,15 +30,16 @@ public abstract class BaseTSubscriber<T> extends DisposableSubscriber<T> {
     public void onError(Throwable throwable) {
         String errorMsg = "";
         if (throwable instanceof SocketTimeoutException) {
-            errorMsg = Constants.SOCKET_TIMEOUT_EXCEPTION;
+            errorMsg = Constant.SOCKET_TIMEOUT_EXCEPTION;
         } else if (throwable instanceof ConnectException) {
-            errorMsg = Constants.CONNECT_EXCEPTION;
+            errorMsg = Constant.CONNECT_EXCEPTION;
         } else if (throwable instanceof UnknownHostException) {
-            errorMsg = Constants.UNKNOWN_HOST_EXCEPTION;
+            errorMsg = Constant.UNKNOWN_HOST_EXCEPTION;
         } else {
             errorMsg = throwable.getMessage();
         }
         ToastUtils.showToast(errorMsg);
+        LogUtils.e(throwable.toString());
     }
 
     @Override

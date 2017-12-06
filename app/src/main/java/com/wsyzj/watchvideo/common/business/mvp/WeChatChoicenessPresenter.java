@@ -3,7 +3,7 @@ package com.wsyzj.watchvideo.common.business.mvp;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
 import com.wsyzj.watchvideo.common.business.bean.WeChatChoiceness;
 import com.wsyzj.watchvideo.common.http.BaseTSubscriber;
-import com.wsyzj.watchvideo.common.tools.Constants;
+import com.wsyzj.watchvideo.common.tools.Constant;
 
 import java.util.List;
 
@@ -40,7 +40,7 @@ public class WeChatChoicenessPresenter extends BasePresenter<WeChatChoicenessCon
                     @Override
                     public void onSuccess(Object data) {
                         WeChatChoiceness chatChoiceness = (WeChatChoiceness) data;
-                        if (chatChoiceness.error_code == Constants.WECHAT_CHOICENESS_ERROR_CODE) {
+                        if (chatChoiceness.error_code == Constant.WECHAT_CHOICENESS_ERROR_CODE) {
                             WeChatChoiceness.ResultBean result = chatChoiceness.result;
                             List<WeChatChoiceness.ResultBean.ListBean> list = result.list;
 

@@ -7,7 +7,6 @@ import android.support.v4.view.ViewPager;
 import com.wsyzj.watchvideo.common.base.BaseActivity;
 import com.wsyzj.watchvideo.common.base.BaseFragment;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
-import com.wsyzj.watchvideo.common.business.adapter.VpAdapter;
 import com.wsyzj.watchvideo.common.business.fragment.KaiYanFragment;
 import com.wsyzj.watchvideo.common.business.fragment.MusicFragment;
 import com.wsyzj.watchvideo.common.business.fragment.WeChatChoicenessFragment;
@@ -84,8 +83,8 @@ public class MainActivity extends BaseActivity implements TabLayout.OnTabSelecte
         fragments.add(new KaiYanFragment());
         fragments.add(new MusicFragment());
 
-        VpAdapter vpAdapter = new VpAdapter(getSupportFragmentManager(), this, fragments, mTabs);
-        viewPager.setAdapter(vpAdapter);
+//        VpAdapter vpAdapter = new VpAdapter(getSupportFragmentManager(), this, fragments, mTabs);
+//        viewPager.setAdapter(vpAdapter);
     }
 
     @Override

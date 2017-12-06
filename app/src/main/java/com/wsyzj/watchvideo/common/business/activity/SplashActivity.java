@@ -71,7 +71,7 @@ public class SplashActivity extends BaseActivity {
                 if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
                     getPermissions();
                 } else {
-                    IntentUtils.main(SplashActivity.this);
+                    IntentUtils.news(SplashActivity.this);
                     finish();
                 }
             }

@@ -1,14 +1,17 @@
 package com.wsyzj.watchvideo.common.widget;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.wsyzj.watchvideo.R;
+import com.wsyzj.watchvideo.common.base.BaseActivity;
 
 
 /**
@@ -21,6 +24,7 @@ public class BaseTitleView extends LinearLayout {
     private Context mContext;
     private View base_layout;
     private Toolbar tooBar;
+    private TextView tv_title;
 
     public BaseTitleView(Context context) {
         super(context);
@@ -42,6 +46,20 @@ public class BaseTitleView extends LinearLayout {
         setOrientation(LinearLayout.VERTICAL);
         base_layout = LayoutInflater.from(mContext).inflate(R.layout.widget_base_title_view, null);
         tooBar = (Toolbar) base_layout.findViewById(R.id.tooBar);
+        tv_title = (TextView) base_layout.findViewById(R.id.tv_title);
+
+
+        if (mContext instanceof BaseActivity) {
+            final BaseActivity activity = (BaseActivity) mContext;
+            activity.setSupportActionBar(tooBar);
+            activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            tooBar.setNavigationOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    activity.finish();
+                }
+            });
+        }
         addView(base_layout);
     }
 
@@ -51,5 +69,20 @@ public class BaseTitleView extends LinearLayout {
     public View hide() {
         base_layout.setVisibility(View.GONE);
         return base_layout;
+    }
+
+    public Toolbar setNavigationIcon(int resId) {
+        tooBar.setNavigationIcon(resId);
+        return tooBar;
+    }
+
+    public Toolbar setNavigationIcon(Drawable icon) {
+        tooBar.setNavigationIcon(icon);
+        return tooBar;
+    }
+
+    public TextView setTitle(String title) {
+        tv_title.setText(title);
+        return tv_title;
     }
 }

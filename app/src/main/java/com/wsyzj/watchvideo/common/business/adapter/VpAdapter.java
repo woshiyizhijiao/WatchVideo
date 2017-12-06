@@ -10,8 +10,6 @@ import com.wsyzj.watchvideo.common.base.BaseFragment;
 
 import java.util.List;
 
-import static android.R.id.tabs;
-
 /**
  * 创建时间 : 2017/10/25
  * 编写人 : 焦洋
@@ -22,9 +20,9 @@ public class VpAdapter extends FragmentPagerAdapter {
 
     private Context mContext;
     private List<BaseFragment> mFragments;
-    private String[] mTabs;
+    private List<String> mTabs;
 
-    public VpAdapter(FragmentManager fm, Context context, List<BaseFragment> fragments, String[] tabs) {
+    public VpAdapter(FragmentManager fm, Context context, List<BaseFragment> fragments, List<String> tabs) {
         super(fm);
         mContext = context;
         mFragments = fragments;
@@ -48,6 +46,6 @@ public class VpAdapter extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return mTabs[position];
+        return mTabs.get(position);
     }
 }

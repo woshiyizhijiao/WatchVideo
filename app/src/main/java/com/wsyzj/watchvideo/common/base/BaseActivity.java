@@ -100,6 +100,12 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         }
     }
 
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.anim_act_translate_exit_in, R.anim.anim_act_translate_exit_out);
+    }
+
     /**
      * 显示progress
      */

@@ -3,7 +3,7 @@ package com.wsyzj.watchvideo.common.http;
 import android.util.ArrayMap;
 
 import com.wsyzj.watchvideo.common.base.BaseApp;
-import com.wsyzj.watchvideo.common.tools.Constants;
+import com.wsyzj.watchvideo.common.tools.Constant;
 
 import java.util.concurrent.TimeUnit;
 
@@ -48,33 +48,6 @@ public class BaseRetrofit {
     }
 
     /**
-     * 获取音频api
-     *
-     * @return
-     */
-    public static BaseRetrofitApi musicApi() {
-        return getBaseRetrofitApi(Constants.MUSIC_URL);
-    }
-
-    /**
-     * 视频api
-     *
-     * @return
-     */
-    public static BaseRetrofitApi videoApi() {
-        return getBaseRetrofitApi(Constants.VIDEO_URL);
-    }
-
-    /**
-     * 微信精选
-     *
-     * @return
-     */
-    public static BaseRetrofitApi wechatChoiceness() {
-        return getBaseRetrofitApi(Constants.WECHAT_CHOICENESS_URL);
-    }
-
-    /**
      * 请网络请求进行统一管理，方便没用的时候进行取消
      *
      * @param key
@@ -95,5 +68,42 @@ public class BaseRetrofit {
             CompositeDisposable cd = mNetManager.get(key);
             cd.clear();
         }
+    }
+
+
+    /**
+     * 获取音频api
+     *
+     * @return
+     */
+    public static BaseRetrofitApi musicApi() {
+        return getBaseRetrofitApi(Constant.MUSIC_URL);
+    }
+
+    /**
+     * 视频api
+     *
+     * @return
+     */
+    public static BaseRetrofitApi videoApi() {
+        return getBaseRetrofitApi(Constant.VIDEO_URL);
+    }
+
+    /**
+     * 微信精选
+     *
+     * @return
+     */
+    public static BaseRetrofitApi wechatChoiceness() {
+        return getBaseRetrofitApi(Constant.WECHAT_CHOICENESS_URL);
+    }
+
+    /**
+     * 京东新闻数据
+     *
+     * @return
+     */
+    public static BaseRetrofitApi jingDong() {
+        return getBaseRetrofitApi(Constant.JingDong.JINGDONG_URL);
     }
 }

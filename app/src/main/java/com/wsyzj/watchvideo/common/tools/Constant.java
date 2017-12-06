@@ -6,7 +6,7 @@ package com.wsyzj.watchvideo.common.tools;
  * 功能描述 :
  * 京东万象key: 9280e20dec44795b1a0bb724a24834c3
  */
-public class Constants {
+public class Constant {
     // 网络请求地址
 
     public static final String MUSIC_URL = "http://tingapi.ting.baidu.com/";
@@ -25,4 +25,14 @@ public class Constants {
     public static final String UNKNOWN_HOST_EXCEPTION = "网络异常，请检查您的网络状态";
 
     public static final int WECHAT_CHOICENESS_ERROR_CODE = 0;
+
+    /**
+     * 京东万象
+     */
+    public static class JingDong {
+        public static final String JINGDONG_URL = "https://way.jd.com/jisuapi/";
+        public static final String JINGDONG_KEY = "9280e20dec44795b1a0bb724a24834c3";
+        public static final int JINGDONG_CODE = 10000;
+        public static final int JINGDONG_STATUS = 0;
+    }
 }

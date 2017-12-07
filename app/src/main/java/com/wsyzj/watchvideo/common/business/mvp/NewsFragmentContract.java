@@ -19,6 +19,8 @@ public class NewsFragmentContract {
     public interface View extends IView {
         void firstHidePullToRefresh(int titleIndex);
 
+        void firstPageLoadFinish();
+
         void setNewsList(List<News.ResultBeanX.ResultBean.ListBean> list);
 
         void setRefreshing(boolean refreshing);

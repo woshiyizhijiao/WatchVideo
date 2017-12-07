@@ -7,12 +7,15 @@ import android.support.v4.widget.SwipeRefreshLayout;
 
 import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.common.base.BaseActivity;
+import com.wsyzj.watchvideo.common.base.BaseEvent;
 import com.wsyzj.watchvideo.common.base.BaseFragment;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
 import com.wsyzj.watchvideo.common.business.adapter.VpAdapter;
 import com.wsyzj.watchvideo.common.business.fragment.NewsFragment;
 import com.wsyzj.watchvideo.common.business.mvp.NewsActivityContract;
 import com.wsyzj.watchvideo.common.business.mvp.NewsActivityPresenter;
+import com.wsyzj.watchvideo.common.tools.Constant;
+import com.wsyzj.watchvideo.common.tools.LogUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,5 +104,22 @@ public class NewsActivity extends BaseActivity implements NewsActivityContract.V
     @Override
     public void onTabReselected(TabLayout.Tab tab) {
 
+    }
+
+    @Override
+    protected boolean isRegisterEventBus() {
+        return true;
+    }
+
+    @Override
+    protected void receiveEvent(BaseEvent event) {
+        super.receiveEvent(event);
+        switch (event.code) {
+            case Constant.EventBusC.NEW_FIRST_PAGE_LOAD_FINISH:
+                swipe_refresh.setEnabled(false);
+                break;
+            default:
+                break;
+        }
     }
 }

@@ -40,7 +40,7 @@ public class WeChatChoicenessPresenter extends BasePresenter<WeChatChoicenessCon
                     @Override
                     public void onSuccess(Object data) {
                         WeChatChoiceness chatChoiceness = (WeChatChoiceness) data;
-                        if (chatChoiceness.error_code == Constant.WECHAT_CHOICENESS_ERROR_CODE) {
+                        if (chatChoiceness.error_code == Constant.WeChat.WECHAT_CHOICENESS_ERROR_CODE) {
                             WeChatChoiceness.ResultBean result = chatChoiceness.result;
                             List<WeChatChoiceness.ResultBean.ListBean> list = result.list;
 

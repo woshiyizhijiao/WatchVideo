@@ -23,8 +23,10 @@ public class NewsFragmentPresenter extends BasePresenter<NewsFragmentContract.Vi
 
     private int mStart;
     private int mNum;
+    private int mTitleIndex;
     private String mCurrentTitle;
     private List<News.ResultBeanX.ResultBean.ListBean> mNewsList;
+    private boolean isFirstLoad = true;
 
     public NewsFragmentPresenter(NewsFragmentContract.View view) {
         mView = view;
@@ -39,10 +41,10 @@ public class NewsFragmentPresenter extends BasePresenter<NewsFragmentContract.Vi
     @Override
     public void getArguments(BaseFragment fragment) {
         Bundle arguments = fragment.getArguments();
-        int titleIndex = arguments.getInt(NewsActivity.BUNDLE_TITLE_INDEX, 0);
+        mTitleIndex = arguments.getInt(NewsActivity.BUNDLE_TITLE_INDEX, 0);
         mCurrentTitle = arguments.getString(NewsActivity.BUNDLE_CURRENT_TITLE, "");
 
-        mView.firstHidePullToRefresh(titleIndex);
+        mView.firstHidePullToRefresh(mTitleIndex);
     }
 
     /**
@@ -81,6 +83,11 @@ public class NewsFragmentPresenter extends BasePresenter<NewsFragmentContract.Vi
                             }
                         }
                         mView.setRefreshing(false);
+
+                        if (isFirstLoad && mTitleIndex == 0) {
+                            mView.firstPageLoadFinish();
+                            isFirstLoad = false;
+                        }
                     }
                 });
         mView.addDisposable(baseTSubscriber);

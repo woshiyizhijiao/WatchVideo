@@ -85,4 +85,10 @@ public class BaseTitleView extends LinearLayout {
         tv_title.setText(title);
         return tv_title;
     }
+
+    public void setNavigationOnClickListener(OnClickListener navigationOnClickListener) {
+        if (navigationOnClickListener != null) {
+            navigationOnClickListener.onClick(tooBar);
+        }
+    }
 }

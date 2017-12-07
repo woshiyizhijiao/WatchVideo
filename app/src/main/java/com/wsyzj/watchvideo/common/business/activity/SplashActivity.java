@@ -47,6 +47,18 @@ public class SplashActivity extends BaseActivity {
         enterMain();
     }
 
+
+    @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(0, 0);
+    }
+
     @Override
     protected void initImmersionBar() {
         mImmersionBar = ImmersionBar.with(this);
@@ -87,7 +99,7 @@ public class SplashActivity extends BaseActivity {
                     @Override
                     public void accept(@NonNull Boolean aBoolean) throws Exception {
                         if (aBoolean) {
-                            IntentUtils.main(SplashActivity.this);
+                            IntentUtils.news(SplashActivity.this);
                             finish();
                         } else {
                             // 拒绝权限需提示用户开启

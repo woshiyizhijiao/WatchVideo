@@ -12,8 +12,12 @@ import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
 import com.wsyzj.watchvideo.common.base.mvp.IView;
 import com.wsyzj.watchvideo.common.http.BaseRetrofit;
+import com.wsyzj.watchvideo.common.tools.EventBusUtils;
 import com.wsyzj.watchvideo.common.tools.ToastUtils;
 import com.wsyzj.watchvideo.common.widget.BaseTitleView;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.ButterKnife;
 import io.reactivex.disposables.Disposable;
@@ -39,6 +43,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         layout();
         initView();
         initData(savedInstanceState);
+        registerEventBus();
     }
 
     /**
@@ -84,6 +89,37 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         }
     }
 
+    /**
+     * 是否使用EventBus
+     *
+     * @return true 代表使用， 默认为false
+     */
+    protected boolean isRegisterEventBus() {
+        return false;
+    }
+
+    private void registerEventBus() {
+        if (isRegisterEventBus()) {
+            EventBusUtils.register(this);
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventBus(BaseEvent event) {
+        if (event != null) {
+            receiveEvent(event);
+        }
+    }
+
+    /**
+     * 接收到分发到事件
+     *
+     * @param event 事件
+     */
+    protected void receiveEvent(BaseEvent event) {
+
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -97,6 +133,9 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         }
         if (mImmersionBar != null) {
             mImmersionBar.destroy();
+        }
+        if (isRegisterEventBus()) {
+            EventBusUtils.unregister(this);
         }
     }
 

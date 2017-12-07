@@ -19,7 +19,7 @@ public abstract class BaseSubscriber<T> extends DisposableSubscriber<BaseEntity<
 
     @Override
     public void onNext(BaseEntity<T> baseEntity) {
-        if (baseEntity.code == Constant.NET_CODE_SUCCESS) {
+        if (baseEntity.code == Constant.NetMessage.NET_CODE_SUCCESS) {
             onSuccess(baseEntity.data);
         } else {
             ToastUtils.showToast(baseEntity.msg);
@@ -30,11 +30,11 @@ public abstract class BaseSubscriber<T> extends DisposableSubscriber<BaseEntity<
     public void onError(Throwable throwable) {
         String errorMsg = "";
         if (throwable instanceof SocketTimeoutException) {
-            errorMsg = Constant.SOCKET_TIMEOUT_EXCEPTION;
+            errorMsg = Constant.NetMessage.SOCKET_TIMEOUT_EXCEPTION;
         } else if (throwable instanceof ConnectException) {
-            errorMsg = Constant.CONNECT_EXCEPTION;
+            errorMsg = Constant.NetMessage.CONNECT_EXCEPTION;
         } else if (throwable instanceof UnknownHostException) {
-            errorMsg = Constant.UNKNOWN_HOST_EXCEPTION;
+            errorMsg = Constant.NetMessage.UNKNOWN_HOST_EXCEPTION;
         } else {
             errorMsg = throwable.getMessage();
         }

@@ -17,7 +17,6 @@ import io.reactivex.Flowable;
  */
 public class NewsFragmentContract {
     public interface View extends IView {
-        void firstHidePullToRefresh(int titleIndex);
 
         void firstPageLoadFinish();
 

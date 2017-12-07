@@ -6,6 +6,7 @@ import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
+import android.view.View;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -22,7 +23,7 @@ import butterknife.BindView;
  * @date 2017/12/6 14:47
  * @Description: $desc$
  */
-public class WebViewActivity extends BaseActivity {
+public class WebViewActivity extends BaseActivity implements View.OnClickListener {
 
     @BindView(R.id.webView)
     WebView webView;
@@ -41,6 +42,7 @@ public class WebViewActivity extends BaseActivity {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void initView() {
+        baseTitleView.setNavigationOnClickListener(this);
         webViewSettings();
     }
 
@@ -93,6 +95,15 @@ public class WebViewActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
+        if (webView.canGoBack()) {
+            webView.goBack();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
         if (webView.canGoBack()) {
             webView.goBack();
         } else {

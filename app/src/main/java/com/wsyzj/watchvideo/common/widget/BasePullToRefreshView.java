@@ -48,7 +48,7 @@ public class BasePullToRefreshView extends LinearLayout implements BaseQuickAdap
         swipe_refresh = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
         recycler = (RecyclerView) view.findViewById(R.id.recycler);
 
-        swipe_refresh.setRefreshing(true);
+        setRefreshing(true);
         addView(view);
     }
 
@@ -61,12 +61,7 @@ public class BasePullToRefreshView extends LinearLayout implements BaseQuickAdap
         if (refreshing) {
             swipe_refresh.setRefreshing(refreshing);
         } else {
-            swipe_refresh.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    swipe_refresh.setRefreshing(refreshing);
-                }
-            }, 1000);
+            swipe_refresh.setRefreshing(refreshing);
         }
     }
 

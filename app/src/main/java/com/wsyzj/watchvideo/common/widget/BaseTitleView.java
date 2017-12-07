@@ -26,6 +26,8 @@ public class BaseTitleView extends LinearLayout {
     private Toolbar tooBar;
     private TextView tv_title;
 
+    private OnClickListener mNavigationOnClickListener;
+
     public BaseTitleView(Context context) {
         super(context);
         init(context);
@@ -56,7 +58,11 @@ public class BaseTitleView extends LinearLayout {
             tooBar.setNavigationOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    activity.finish();
+                    if (mNavigationOnClickListener != null) {
+                        mNavigationOnClickListener.onClick(v);
+                    } else {
+                        activity.finish();
+                    }
                 }
             });
         }
@@ -64,31 +70,52 @@ public class BaseTitleView extends LinearLayout {
     }
 
     /**
-     * 隐藏
+     * 隐藏整个BaseTitleView
      */
     public View hide() {
         base_layout.setVisibility(View.GONE);
         return base_layout;
     }
 
+    /**
+     * 设置返回键的图标
+     *
+     * @param resId
+     * @return
+     */
     public Toolbar setNavigationIcon(int resId) {
         tooBar.setNavigationIcon(resId);
         return tooBar;
     }
 
+    /**
+     * 设置返回键的图标
+     *
+     * @param icon
+     * @return
+     */
     public Toolbar setNavigationIcon(Drawable icon) {
         tooBar.setNavigationIcon(icon);
         return tooBar;
     }
 
+    /**
+     * 设置标题
+     *
+     * @param title
+     * @return
+     */
     public TextView setTitle(String title) {
         tv_title.setText(title);
         return tv_title;
     }
 
+    /**
+     * 返回按键事件
+     *
+     * @param navigationOnClickListener
+     */
     public void setNavigationOnClickListener(OnClickListener navigationOnClickListener) {
-        if (navigationOnClickListener != null) {
-            navigationOnClickListener.onClick(tooBar);
-        }
+        mNavigationOnClickListener = navigationOnClickListener;
     }
 }

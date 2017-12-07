@@ -59,18 +59,6 @@ public class NewsFragment extends BaseFragment implements NewsFragmentContract.V
     }
 
     /**
-     * 第一个的时候隐藏下拉
-     *
-     * @param titleIndex
-     */
-    @Override
-    public void firstHidePullToRefresh(int titleIndex) {
-        if (titleIndex == 0) {
-            setRefreshing(false);
-        }
-    }
-
-    /**
      * 如果是第一个page加载完成就需要把activity上面的下拉禁止掉
      */
     @Override
@@ -97,7 +85,7 @@ public class NewsFragment extends BaseFragment implements NewsFragmentContract.V
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 News.ResultBeanX.ResultBean.ListBean listBean = mNewsAdapter.getData().get(position);
-                IntentUtils.webView(mActivity, listBean.title, listBean.url);
+                IntentUtils.webView(mActivity, listBean.title, listBean.weburl);
             }
         });
     }

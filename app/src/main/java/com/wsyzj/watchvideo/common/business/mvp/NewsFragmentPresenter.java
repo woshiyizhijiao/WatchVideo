@@ -44,7 +44,7 @@ public class NewsFragmentPresenter extends BasePresenter<NewsFragmentContract.Vi
         mTitleIndex = arguments.getInt(NewsActivity.BUNDLE_TITLE_INDEX, 0);
         mCurrentTitle = arguments.getString(NewsActivity.BUNDLE_CURRENT_TITLE, "");
 
-        mView.firstHidePullToRefresh(mTitleIndex);
+        mView.setRefreshing(mTitleIndex != 0);
     }
 
     /**

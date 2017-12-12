@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import cn.jzvd.JZVideoPlayer;
 
 public class MainActivity extends BaseActivity implements TabLayout.OnTabSelectedListener, ViewPager.OnPageChangeListener {
 
@@ -54,16 +53,16 @@ public class MainActivity extends BaseActivity implements TabLayout.OnTabSelecte
     @Override
     protected void onPause() {
         super.onPause();
-        JZVideoPlayer.releaseAllVideos();
+//        JZVideoPlayer.releaseAllVideos();
     }
 
-    @Override
-    public void onBackPressed() {
-        if (JZVideoPlayer.backPress()) {
-            return;
-        }
-        super.onBackPressed();
-    }
+//    @Override
+//    public void onBackPressed() {
+//        if (JZVideoPlayer.backPress()) {
+//            return;
+//        }
+//        super.onBackPressed();
+//    }
 
     /**
      * 初始化tab
@@ -90,7 +89,7 @@ public class MainActivity extends BaseActivity implements TabLayout.OnTabSelecte
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
         viewPager.setCurrentItem(tab.getPosition());
-        JZVideoPlayer.releaseAllVideos();
+//        JZVideoPlayer.releaseAllVideos();
     }
 
     @Override
@@ -105,7 +104,7 @@ public class MainActivity extends BaseActivity implements TabLayout.OnTabSelecte
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        JZVideoPlayer.releaseAllVideos();
+//        JZVideoPlayer.releaseAllVideos();
     }
 
     @Override

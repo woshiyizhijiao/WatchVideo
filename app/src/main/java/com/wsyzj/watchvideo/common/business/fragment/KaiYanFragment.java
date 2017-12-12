@@ -17,7 +17,6 @@ import com.wsyzj.watchvideo.common.widget.BasePullToRefreshView;
 import java.util.List;
 
 import butterknife.BindView;
-import cn.jzvd.JZVideoPlayer;
 
 /**
  * author : 焦洋
@@ -96,6 +95,6 @@ public class KaiYanFragment extends BaseFragment implements KaiYanContract.View,
 
     @Override
     public void onChildViewDetachedFromWindow(View view) {
-        JZVideoPlayer.releaseAllVideos();
+//        JZVideoPlayer.releaseAllVideos();
     }
 }

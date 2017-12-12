@@ -35,6 +35,8 @@ public class NewsActivityPresenter extends BasePresenter<NewsActivityContract.Vi
                     if (result.status == Constant.JingDong.JINGDONG_STATUS) {
                         mView.setNewsTitle(result.result);
                     }
+                } else {
+                    mView.setNewsTitle(null);
                 }
             }
         });

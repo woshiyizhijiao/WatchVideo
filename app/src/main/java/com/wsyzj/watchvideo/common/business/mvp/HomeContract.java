@@ -1,10 +1,9 @@
 package com.wsyzj.watchvideo.common.business.mvp;
 
-import com.wsyzj.watchvideo.common.base.BaseFragment;
 import com.wsyzj.watchvideo.common.base.mvp.IModel;
 import com.wsyzj.watchvideo.common.base.mvp.IPresenter;
 import com.wsyzj.watchvideo.common.base.mvp.IView;
-import com.wsyzj.watchvideo.common.business.bean.News;
+import com.wsyzj.watchvideo.common.business.bean.Gank;
 
 import java.util.List;
 
@@ -12,13 +11,15 @@ import io.reactivex.Flowable;
 
 /**
  * @author 焦洋
- * @date 2017/12/6 9:50
- * @Description: $desc$
+ * @date 2017/12/12 14:04
+ * @Description: 主页
  */
-public class NewsFragmentContract {
-    public interface View extends IView {
+public class HomeContract {
 
-        void setNewsList(List<News.ResultBeanX.ResultBean.ListBean> list);
+    public interface View extends IView {
+        void firstPageLoadFinish();
+
+        void setGankData(List<Gank.ResultsBean> results);
 
         void setRefreshing(boolean refreshing);
 
@@ -26,12 +27,10 @@ public class NewsFragmentContract {
     }
 
     public interface Model extends IModel {
-        Flowable<News> getNewsListByTitle(String channel, int start, int num);
+        Flowable<Gank> getGankData(String type, int pageNumber, int page);
     }
 
     interface Presenter extends IPresenter<View> {
-        void getArguments(BaseFragment fragment);
-
-        void getNewsListByTitle(boolean refreshing);
+        void getGankData(boolean refreshing);
     }
 }

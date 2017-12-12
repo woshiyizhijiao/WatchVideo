@@ -1,5 +1,6 @@
 package com.wsyzj.watchvideo.common.http;
 
+import com.wsyzj.watchvideo.common.business.bean.Gank;
 import com.wsyzj.watchvideo.common.business.bean.KaiYan;
 import com.wsyzj.watchvideo.common.business.bean.Music;
 import com.wsyzj.watchvideo.common.business.bean.News;
@@ -12,6 +13,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 /**
@@ -96,4 +98,15 @@ public interface BaseRetrofitApi {
      */
     @POST("get")
     Flowable<News> getNewsListByTitle(@Query("channel") String channel, @Query("start") int start, @Query("num") int num, @Query("appkey") String appkey);
+
+    /**
+     * 首页数据
+     *
+     * @param type
+     * @param pageNumber
+     * @param page
+     * @return
+     */
+    @GET("{type}/{pageNumber}/{page}")
+    Flowable<Gank> getGankData(@Path("type") String type, @Path("pageNumber") int pageNumber, @Path("page") int page);
 }

@@ -14,6 +14,7 @@ public class Constant {
     public static final String MUSIC_URL = "http://tingapi.ting.baidu.com/";
     public static final String VIDEO_URL = "http://app.pearvideo.com/clt/jsp/v2/";
     public static final String WECHAT_CHOICENESS_URL = "http://v.juhe.cn/weixin/";
+    public static final String GANK_IO_URL = "http://gank.io/api/data/";
 
     /**
      * 网络请求

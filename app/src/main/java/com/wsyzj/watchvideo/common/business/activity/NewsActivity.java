@@ -11,11 +11,11 @@ import com.wsyzj.watchvideo.common.base.BaseEvent;
 import com.wsyzj.watchvideo.common.base.BaseFragment;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
 import com.wsyzj.watchvideo.common.business.adapter.VpAdapter;
+import com.wsyzj.watchvideo.common.business.fragment.HomeFragment;
 import com.wsyzj.watchvideo.common.business.fragment.NewsFragment;
 import com.wsyzj.watchvideo.common.business.mvp.NewsActivityContract;
 import com.wsyzj.watchvideo.common.business.mvp.NewsActivityPresenter;
 import com.wsyzj.watchvideo.common.tools.Constant;
-import com.wsyzj.watchvideo.common.tools.LogUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,16 +75,21 @@ public class NewsActivity extends BaseActivity implements NewsActivityContract.V
     @Override
     public void setNewsTitle(List<String> newsTitle) {
         List<BaseFragment> fragments = new ArrayList<>();
+        fragments.add(new HomeFragment());
 
-        for (int i = 0; i < newsTitle.size(); i++) {
-            tabLayout.addTab(tabLayout.newTab().setText(newsTitle.get(i)));
-            Bundle bundle = new Bundle();
-            bundle.putInt(BUNDLE_TITLE_INDEX, i);
-            bundle.putString(BUNDLE_CURRENT_TITLE, newsTitle.get(i));
+        if (newsTitle != null) {
+            for (int i = 0; i < newsTitle.size(); i++) {
+                tabLayout.addTab(tabLayout.newTab().setText(newsTitle.get(i)));
+                Bundle bundle = new Bundle();
+                bundle.putInt(BUNDLE_TITLE_INDEX, i);
+                bundle.putString(BUNDLE_CURRENT_TITLE, newsTitle.get(i));
 
-            NewsFragment newsFragment = new NewsFragment();
-            newsFragment.setArguments(bundle);
-            fragments.add(newsFragment);
+                NewsFragment newsFragment = new NewsFragment();
+                newsFragment.setArguments(bundle);
+                fragments.add(newsFragment);
+            }
+
+            newsTitle.add(0, "主页");
         }
 
         VpAdapter vpAdapter = new VpAdapter(getSupportFragmentManager(), this, fragments, newsTitle);

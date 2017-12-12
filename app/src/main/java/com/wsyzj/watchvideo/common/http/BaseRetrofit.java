@@ -106,4 +106,13 @@ public class BaseRetrofit {
     public static BaseRetrofitApi jingDong() {
         return getBaseRetrofitApi(Constant.JingDong.JINGDONG_URL);
     }
+
+    /**
+     * gank数据
+     *
+     * @return
+     */
+    public static BaseRetrofitApi gank() {
+        return getBaseRetrofitApi(Constant.GANK_IO_URL);
+    }
 }

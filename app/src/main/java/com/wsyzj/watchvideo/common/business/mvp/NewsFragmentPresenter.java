@@ -26,7 +26,6 @@ public class NewsFragmentPresenter extends BasePresenter<NewsFragmentContract.Vi
     private int mTitleIndex;
     private String mCurrentTitle;
     private List<News.ResultBeanX.ResultBean.ListBean> mNewsList;
-    private boolean isFirstLoad = true;
 
     public NewsFragmentPresenter(NewsFragmentContract.View view) {
         mView = view;
@@ -43,8 +42,6 @@ public class NewsFragmentPresenter extends BasePresenter<NewsFragmentContract.Vi
         Bundle arguments = fragment.getArguments();
         mTitleIndex = arguments.getInt(NewsActivity.BUNDLE_TITLE_INDEX, 0);
         mCurrentTitle = arguments.getString(NewsActivity.BUNDLE_CURRENT_TITLE, "");
-
-        mView.setRefreshing(mTitleIndex != 0);
     }
 
     /**
@@ -83,11 +80,6 @@ public class NewsFragmentPresenter extends BasePresenter<NewsFragmentContract.Vi
                             }
                         }
                         mView.setRefreshing(false);
-
-                        if (isFirstLoad && mTitleIndex == 0) {
-                            mView.firstPageLoadFinish();
-                            isFirstLoad = false;
-                        }
                     }
                 });
         mView.addDisposable(baseTSubscriber);

@@ -6,15 +6,12 @@ import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.wsyzj.watchvideo.R;
-import com.wsyzj.watchvideo.common.base.BaseEvent;
 import com.wsyzj.watchvideo.common.base.BaseFragment;
 import com.wsyzj.watchvideo.common.base.mvp.IPresenter;
 import com.wsyzj.watchvideo.common.business.adapter.NewsAdapter;
 import com.wsyzj.watchvideo.common.business.bean.News;
 import com.wsyzj.watchvideo.common.business.mvp.NewsFragmentContract;
 import com.wsyzj.watchvideo.common.business.mvp.NewsFragmentPresenter;
-import com.wsyzj.watchvideo.common.tools.Constant;
-import com.wsyzj.watchvideo.common.tools.EventBusUtils;
 import com.wsyzj.watchvideo.common.tools.IntentUtils;
 import com.wsyzj.watchvideo.common.widget.BasePullToRefreshView;
 
@@ -48,6 +45,7 @@ public class NewsFragment extends BaseFragment implements NewsFragmentContract.V
 
     @Override
     public void initView() {
+        setRefreshing(true);
         pull_to_refresh.setOnRefreshListener(this);
         pull_to_refresh.setRequestLoadMoreListener(this);
     }
@@ -56,14 +54,6 @@ public class NewsFragment extends BaseFragment implements NewsFragmentContract.V
     public void initData() {
         mPresenter.getArguments(this);
         mPresenter.getNewsListByTitle(true);
-    }
-
-    /**
-     * 如果是第一个page加载完成就需要把activity上面的下拉禁止掉
-     */
-    @Override
-    public void firstPageLoadFinish() {
-        EventBusUtils.sendEvent(new BaseEvent(Constant.EventBusC.NEW_FIRST_PAGE_LOAD_FINISH));
     }
 
     /**

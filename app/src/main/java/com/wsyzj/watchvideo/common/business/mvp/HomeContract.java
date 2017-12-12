@@ -17,6 +17,7 @@ import io.reactivex.Flowable;
 public class HomeContract {
 
     public interface View extends IView {
+
         void firstPageLoadFinish();
 
         void setGankData(List<Gank.ResultsBean> results);

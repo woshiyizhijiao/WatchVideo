@@ -2,6 +2,7 @@ package com.wsyzj.watchvideo.common.business.fragment;
 
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
+import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.wsyzj.watchvideo.R;
@@ -14,6 +15,7 @@ import com.wsyzj.watchvideo.common.business.mvp.HomeContract;
 import com.wsyzj.watchvideo.common.business.mvp.HomePresenter;
 import com.wsyzj.watchvideo.common.tools.Constant;
 import com.wsyzj.watchvideo.common.tools.EventBusUtils;
+import com.wsyzj.watchvideo.common.tools.UiUtils;
 import com.wsyzj.watchvideo.common.widget.BasePullToRefreshView;
 
 import java.util.List;
@@ -72,8 +74,21 @@ public class HomeFragment extends BaseFragment implements HomeContract.View, Swi
             mHomeAdapter = new HomeAdapter(mActivity, R.layout.item_home, results);
             pull_to_refresh.setLayoutManager(new GridLayoutManager(mActivity, 2));
             pull_to_refresh.setAdapter(mHomeAdapter);
+            addHeadView();
         } else {
             mHomeAdapter.setNewData(results);
+        }
+    }
+
+    /**
+     * 获取头部添加的View
+     *
+     * @return
+     */
+    private void addHeadView() {
+        if (mHomeAdapter.getHeaderLayoutCount() == 0) {
+            View headView = UiUtils.inflate(R.layout.item_header_home);
+            pull_to_refresh.addHeadView(headView);
         }
     }
 

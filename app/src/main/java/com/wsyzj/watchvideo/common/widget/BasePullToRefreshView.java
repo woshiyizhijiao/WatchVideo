@@ -20,6 +20,7 @@ import com.wsyzj.watchvideo.R;
 public class BasePullToRefreshView extends LinearLayout implements BaseQuickAdapter.RequestLoadMoreListener {
     private SwipeRefreshLayout swipe_refresh;
     private RecyclerView recycler;
+    private BaseQuickAdapter mBaseQuickAdapter;
 
     private BaseQuickAdapter.RequestLoadMoreListener mRequestLoadMoreListener;
 
@@ -82,9 +83,28 @@ public class BasePullToRefreshView extends LinearLayout implements BaseQuickAdap
      * @param adapter
      */
     public void setAdapter(BaseQuickAdapter adapter) {
+        mBaseQuickAdapter = adapter;
         recycler.setAdapter(adapter);
         adapter.setLoadMoreView(new BaseLoadMoreView());
         adapter.setOnLoadMoreListener(this, recycler);
+    }
+
+    /**
+     * 添加头部
+     *
+     * @param header
+     */
+    public void addHeadView(View header) {
+        mBaseQuickAdapter.addHeaderView(header);
+    }
+
+    /**
+     * 添加头部到指定位置
+     *
+     * @param header
+     */
+    public void addHeadView(View header, int index) {
+        mBaseQuickAdapter.addHeaderView(header, index);
     }
 
     /**

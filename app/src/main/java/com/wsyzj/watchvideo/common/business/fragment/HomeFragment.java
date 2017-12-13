@@ -2,7 +2,10 @@ package com.wsyzj.watchvideo.common.business.fragment;
 
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.wsyzj.watchvideo.R;
@@ -10,11 +13,15 @@ import com.wsyzj.watchvideo.common.base.BaseEvent;
 import com.wsyzj.watchvideo.common.base.BaseFragment;
 import com.wsyzj.watchvideo.common.base.mvp.IPresenter;
 import com.wsyzj.watchvideo.common.business.adapter.HomeAdapter;
+import com.wsyzj.watchvideo.common.business.adapter.HomeDouBanAdapter;
+import com.wsyzj.watchvideo.common.business.bean.DouBan;
 import com.wsyzj.watchvideo.common.business.bean.Gank;
+import com.wsyzj.watchvideo.common.business.bean.MeiRiYiWen;
 import com.wsyzj.watchvideo.common.business.mvp.HomeContract;
 import com.wsyzj.watchvideo.common.business.mvp.HomePresenter;
 import com.wsyzj.watchvideo.common.tools.Constant;
 import com.wsyzj.watchvideo.common.tools.EventBusUtils;
+import com.wsyzj.watchvideo.common.tools.IntentUtils;
 import com.wsyzj.watchvideo.common.tools.UiUtils;
 import com.wsyzj.watchvideo.common.widget.BasePullToRefreshView;
 
@@ -34,6 +41,7 @@ public class HomeFragment extends BaseFragment implements HomeContract.View, Swi
 
     private HomePresenter mPresenter;
     private HomeAdapter mHomeAdapter;
+    private View mHeadView;
 
     @Override
     protected IPresenter presenter() {
@@ -48,13 +56,16 @@ public class HomeFragment extends BaseFragment implements HomeContract.View, Swi
 
     @Override
     public void initView() {
-        setRefreshing(false);
         pull_to_refresh.setOnRefreshListener(this);
         pull_to_refresh.setRequestLoadMoreListener(this);
+        setRefreshing(false);
     }
 
     @Override
     public void initData() {
+        setGankData(null);
+        mPresenter.getMeiRiYiWen();
+        mPresenter.getTheatersList();
         mPresenter.getGankData(true);
     }
 
@@ -64,7 +75,7 @@ public class HomeFragment extends BaseFragment implements HomeContract.View, Swi
     }
 
     /**
-     * 设置福利的数据
+     * 设置福利的数据(刚开始调用一下把头部布局添加进来)
      *
      * @param results
      */
@@ -85,10 +96,51 @@ public class HomeFragment extends BaseFragment implements HomeContract.View, Swi
      *
      * @return
      */
+
     private void addHeadView() {
         if (mHomeAdapter.getHeaderLayoutCount() == 0) {
-            View headView = UiUtils.inflate(R.layout.item_header_home);
-            pull_to_refresh.addHeadView(headView);
+            mHeadView = UiUtils.inflate(R.layout.item_header_home);
+            pull_to_refresh.addHeadView(mHeadView);
+        }
+    }
+
+    /**
+     * 设置每日一文数据
+     *
+     * @param meiRiYiWenData
+     */
+    @Override
+    public void setMeiRiYiWenData(MeiRiYiWen.DataBean meiRiYiWenData) {
+        if (mHeadView != null) {
+            TextView tv_title = (TextView) mHeadView.findViewById(R.id.tv_title);
+            TextView tv_desc = (TextView) mHeadView.findViewById(R.id.tv_desc);
+            TextView tv_author = (TextView) mHeadView.findViewById(R.id.tv_author);
+
+            tv_title.setText(meiRiYiWenData.title);
+            tv_desc.setText(meiRiYiWenData.digest);
+            tv_author.setText(meiRiYiWenData.author);
+        }
+    }
+
+    /**
+     * 设置豆瓣电影数据
+     */
+    @Override
+    public void setTheatersList(final List<DouBan.SubjectsBean> subjects) {
+        if (mHeadView != null) {
+            RecyclerView rv_douban = (RecyclerView) mHeadView.findViewById(R.id.rv_douban);
+
+            final HomeDouBanAdapter douBanAdapter = new HomeDouBanAdapter(mActivity, R.layout.item_home_douban, subjects);
+            rv_douban.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.HORIZONTAL, false));
+            rv_douban.setAdapter(douBanAdapter);
+
+            douBanAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                    DouBan.SubjectsBean subjectsBean = douBanAdapter.getData().get(position);
+                    IntentUtils.webView(mActivity, subjectsBean.title, subjectsBean.alt);
+                }
+            });
         }
     }
 

@@ -11,6 +11,7 @@ import android.webkit.SslErrorHandler;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
 
 import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.common.base.BaseActivity;
@@ -28,6 +29,9 @@ public class WebViewActivity extends BaseActivity implements View.OnClickListene
     @BindView(R.id.webView)
     WebView webView;
 
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
+
     @Override
     protected BasePresenter presenter() {
         return null;
@@ -35,7 +39,6 @@ public class WebViewActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     protected int contentView() {
-        baseTitleView.setNavigationIcon(R.drawable.toolbar_back);
         return R.layout.activity_webview;
     }
 
@@ -77,6 +80,12 @@ public class WebViewActivity extends BaseActivity implements View.OnClickListene
         settings.setBlockNetworkImage(false);
 
         webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                progressBar.setVisibility(View.INVISIBLE);
+            }
+
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 if (url.startsWith("scheme:") || url.startsWith("scheme:")) {

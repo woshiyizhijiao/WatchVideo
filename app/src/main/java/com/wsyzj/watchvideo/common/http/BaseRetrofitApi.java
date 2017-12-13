@@ -1,7 +1,9 @@
 package com.wsyzj.watchvideo.common.http;
 
+import com.wsyzj.watchvideo.common.business.bean.DouBan;
 import com.wsyzj.watchvideo.common.business.bean.Gank;
 import com.wsyzj.watchvideo.common.business.bean.KaiYan;
+import com.wsyzj.watchvideo.common.business.bean.MeiRiYiWen;
 import com.wsyzj.watchvideo.common.business.bean.Music;
 import com.wsyzj.watchvideo.common.business.bean.News;
 import com.wsyzj.watchvideo.common.business.bean.NewsTitle;
@@ -109,4 +111,26 @@ public interface BaseRetrofitApi {
      */
     @GET("{type}/{pageNumber}/{page}")
     Flowable<Gank> getGankData(@Path("type") String type, @Path("pageNumber") int pageNumber, @Path("page") int page);
+
+    /**
+     * 获取每日一文的数据
+     * https://interface.meiriyiwen.com/article/today?dev=1
+     * https://interface.meiriyiwen.com/article/today?dev=1
+     *
+     * @return
+     */
+    @GET("article/day?dev=1&date=20171213")
+    Flowable<MeiRiYiWen> getMeiRiYiWen();
+
+    /**
+     * 获取上映电影信息
+     *
+     * @param apikey
+     * @param city
+     * @param start
+     * @param count
+     * @return
+     */
+    @POST("in_theaters")
+    Flowable<DouBan> getTheatersList(@Query("apikey") String apikey, @Query("city") String city, @Query("start") int start, @Query("count") int count);
 }

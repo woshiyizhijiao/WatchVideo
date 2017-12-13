@@ -10,6 +10,7 @@
 
     <style name="BaseTitleView" parent="AppTheme">
         <item name="colorControlNormal">@color/white</item>
+        <item name="android:textColorPrimary">@color/white</item>
     </style>
 
 </resources>

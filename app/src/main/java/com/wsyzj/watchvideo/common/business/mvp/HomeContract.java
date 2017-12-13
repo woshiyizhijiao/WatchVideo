@@ -3,7 +3,9 @@ package com.wsyzj.watchvideo.common.business.mvp;
 import com.wsyzj.watchvideo.common.base.mvp.IModel;
 import com.wsyzj.watchvideo.common.base.mvp.IPresenter;
 import com.wsyzj.watchvideo.common.base.mvp.IView;
+import com.wsyzj.watchvideo.common.business.bean.DouBan;
 import com.wsyzj.watchvideo.common.business.bean.Gank;
+import com.wsyzj.watchvideo.common.business.bean.MeiRiYiWen;
 
 import java.util.List;
 
@@ -25,13 +27,25 @@ public class HomeContract {
         void setRefreshing(boolean refreshing);
 
         void setLoadMoreState(int totalCount);
+
+        void setMeiRiYiWenData(MeiRiYiWen.DataBean meiRiYiWenData);
+
+        void setTheatersList(List<DouBan.SubjectsBean> subjects);
     }
 
     public interface Model extends IModel {
         Flowable<Gank> getGankData(String type, int pageNumber, int page);
+
+        Flowable<MeiRiYiWen> getMeiRiYiWen();
+
+        Flowable<DouBan> getTheatersList(int start, int count);
     }
 
     interface Presenter extends IPresenter<View> {
         void getGankData(boolean refreshing);
+
+        void getMeiRiYiWen();
+
+        void getTheatersList();
     }
 }

@@ -1,5 +1,6 @@
 package com.wsyzj.watchvideo.common.widget;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
@@ -8,7 +9,6 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.common.base.BaseActivity;
@@ -24,7 +24,6 @@ public class BaseTitleView extends LinearLayout {
     private Context mContext;
     private View base_layout;
     private Toolbar tooBar;
-    private TextView tv_title;
 
     private OnClickListener mNavigationOnClickListener;
 
@@ -48,7 +47,6 @@ public class BaseTitleView extends LinearLayout {
         setOrientation(LinearLayout.VERTICAL);
         base_layout = LayoutInflater.from(mContext).inflate(R.layout.widget_base_title_view, null);
         tooBar = (Toolbar) base_layout.findViewById(R.id.tooBar);
-        tv_title = (TextView) base_layout.findViewById(R.id.tv_title);
 
 
         if (mContext instanceof BaseActivity) {
@@ -105,9 +103,12 @@ public class BaseTitleView extends LinearLayout {
      * @param title
      * @return
      */
-    public TextView setTitle(String title) {
-        tv_title.setText(title);
-        return tv_title;
+    public Toolbar setTitle(String title) {
+        if (mContext instanceof Activity) {
+            BaseActivity activity = (BaseActivity) mContext;
+            activity.getSupportActionBar().setTitle(title);
+        }
+        return tooBar;
     }
 
     /**

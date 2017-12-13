@@ -3,58 +3,96 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="@color/black"
+              android:background="@color/white"
               android:orientation="vertical">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="140dp"
+        android:layout_height="230dp"
         android:background="@color/white"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginLeft="15dp"
+            android:gravity="center_vertical"
+            android:text="热映(来自豆瓣数据)"
+            android:textColor="@color/c888888"
+            android:textSize="14sp"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_douban"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/cdddddd"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:background="@color/white"
+        android:orientation="vertical"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
         android:paddingTop="15dp">
 
-        <ImageView
-            android:id="@+id/iv_conver"
-            android:layout_width="83dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="83dp"
-            android:layout_alignParentRight="true"
-            android:src="@drawable/default_cover"/>
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:layout_toLeftOf="@id/iv_conver"
-            android:ellipsize="end"
-            android:lineSpacingExtra="5dp"
-            android:maxLines="2"
-            android:textColor="@color/c777777"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            tools:text="35岁裸辞，让我学会的几件事,让我学会的几件事,"/>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_desc"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tv_title"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="5dp"
-            android:layout_toLeftOf="@id/iv_conver"
-            android:ellipsize="end"
-            android:lineSpacingExtra="2dp"
-            android:maxLines="2"
-            android:textColor="@color/c999999"
-            tools:text="35岁裸辞，让我学会的几件事,35岁裸辞，让我学会的几件事"/>
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:lineSpacingExtra="5dp"
+                    android:maxLines="2"
+                    android:text="35岁裸辞，让我学会的几件事,让我学会的几件事,"
+                    android:textColor="@color/c777777"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    tools:text="35岁裸辞，让我学会的几件事,让我学会的几件事,"/>
+
+                <TextView
+                    android:id="@+id/tv_desc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:lineSpacingExtra="2dp"
+                    android:maxLines="2"
+                    android:text="35岁裸辞，让我学会的几件事,35岁裸辞，让我学会的几件事"
+                    android:textColor="@color/c999999"
+                    tools:text="35岁裸辞，让我学会的几件事,35岁裸辞，让我学会的几件事"/>
+
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="83dp"
+                android:layout_height="83dp"
+                android:src="@drawable/default_cover"/>
+
+        </LinearLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/tv_desc">
+            android:layout_height="match_parent">
 
             <TextView
+                android:id="@+id/tv_author"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -62,9 +100,16 @@
                 android:textColor="@color/c999999"
                 android:textSize="12sp"/>
 
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_action_more"/>
+
         </RelativeLayout>
 
-    </RelativeLayout>
+    </LinearLayout>
 
     <View
         android:layout_width="match_parent"

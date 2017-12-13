@@ -1,6 +1,8 @@
 package com.wsyzj.watchvideo.common.business.mvp;
 
+import com.wsyzj.watchvideo.common.business.bean.DouBan;
 import com.wsyzj.watchvideo.common.business.bean.Gank;
+import com.wsyzj.watchvideo.common.business.bean.MeiRiYiWen;
 import com.wsyzj.watchvideo.common.http.BaseRetrofit;
 import com.wsyzj.watchvideo.common.http.BaseRxSchedulers;
 
@@ -20,4 +22,21 @@ public class HomeModel implements HomeContract.Model {
                 .getGankData(type, pageNumber, page)
                 .compose(BaseRxSchedulers.<Gank>io_main());
     }
+
+    @Override
+    public Flowable<MeiRiYiWen> getMeiRiYiWen() {
+        return BaseRetrofit
+                .meiRiYiWen()
+                .getMeiRiYiWen()
+                .compose(BaseRxSchedulers.<MeiRiYiWen>io_main());
+    }
+
+    @Override
+    public Flowable<DouBan> getTheatersList(int start, int count) {
+        return BaseRetrofit
+                .douBan()
+                .getTheatersList("0b2bdeda43b5688921839c8ecb20399b", "深圳", start, count)
+                .compose(BaseRxSchedulers.<DouBan>io_main());
+    }
+
 }

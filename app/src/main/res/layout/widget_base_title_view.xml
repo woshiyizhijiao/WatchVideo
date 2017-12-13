@@ -14,19 +14,6 @@
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
         app:navigationIcon="@drawable/toolbar_back"
-        app:theme="@style/BaseTitleView">
-
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="20dp"
-            android:singleLine="true"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            tools:text="标题"/>
-
-    </android.support.v7.widget.Toolbar>
+        app:theme="@style/BaseTitleView"/>
 
 </LinearLayout>

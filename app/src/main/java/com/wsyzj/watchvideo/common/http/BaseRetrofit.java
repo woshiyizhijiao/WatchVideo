@@ -31,9 +31,9 @@ public class BaseRetrofit {
             interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
             builder.addInterceptor(interceptor);
         }
-        builder.connectTimeout(12, TimeUnit.SECONDS);       //设置连接超时
-        builder.writeTimeout(12, TimeUnit.SECONDS);         //设置写超时
-        builder.readTimeout(12, TimeUnit.SECONDS);          //设置读超时
+        builder.connectTimeout(12, TimeUnit.SECONDS);
+        builder.writeTimeout(12, TimeUnit.SECONDS);
+        builder.readTimeout(12, TimeUnit.SECONDS);
         return builder.build();
     }
 
@@ -114,5 +114,24 @@ public class BaseRetrofit {
      */
     public static BaseRetrofitApi gank() {
         return getBaseRetrofitApi(Constant.GANK_IO_URL);
+    }
+
+
+    /**
+     * 每日一文数据
+     *
+     * @return
+     */
+    public static BaseRetrofitApi meiRiYiWen() {
+        return getBaseRetrofitApi(Constant.MEIRIYIWEN_URL);
+    }
+
+    /**
+     * 豆瓣
+     *
+     * @return
+     */
+    public static BaseRetrofitApi douBan() {
+        return getBaseRetrofitApi(Constant.DOUBAN_URL);
     }
 }

@@ -1,7 +1,9 @@
 package com.wsyzj.watchvideo.common.business.mvp;
 
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
+import com.wsyzj.watchvideo.common.business.bean.DouBan;
 import com.wsyzj.watchvideo.common.business.bean.Gank;
+import com.wsyzj.watchvideo.common.business.bean.MeiRiYiWen;
 import com.wsyzj.watchvideo.common.http.BaseTSubscriber;
 
 import java.util.List;
@@ -65,6 +67,44 @@ public class HomePresenter extends BasePresenter<HomeContract.View, HomeContract
                         if (isFirstLoad) {
                             mView.firstPageLoadFinish();
                             isFirstLoad = false;
+                        }
+                    }
+                });
+        mView.addDisposable(baseTSubscriber);
+    }
+
+    /**
+     * 每日一文
+     */
+    @Override
+    public void getMeiRiYiWen() {
+        BaseTSubscriber<MeiRiYiWen> baseTSubscriber = mModel.getMeiRiYiWen()
+                .subscribeWith(new BaseTSubscriber<MeiRiYiWen>() {
+                    @Override
+                    public void onSuccess(Object data) {
+                        MeiRiYiWen meiRiYiWen = (MeiRiYiWen) data;
+                        MeiRiYiWen.DataBean dataBean = meiRiYiWen.data;
+                        if (dataBean != null) {
+                            mView.setMeiRiYiWenData(dataBean);
+                        }
+                    }
+                });
+        mView.addDisposable(baseTSubscriber);
+    }
+
+    /**
+     * 设置豆瓣电影
+     */
+    @Override
+    public void getTheatersList() {
+        BaseTSubscriber<DouBan> baseTSubscriber = mModel
+                .getTheatersList(1, 20).subscribeWith(new BaseTSubscriber<DouBan>() {
+                    @Override
+                    public void onSuccess(Object data) {
+                        DouBan douBan = (DouBan) data;
+                        List<DouBan.SubjectsBean> subjects = douBan.subjects;
+                        if (subjects != null) {
+                            mView.setTheatersList(subjects);
                         }
                     }
                 });

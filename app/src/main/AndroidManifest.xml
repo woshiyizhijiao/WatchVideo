@@ -40,6 +40,9 @@
         // WebView
         <activity android:name=".common.business.activity.WebViewActivity"/>
 
+        // 每日一文
+        <activity android:name=".common.business.activity.MeiRiYiWenActivity"/>
+
         // 音乐播放服务
         <service android:name=".common.business.service.PlayMusicService"/>
 

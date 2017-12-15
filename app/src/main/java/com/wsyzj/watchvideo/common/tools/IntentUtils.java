@@ -7,6 +7,7 @@ import android.provider.Settings;
 
 import com.wsyzj.watchvideo.MainActivity;
 import com.wsyzj.watchvideo.R;
+import com.wsyzj.watchvideo.common.business.activity.MeiRiYiWenActivity;
 import com.wsyzj.watchvideo.common.business.activity.NewsActivity;
 import com.wsyzj.watchvideo.common.business.activity.WebViewActivity;
 
@@ -63,6 +64,17 @@ public class IntentUtils {
         Intent intent = new Intent(activity, WebViewActivity.class);
         intent.putExtra("title", title);
         intent.putExtra("url", url);
+        startIntentActivity(activity, intent);
+    }
+
+    /**
+     * 每日一文
+     */
+    public static void meiRiYiWen(Activity activity, String title, String author, String content) {
+        Intent intent = new Intent(activity, MeiRiYiWenActivity.class);
+        intent.putExtra("title", title);
+        intent.putExtra("author", author);
+        intent.putExtra("content", content);
         startIntentActivity(activity, intent);
     }
 }

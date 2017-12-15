@@ -3,12 +3,10 @@ package com.wsyzj.watchvideo.common.http;
 import com.wsyzj.watchvideo.common.business.bean.DouBan;
 import com.wsyzj.watchvideo.common.business.bean.Gank;
 import com.wsyzj.watchvideo.common.business.bean.KaiYan;
-import com.wsyzj.watchvideo.common.business.bean.MeiRiYiWen;
 import com.wsyzj.watchvideo.common.business.bean.Music;
 import com.wsyzj.watchvideo.common.business.bean.News;
 import com.wsyzj.watchvideo.common.business.bean.NewsTitle;
 import com.wsyzj.watchvideo.common.business.bean.Song;
-import com.wsyzj.watchvideo.common.business.bean.WeChatChoiceness;
 
 import io.reactivex.Flowable;
 import retrofit2.http.GET;
@@ -71,17 +69,6 @@ public interface BaseRetrofitApi {
     Flowable<KaiYan> getVideoList();
 
     /**
-     * 获取微信精选数据
-     *
-     * @param pno
-     * @param ps
-     * @param key
-     * @return
-     */
-    @POST("query")
-    Flowable<WeChatChoiceness> wechatChoiceness(@Query("pno") int pno, @Query("ps") int ps, @Query("key") String key);
-
-    /**
      * 获取所有的新闻标题
      *
      * @param appkey
@@ -111,16 +98,6 @@ public interface BaseRetrofitApi {
      */
     @GET("{type}/{pageNumber}/{page}")
     Flowable<Gank> getGankData(@Path("type") String type, @Path("pageNumber") int pageNumber, @Path("page") int page);
-
-    /**
-     * 获取每日一文的数据
-     * https://interface.meiriyiwen.com/article/today?dev=1
-     * https://interface.meiriyiwen.com/article/today?dev=1
-     *
-     * @return
-     */
-    @GET("article/day?dev=1&date=20171213")
-    Flowable<MeiRiYiWen> getMeiRiYiWen();
 
     /**
      * 获取上映电影信息

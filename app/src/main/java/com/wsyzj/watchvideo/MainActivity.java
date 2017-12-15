@@ -9,7 +9,6 @@ import com.wsyzj.watchvideo.common.base.BaseFragment;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
 import com.wsyzj.watchvideo.common.business.fragment.KaiYanFragment;
 import com.wsyzj.watchvideo.common.business.fragment.MusicFragment;
-import com.wsyzj.watchvideo.common.business.fragment.WeChatChoicenessFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,7 +77,6 @@ public class MainActivity extends BaseActivity implements TabLayout.OnTabSelecte
      */
     private void initVpData() {
         List<BaseFragment> fragments = new ArrayList<>();
-        fragments.add(new WeChatChoicenessFragment());
         fragments.add(new KaiYanFragment());
         fragments.add(new MusicFragment());
 

@@ -5,6 +5,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -64,7 +65,7 @@ public class HomeFragment extends BaseFragment implements HomeContract.View, Swi
     @Override
     public void initData() {
         setGankData(null);
-        mPresenter.getMeiRiYiWen();
+        mPresenter.getMeiRiYiWen(mActivity);
         mPresenter.getTheatersList();
         mPresenter.getGankData(true);
     }
@@ -107,18 +108,26 @@ public class HomeFragment extends BaseFragment implements HomeContract.View, Swi
     /**
      * 设置每日一文数据
      *
-     * @param meiRiYiWenData
+     * @param meiRiYiWen
      */
     @Override
-    public void setMeiRiYiWenData(MeiRiYiWen.DataBean meiRiYiWenData) {
+    public void setMeiRiYiWenData(final MeiRiYiWen meiRiYiWen) {
         if (mHeadView != null) {
+            LinearLayout ll_meiriyiwen = (LinearLayout) mHeadView.findViewById(R.id.ll_meiriyiwen);
             TextView tv_title = (TextView) mHeadView.findViewById(R.id.tv_title);
             TextView tv_desc = (TextView) mHeadView.findViewById(R.id.tv_desc);
             TextView tv_author = (TextView) mHeadView.findViewById(R.id.tv_author);
 
-            tv_title.setText(meiRiYiWenData.title);
-            tv_desc.setText(meiRiYiWenData.digest);
-            tv_author.setText(meiRiYiWenData.author);
+            tv_title.setText(meiRiYiWen.title);
+            tv_desc.setText(meiRiYiWen.digest);
+            tv_author.setText(meiRiYiWen.author);
+
+            ll_meiriyiwen.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    IntentUtils.meiRiYiWen(mActivity, meiRiYiWen.title, meiRiYiWen.author, meiRiYiWen.content);
+                }
+            });
         }
     }
 

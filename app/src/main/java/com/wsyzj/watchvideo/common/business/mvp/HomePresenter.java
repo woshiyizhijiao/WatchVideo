@@ -1,11 +1,19 @@
 package com.wsyzj.watchvideo.common.business.mvp;
 
+import android.app.Activity;
+
+import com.wsyzj.watchvideo.common.base.BaseThreadManager;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
 import com.wsyzj.watchvideo.common.business.bean.DouBan;
 import com.wsyzj.watchvideo.common.business.bean.Gank;
 import com.wsyzj.watchvideo.common.business.bean.MeiRiYiWen;
 import com.wsyzj.watchvideo.common.http.BaseTSubscriber;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -21,8 +29,8 @@ public class HomePresenter extends BasePresenter<HomeContract.View, HomeContract
     private String mType = "福利";
     private int mPageNumber = 10;
     private int mPage = 1;
-    private List<Gank.ResultsBean> mGankData;
     private boolean isFirstLoad = true;
+    private List<Gank.ResultsBean> mGankData;
 
     public HomePresenter(HomeContract.View view) {
         mView = view;
@@ -77,19 +85,31 @@ public class HomePresenter extends BasePresenter<HomeContract.View, HomeContract
      * 每日一文
      */
     @Override
-    public void getMeiRiYiWen() {
-        BaseTSubscriber<MeiRiYiWen> baseTSubscriber = mModel.getMeiRiYiWen()
-                .subscribeWith(new BaseTSubscriber<MeiRiYiWen>() {
-                    @Override
-                    public void onSuccess(Object data) {
-                        MeiRiYiWen meiRiYiWen = (MeiRiYiWen) data;
-                        MeiRiYiWen.DataBean dataBean = meiRiYiWen.data;
-                        if (dataBean != null) {
-                            mView.setMeiRiYiWenData(dataBean);
+    public void getMeiRiYiWen(final Activity activity) {
+        BaseThreadManager.getInstance().createLongPool().execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Document document = Jsoup.connect("https://meiriyiwen.com/").get();
+                    Element article_show = document.getElementById("article_show");
+
+                    final MeiRiYiWen meiRiYiWen = new MeiRiYiWen();
+                    meiRiYiWen.title = article_show.select("h1").text();
+                    meiRiYiWen.author = article_show.getElementsByClass("article_author").text();
+                    meiRiYiWen.content = article_show.getElementsByClass("article_text").toString();
+                    meiRiYiWen.digest = article_show.getElementsByClass("article_text").text();
+
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mView.setMeiRiYiWenData(meiRiYiWen);
                         }
-                    }
-                });
-        mView.addDisposable(baseTSubscriber);
+                    });
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     /**

@@ -34,8 +34,9 @@
         android:background="@color/cdddddd"/>
 
     <LinearLayout
+        android:id="@+id/ll_meiriyiwen"
         android:layout_width="match_parent"
-        android:layout_height="130dp"
+        android:layout_height="125dp"
         android:background="@color/white"
         android:orientation="vertical"
         android:paddingLeft="15dp"
@@ -44,7 +45,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="83dp"
+            android:layout_height="75dp"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -58,11 +59,9 @@
                     android:id="@+id/tv_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:ellipsize="end"
                     android:lineSpacingExtra="5dp"
-                    android:maxLines="2"
-                    android:text="35岁裸辞，让我学会的几件事,让我学会的几件事,"
-                    android:textColor="@color/c777777"
+                    android:singleLine="true"
+                    android:textColor="@color/c444444"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     tools:text="35岁裸辞，让我学会的几件事,让我学会的几件事,"/>
@@ -71,19 +70,20 @@
                     android:id="@+id/tv_desc"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:ellipsize="end"
                     android:lineSpacingExtra="2dp"
                     android:maxLines="2"
-                    android:text="35岁裸辞，让我学会的几件事,35岁裸辞，让我学会的几件事"
-                    android:textColor="@color/c999999"
+                    android:textColor="@color/c777777"
                     tools:text="35岁裸辞，让我学会的几件事,35岁裸辞，让我学会的几件事"/>
 
             </LinearLayout>
 
             <ImageView
-                android:layout_width="83dp"
-                android:layout_height="83dp"
-                android:src="@drawable/default_cover"/>
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/icon_meiriyiwen_text"/>
 
         </LinearLayout>
 

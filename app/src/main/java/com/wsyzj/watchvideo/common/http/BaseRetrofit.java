@@ -1,10 +1,9 @@
 package com.wsyzj.watchvideo.common.http;
 
-import android.util.ArrayMap;
-
 import com.wsyzj.watchvideo.common.base.BaseApp;
 import com.wsyzj.watchvideo.common.tools.Constant;
 
+import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.disposables.CompositeDisposable;
@@ -22,7 +21,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class BaseRetrofit {
-    private static ArrayMap<String, CompositeDisposable> mNetManager = new ArrayMap<>();
+
+    private static HashMap<String, CompositeDisposable> mNetManager = new HashMap<>();
 
     private static OkHttpClient getOkHttpClient() {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();

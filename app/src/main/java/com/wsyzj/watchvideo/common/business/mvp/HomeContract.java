@@ -1,5 +1,7 @@
 package com.wsyzj.watchvideo.common.business.mvp;
 
+import android.app.Activity;
+
 import com.wsyzj.watchvideo.common.base.mvp.IModel;
 import com.wsyzj.watchvideo.common.base.mvp.IPresenter;
 import com.wsyzj.watchvideo.common.base.mvp.IView;
@@ -28,7 +30,7 @@ public class HomeContract {
 
         void setLoadMoreState(int totalCount);
 
-        void setMeiRiYiWenData(MeiRiYiWen.DataBean meiRiYiWenData);
+        void setMeiRiYiWenData(MeiRiYiWen meiRiYiWen);
 
         void setTheatersList(List<DouBan.SubjectsBean> subjects);
     }
@@ -36,15 +38,13 @@ public class HomeContract {
     public interface Model extends IModel {
         Flowable<Gank> getGankData(String type, int pageNumber, int page);
 
-        Flowable<MeiRiYiWen> getMeiRiYiWen();
-
         Flowable<DouBan> getTheatersList(int start, int count);
     }
 
     interface Presenter extends IPresenter<View> {
         void getGankData(boolean refreshing);
 
-        void getMeiRiYiWen();
+        void getMeiRiYiWen(Activity activity);
 
         void getTheatersList();
     }

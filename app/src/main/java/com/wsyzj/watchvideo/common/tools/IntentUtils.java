@@ -7,9 +7,9 @@ import android.provider.Settings;
 
 import com.wsyzj.watchvideo.MainActivity;
 import com.wsyzj.watchvideo.R;
-import com.wsyzj.watchvideo.common.business.activity.MeiRiYiWenActivity;
-import com.wsyzj.watchvideo.common.business.activity.NewsActivity;
-import com.wsyzj.watchvideo.common.business.activity.WebViewActivity;
+import com.wsyzj.watchvideo.business.activity.MeiRiYiWenActivity;
+import com.wsyzj.watchvideo.business.activity.NewsActivity;
+import com.wsyzj.watchvideo.business.activity.WebViewActivity;
 
 /**
  * @author: wsyzj

@@ -2,8 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.wsyzj.watchvideo">
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
 
@@ -17,7 +15,7 @@
         android:theme="@style/AppTheme">
 
         // 闪屏
-        <activity android:name=".common.business.activity.SplashActivity">
+        <activity android:name=".business.activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -33,18 +31,18 @@
 
         // 新闻
         <activity
-            android:name=".common.business.activity.NewsActivity"
+            android:name=".business.activity.NewsActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:screenOrientation="portrait"/>
 
         // WebView
-        <activity android:name=".common.business.activity.WebViewActivity"/>
+        <activity android:name=".business.activity.WebViewActivity"/>
 
         // 每日一文
-        <activity android:name=".common.business.activity.MeiRiYiWenActivity"/>
+        <activity android:name=".business.activity.MeiRiYiWenActivity"/>
 
         // 音乐播放服务
-        <service android:name=".common.business.service.PlayMusicService"/>
+        <service android:name=".business.service.PlayMusicService"/>
 
     </application>
 

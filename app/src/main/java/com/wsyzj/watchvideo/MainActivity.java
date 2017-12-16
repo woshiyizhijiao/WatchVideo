@@ -4,11 +4,11 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 
+import com.wsyzj.watchvideo.business.fragment.KaiYanFragment;
+import com.wsyzj.watchvideo.business.fragment.MusicFragment;
 import com.wsyzj.watchvideo.common.base.BaseActivity;
 import com.wsyzj.watchvideo.common.base.BaseFragment;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
-import com.wsyzj.watchvideo.common.business.fragment.KaiYanFragment;
-import com.wsyzj.watchvideo.common.business.fragment.MusicFragment;
 
 import java.util.ArrayList;
 import java.util.List;

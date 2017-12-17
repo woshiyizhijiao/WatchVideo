@@ -3,7 +3,7 @@ package com.wsyzj.watchvideo.common.tools;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 
-import com.wsyzj.watchvideo.common.base.BaseApp;
+import com.wsyzj.watchvideo.BaseApp;
 
 
 /**
@@ -35,5 +35,19 @@ public class UiUtils {
      */
     public static int getColor(int colorId) {
         return BaseApp.getApp().getResources().getColor(colorId);
+    }
+
+    /**
+     * 获取系统栏的高度
+     *
+     * @return
+     */
+    public static int getStatusBarHeight() {
+        int result = 0;
+        int resourceId = BaseApp.getApp().getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = BaseApp.getApp().getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
     }
 }

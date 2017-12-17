@@ -1,5 +1,7 @@
 package com.wsyzj.watchvideo.business.bean;
 
+import android.graphics.Rect;
+
 import java.util.List;
 
 /**
@@ -39,5 +41,6 @@ public class Gank {
         public String url;
         public boolean used;
         public String who;
+        public Rect bounds;
     }
 }

@@ -1,9 +1,10 @@
-package com.wsyzj.watchvideo;
+package com.wsyzj.watchvideo.business.activity;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 
+import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.business.fragment.KaiYanFragment;
 import com.wsyzj.watchvideo.business.fragment.MusicFragment;
 import com.wsyzj.watchvideo.common.base.BaseActivity;

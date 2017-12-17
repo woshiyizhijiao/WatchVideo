@@ -5,8 +5,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.provider.Settings;
 
-import com.wsyzj.watchvideo.MainActivity;
 import com.wsyzj.watchvideo.R;
+import com.wsyzj.watchvideo.business.activity.MainActivity;
 import com.wsyzj.watchvideo.business.activity.MeiRiYiWenActivity;
 import com.wsyzj.watchvideo.business.activity.NewsActivity;
 import com.wsyzj.watchvideo.business.activity.WebViewActivity;

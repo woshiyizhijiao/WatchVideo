@@ -53,7 +53,7 @@ public abstract class BaseFragment<P extends IPresenter> extends Fragment implem
         isViewCreated = true;
         View view = inflater.inflate(contentView(), container, false);
         ButterKnife.bind(this, view);
-        initView();
+        initView(view);
         return view;
     }
 
@@ -133,7 +133,7 @@ public abstract class BaseFragment<P extends IPresenter> extends Fragment implem
 
     public abstract int contentView();
 
-    public abstract void initView();
+    public abstract void initView(View view);
 
     public abstract void initData();
 }

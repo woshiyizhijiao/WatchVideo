@@ -43,7 +43,7 @@ public class KaiYanFragment extends BaseFragment implements KaiYanContract.View,
     }
 
     @Override
-    public void initView() {
+    public void initView(View view) {
         pull_to_refresh.setOnRefreshListener(this);
         pull_to_refresh.getRecycler().addOnChildAttachStateChangeListener(this);
     }

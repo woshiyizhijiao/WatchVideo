@@ -45,7 +45,7 @@ public class NewsFragment extends BaseFragment implements NewsFragmentContract.V
     }
 
     @Override
-    public void initView() {
+    public void initView(View view) {
         setRefreshing(true);
         pull_to_refresh.getRecycler().setHasFixedSize(true);
         pull_to_refresh.getRecycler().addOnItemTouchListener(new OnItemChildClickListener() {

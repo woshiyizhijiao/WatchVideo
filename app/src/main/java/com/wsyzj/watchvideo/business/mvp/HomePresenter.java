@@ -30,7 +30,7 @@ public class HomePresenter extends BasePresenter<HomeContract.View, HomeContract
     private int mPageNumber = 10;
     private int mPage = 1;
     private boolean isFirstLoad = true;
-    private List<Gank.ResultsBean> mGankData;
+    public List<Gank.ResultsBean> mGankData;
 
     public HomePresenter(HomeContract.View view) {
         mView = view;

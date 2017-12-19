@@ -25,7 +25,7 @@
 
         // 主界面
         <activity
-            android:name=".MainActivity"
+            android:name=".business.activity.MainActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:screenOrientation="portrait"/>
 
@@ -40,6 +40,9 @@
 
         // 每日一文
         <activity android:name=".business.activity.MeiRiYiWenActivity"/>
+
+        // 预览大图
+        <activity android:name=".business.activity.PreviewLargeActivity"/>
 
         // 音乐播放服务
         <service android:name=".business.service.PlayMusicService"/>

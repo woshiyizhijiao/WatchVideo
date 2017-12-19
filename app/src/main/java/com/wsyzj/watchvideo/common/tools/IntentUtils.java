@@ -9,7 +9,12 @@ import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.business.activity.MainActivity;
 import com.wsyzj.watchvideo.business.activity.MeiRiYiWenActivity;
 import com.wsyzj.watchvideo.business.activity.NewsActivity;
+import com.wsyzj.watchvideo.business.activity.PreviewLargeActivity;
 import com.wsyzj.watchvideo.business.activity.WebViewActivity;
+import com.wsyzj.watchvideo.business.bean.Gank;
+
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author: wsyzj
@@ -75,6 +80,18 @@ public class IntentUtils {
         intent.putExtra("title", title);
         intent.putExtra("author", author);
         intent.putExtra("content", content);
+        startIntentActivity(activity, intent);
+    }
+
+    /**
+     * 预览大图
+     *
+     * @param position
+     */
+    public static void previewLarge(Activity activity, int position, List<Gank.ResultsBean> ganks) {
+        Intent intent = new Intent(activity, PreviewLargeActivity.class);
+        intent.putExtra("position", position);
+        intent.putExtra("ganks", (Serializable) ganks);
         startIntentActivity(activity, intent);
     }
 }

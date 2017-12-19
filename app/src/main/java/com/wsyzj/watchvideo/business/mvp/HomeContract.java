@@ -5,9 +5,9 @@ import android.app.Activity;
 import com.wsyzj.watchvideo.business.bean.DouBan;
 import com.wsyzj.watchvideo.business.bean.Gank;
 import com.wsyzj.watchvideo.business.bean.MeiRiYiWen;
-import com.wsyzj.watchvideo.common.base.mvp.IModel;
-import com.wsyzj.watchvideo.common.base.mvp.IPresenter;
-import com.wsyzj.watchvideo.common.base.mvp.IView;
+import com.wsyzj.watchvideo.common.base.mvp.BaseIModel;
+import com.wsyzj.watchvideo.common.base.mvp.BaseIPresenter;
+import com.wsyzj.watchvideo.common.base.mvp.BaseIView;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ import io.reactivex.Flowable;
  */
 public class HomeContract {
 
-    public interface View extends IView {
+    public interface View extends BaseIView {
 
         void firstPageLoadFinish();
 
@@ -35,13 +35,13 @@ public class HomeContract {
         void setTheatersList(List<DouBan.SubjectsBean> subjects);
     }
 
-    public interface Model extends IModel {
+    public interface Model extends BaseIModel {
         Flowable<Gank> getGankData(String type, int pageNumber, int page);
 
         Flowable<DouBan> getTheatersList(int start, int count);
     }
 
-    interface Presenter extends IPresenter<View> {
+    interface Presenter extends BaseIPresenter<View> {
         void getGankData(boolean refreshing);
 
         void getMeiRiYiWen(Activity activity);

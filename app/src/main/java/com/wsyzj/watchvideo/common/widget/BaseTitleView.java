@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 
 import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.common.base.BaseActivity;
+import com.wsyzj.watchvideo.common.tools.UiUtils;
 
 
 /**
@@ -23,7 +24,7 @@ public class BaseTitleView extends LinearLayout {
 
     private Context mContext;
     private View base_layout;
-    private Toolbar tooBar;
+    private Toolbar toobar;
 
     private OnClickListener mNavigationOnClickListener;
 
@@ -46,14 +47,15 @@ public class BaseTitleView extends LinearLayout {
         mContext = context;
         setOrientation(LinearLayout.VERTICAL);
         base_layout = LayoutInflater.from(mContext).inflate(R.layout.widget_base_title_view, null);
-        tooBar = (Toolbar) base_layout.findViewById(R.id.tooBar);
+        toobar = (Toolbar) base_layout.findViewById(R.id.tooBar);
 
 
         if (mContext instanceof BaseActivity) {
             final BaseActivity activity = (BaseActivity) mContext;
-            activity.setSupportActionBar(tooBar);
+            activity.setSupportActionBar(toobar);
             activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            tooBar.setNavigationOnClickListener(new OnClickListener() {
+            activity.getSupportActionBar().setTitle("");
+            toobar.setNavigationOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (mNavigationOnClickListener != null) {
@@ -82,8 +84,8 @@ public class BaseTitleView extends LinearLayout {
      * @return
      */
     public Toolbar setNavigationIcon(int resId) {
-        tooBar.setNavigationIcon(resId);
-        return tooBar;
+        toobar.setNavigationIcon(resId);
+        return toobar;
     }
 
     /**
@@ -93,8 +95,19 @@ public class BaseTitleView extends LinearLayout {
      * @return
      */
     public Toolbar setNavigationIcon(Drawable icon) {
-        tooBar.setNavigationIcon(icon);
-        return tooBar;
+        toobar.setNavigationIcon(icon);
+        return toobar;
+    }
+
+    /**
+     * 设置背景颜色
+     *
+     * @param color
+     * @return
+     */
+    public Toolbar setTbBackgroundColor(int color) {
+        toobar.setBackgroundColor(UiUtils.getColor(color));
+        return toobar;
     }
 
     /**
@@ -108,7 +121,7 @@ public class BaseTitleView extends LinearLayout {
             BaseActivity activity = (BaseActivity) mContext;
             activity.getSupportActionBar().setTitle(title);
         }
-        return tooBar;
+        return toobar;
     }
 
     /**

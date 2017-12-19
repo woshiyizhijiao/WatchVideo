@@ -6,7 +6,7 @@ package com.wsyzj.watchvideo.common.base.mvp;
  * @date: 2017-03-18 10:07
  * @comment: MVP模式的指挥者(连接View和Model)
  */
-public class BasePresenter<V extends IView, M extends IModel> implements IPresenter<V> {
+public class BasePresenter<V extends BaseIView, M extends BaseIModel> implements BaseIPresenter<V> {
 
     protected V mView;
     protected M mModel;

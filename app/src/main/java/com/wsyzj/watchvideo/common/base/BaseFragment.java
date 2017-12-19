@@ -8,8 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.wsyzj.watchvideo.common.base.mvp.IPresenter;
-import com.wsyzj.watchvideo.common.base.mvp.IView;
+import com.wsyzj.watchvideo.common.base.mvp.BaseIPresenter;
+import com.wsyzj.watchvideo.common.base.mvp.BaseIView;
 import com.wsyzj.watchvideo.common.http.BaseRetrofit;
 import com.wsyzj.watchvideo.common.tools.ToastUtils;
 
@@ -21,7 +21,7 @@ import io.reactivex.disposables.Disposable;
  * @date: 2016-10-02 12:23
  * @comment: 所有Fragment的基类
  */
-public abstract class BaseFragment<P extends IPresenter> extends Fragment implements IView {
+public abstract class BaseFragment<P extends BaseIPresenter> extends Fragment implements BaseIView {
     protected Activity mActivity;
     protected P mPresenter;
     private boolean isViewCreated;          // 控件是否初始化完成

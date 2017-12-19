@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
 import com.gyf.barlibrary.ImmersionBar;
 import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
-import com.wsyzj.watchvideo.common.base.mvp.IView;
+import com.wsyzj.watchvideo.common.base.mvp.BaseIView;
 import com.wsyzj.watchvideo.common.http.BaseRetrofit;
 import com.wsyzj.watchvideo.common.tools.EventBusUtils;
 import com.wsyzj.watchvideo.common.tools.ToastUtils;
@@ -28,7 +28,7 @@ import io.reactivex.disposables.Disposable;
  * @date: 2017-03-18 10:06
  * @comment: 所有Activity的基类
  */
-public abstract class BaseActivity<P extends BasePresenter> extends AppCompatActivity implements IView {
+public abstract class BaseActivity<P extends BasePresenter> extends AppCompatActivity implements BaseIView {
 
     private P mPresenter;
     public ImmersionBar mImmersionBar;

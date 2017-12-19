@@ -5,7 +5,7 @@ package com.wsyzj.watchvideo.common.base.mvp;
  * @date: 2017-03-19 17:08
  * @comment: MVP
  */
-public interface IPresenter<V extends IView> {
+public interface BaseIPresenter<V extends BaseIView> {
 
     void attachView(V view);
 

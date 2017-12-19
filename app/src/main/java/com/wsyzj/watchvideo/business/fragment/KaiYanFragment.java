@@ -11,7 +11,7 @@ import com.wsyzj.watchvideo.business.bean.KaiYan;
 import com.wsyzj.watchvideo.business.mvp.KaiYanContract;
 import com.wsyzj.watchvideo.business.mvp.KaiYanPresenter;
 import com.wsyzj.watchvideo.common.base.BaseFragment;
-import com.wsyzj.watchvideo.common.base.mvp.IPresenter;
+import com.wsyzj.watchvideo.common.base.mvp.BaseIPresenter;
 import com.wsyzj.watchvideo.common.widget.BasePullToRefreshView;
 
 import java.util.List;
@@ -32,7 +32,7 @@ public class KaiYanFragment extends BaseFragment implements KaiYanContract.View,
     private VideoAdapter mKaiYanAdapter;
 
     @Override
-    protected IPresenter presenter() {
+    protected BaseIPresenter presenter() {
         mPresenter = new KaiYanPresenter(this);
         return mPresenter;
     }

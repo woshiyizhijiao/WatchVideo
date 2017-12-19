@@ -2,6 +2,7 @@ package com.wsyzj.watchvideo.business.bean;
 
 import android.graphics.Rect;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -9,7 +10,7 @@ import java.util.List;
  * @date 2017/12/12 14:20
  * @Description: $desc$
  */
-public class Gank {
+public class Gank implements Serializable {
 
     /**
      * error : false
@@ -19,7 +20,7 @@ public class Gank {
     public boolean error;
     public List<ResultsBean> results;
 
-    public static class ResultsBean {
+    public static class ResultsBean implements Serializable {
         /**
          * _id : 5a2dd04e421aa90fe2f02ccc
          * createdAt : 2017-12-11T08:24:46.981Z

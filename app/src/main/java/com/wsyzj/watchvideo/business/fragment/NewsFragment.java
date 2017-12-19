@@ -5,14 +5,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.business.adapter.NewsAdapter;
 import com.wsyzj.watchvideo.business.bean.News;
 import com.wsyzj.watchvideo.business.mvp.NewsFragmentContract;
 import com.wsyzj.watchvideo.business.mvp.NewsFragmentPresenter;
 import com.wsyzj.watchvideo.common.base.BaseFragment;
-import com.wsyzj.watchvideo.common.base.mvp.IPresenter;
+import com.wsyzj.watchvideo.common.base.mvp.BaseIPresenter;
 import com.wsyzj.watchvideo.common.tools.IntentUtils;
 import com.wsyzj.watchvideo.common.widget.BasePullToRefreshView;
 
@@ -34,7 +33,7 @@ public class NewsFragment extends BaseFragment implements NewsFragmentContract.V
     private NewsAdapter mNewsAdapter;
 
     @Override
-    protected IPresenter presenter() {
+    protected BaseIPresenter presenter() {
         mPresenter = new NewsFragmentPresenter(this);
         return mPresenter;
     }
@@ -47,13 +46,6 @@ public class NewsFragment extends BaseFragment implements NewsFragmentContract.V
     @Override
     public void initView(View view) {
         setRefreshing(true);
-        pull_to_refresh.getRecycler().setHasFixedSize(true);
-        pull_to_refresh.getRecycler().addOnItemTouchListener(new OnItemChildClickListener() {
-            @Override
-            public void onSimpleItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-
-            }
-        });
         pull_to_refresh.setOnRefreshListener(this);
         pull_to_refresh.setRequestLoadMoreListener(this);
     }

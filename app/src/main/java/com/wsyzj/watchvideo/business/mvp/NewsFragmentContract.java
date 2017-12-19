@@ -1,9 +1,9 @@
 package com.wsyzj.watchvideo.business.mvp;
 
 import com.wsyzj.watchvideo.common.base.BaseFragment;
-import com.wsyzj.watchvideo.common.base.mvp.IModel;
-import com.wsyzj.watchvideo.common.base.mvp.IPresenter;
-import com.wsyzj.watchvideo.common.base.mvp.IView;
+import com.wsyzj.watchvideo.common.base.mvp.BaseIModel;
+import com.wsyzj.watchvideo.common.base.mvp.BaseIPresenter;
+import com.wsyzj.watchvideo.common.base.mvp.BaseIView;
 import com.wsyzj.watchvideo.business.bean.News;
 
 import java.util.List;
@@ -16,7 +16,7 @@ import io.reactivex.Flowable;
  * @Description: $desc$
  */
 public class NewsFragmentContract {
-    public interface View extends IView {
+    public interface View extends BaseIView {
 
         void setNewsList(List<News.ResultBeanX.ResultBean.ListBean> list);
 
@@ -25,11 +25,11 @@ public class NewsFragmentContract {
         void setLoadMoreState(int totalCount);
     }
 
-    public interface Model extends IModel {
+    public interface Model extends BaseIModel {
         Flowable<News> getNewsListByTitle(String channel, int start, int num);
     }
 
-    interface Presenter extends IPresenter<View> {
+    interface Presenter extends BaseIPresenter<View> {
         void getArguments(BaseFragment fragment);
 
         void getNewsListByTitle(boolean refreshing);

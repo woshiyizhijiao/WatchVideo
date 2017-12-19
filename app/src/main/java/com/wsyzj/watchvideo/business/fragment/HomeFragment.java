@@ -19,7 +19,7 @@ import com.wsyzj.watchvideo.business.mvp.HomeContract;
 import com.wsyzj.watchvideo.business.mvp.HomePresenter;
 import com.wsyzj.watchvideo.common.base.BaseEvent;
 import com.wsyzj.watchvideo.common.base.BaseFragment;
-import com.wsyzj.watchvideo.common.base.mvp.IPresenter;
+import com.wsyzj.watchvideo.common.base.mvp.BaseIPresenter;
 import com.wsyzj.watchvideo.common.tools.Constant;
 import com.wsyzj.watchvideo.common.tools.EventBusUtils;
 import com.wsyzj.watchvideo.common.tools.IntentUtils;
@@ -45,7 +45,7 @@ public class HomeFragment extends BaseFragment implements HomeContract.View, Swi
     private View mHeadView;
 
     @Override
-    protected IPresenter presenter() {
+    protected BaseIPresenter presenter() {
         mPresenter = new HomePresenter(this);
         return mPresenter;
     }
@@ -82,7 +82,7 @@ public class HomeFragment extends BaseFragment implements HomeContract.View, Swi
      * @param results
      */
     @Override
-    public void setGankData(List<Gank.ResultsBean> results) {
+    public void setGankData(final List<Gank.ResultsBean> results) {
         if (mHomeAdapter == null) {
             mHomeAdapter = new HomeAdapter(mActivity, R.layout.item_home, results);
             pull_to_refresh.setLayoutManager(new GridLayoutManager(mActivity, 2));
@@ -91,6 +91,13 @@ public class HomeFragment extends BaseFragment implements HomeContract.View, Swi
         } else {
             mHomeAdapter.setNewData(results);
         }
+
+        mHomeAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                IntentUtils.previewLarge(mActivity, position, results);
+            }
+        });
     }
 
     /**

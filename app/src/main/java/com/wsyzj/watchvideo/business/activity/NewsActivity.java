@@ -89,7 +89,7 @@ public class NewsActivity extends BaseActivity implements NewsActivityContract.V
                 fragments.add(newsFragment);
             }
 
-            newsTitle.add(0, "主页");
+            newsTitle.add(0, "推荐");
         }
 
         VpAdapter vpAdapter = new VpAdapter(getSupportFragmentManager(), this, fragments, newsTitle);

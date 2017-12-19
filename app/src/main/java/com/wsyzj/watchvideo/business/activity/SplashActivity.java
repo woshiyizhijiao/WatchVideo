@@ -6,9 +6,13 @@ import android.os.Handler;
 
 import com.gyf.barlibrary.ImmersionBar;
 import com.wsyzj.watchvideo.R;
+import com.wsyzj.watchvideo.business.BaseApp;
 import com.wsyzj.watchvideo.common.base.BaseActivity;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
+import com.wsyzj.watchvideo.common.tools.Constant;
 import com.wsyzj.watchvideo.common.tools.IntentUtils;
+
+import net.youmi.android.AdManager;
 
 /**
  * 创建时间 : 2017/10/23
@@ -38,9 +42,16 @@ public class SplashActivity extends BaseActivity {
 
     @Override
     protected void initData(Bundle savedInstanceState) {
+        initThreeSdk();
         enterMain();
     }
 
+    /**
+     * 初始化第三方sdk
+     */
+    private void initThreeSdk() {
+        AdManager.getInstance(this).init(Constant.Youmi.APP_ID, Constant.Youmi.APP_SECRET, BaseApp.isDebug);
+    }
 
     @Override
     public void onBackPressed() {

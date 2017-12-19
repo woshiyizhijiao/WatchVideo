@@ -1,18 +1,14 @@
 package com.wsyzj.watchvideo.business.fragment;
 
-import android.graphics.Rect;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.business.adapter.HomeAdapter;
 import com.wsyzj.watchvideo.business.adapter.HomeDouBanAdapter;
@@ -21,15 +17,14 @@ import com.wsyzj.watchvideo.business.bean.Gank;
 import com.wsyzj.watchvideo.business.bean.MeiRiYiWen;
 import com.wsyzj.watchvideo.business.mvp.HomeContract;
 import com.wsyzj.watchvideo.business.mvp.HomePresenter;
-import com.wsyzj.watchvideo.business.widget.photo.PreviewLayout;
 import com.wsyzj.watchvideo.common.base.BaseEvent;
 import com.wsyzj.watchvideo.common.base.BaseFragment;
 import com.wsyzj.watchvideo.common.base.mvp.IPresenter;
-import com.wsyzj.watchvideo.common.base.widget.BasePullToRefreshView;
 import com.wsyzj.watchvideo.common.tools.Constant;
 import com.wsyzj.watchvideo.common.tools.EventBusUtils;
 import com.wsyzj.watchvideo.common.tools.IntentUtils;
 import com.wsyzj.watchvideo.common.tools.UiUtils;
+import com.wsyzj.watchvideo.common.widget.BasePullToRefreshView;
 
 import java.util.List;
 
@@ -47,15 +42,7 @@ public class HomeFragment extends BaseFragment implements HomeContract.View, Swi
 
     private HomePresenter mPresenter;
     private HomeAdapter mHomeAdapter;
-    private FrameLayout mContentContainer;
     private View mHeadView;
-    private PreviewLayout mPreviewLayout;
-    private GridLayoutManager mGridLayoutManager;
-    private int[] mPadding = new int[4];
-    private int mSolidWidth = 0;
-    private int mSolidHeight = 0;
-    private Rect mRVBounds = new Rect();
-    private int mStatusBarHeight = UiUtils.getStatusBarHeight();
 
     @Override
     protected IPresenter presenter() {
@@ -71,20 +58,8 @@ public class HomeFragment extends BaseFragment implements HomeContract.View, Swi
     @Override
     public void initView(View view) {
         setRefreshing(false);
-        mContentContainer = (FrameLayout) view.findViewById(android.R.id.content);
-        pull_to_refresh.getRecycler().setHasFixedSize(true);
         pull_to_refresh.setOnRefreshListener(this);
         pull_to_refresh.setRequestLoadMoreListener(this);
-        pull_to_refresh.getRecycler().addOnScrollListener(new MyRecyclerOnScrollListener());
-        pull_to_refresh.getRecycler().addOnItemTouchListener(new OnItemClickListener() {
-            @Override
-            public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
-                mPreviewLayout = new PreviewLayout(mActivity);
-                mPreviewLayout.setData(mPresenter.mGankData, position);
-                mPreviewLayout.startScaleUpAnimation();
-                mContentContainer.addView(mPreviewLayout);
-            }
-        });
     }
 
     @Override
@@ -95,87 +70,6 @@ public class HomeFragment extends BaseFragment implements HomeContract.View, Swi
         mPresenter.getGankData(true);
     }
 
-    private class MyRecyclerOnScrollListener extends RecyclerView.OnScrollListener {
-        @Override
-        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-            super.onScrollStateChanged(recyclerView, newState);
-            if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                assembleDataList();
-            }
-        }
-    }
-
-    private void assembleDataList() {
-        computeBoundsForward(mGridLayoutManager.findFirstCompletelyVisibleItemPosition());
-        computeBoundsBackward(mGridLayoutManager.findFirstCompletelyVisibleItemPosition());
-    }
-
-    /**
-     * 从第一个完整可见item顺序遍历
-     */
-    private void computeBoundsForward(int firstCompletelyVisiblePos) {
-        for (int i = firstCompletelyVisiblePos; i < mPresenter.mGankData.size(); i++) {
-            View itemView = mGridLayoutManager.findViewByPosition(i);
-            Rect bounds = new Rect();
-
-            if (itemView != null) {
-                ImageView thumbView = (ImageView) itemView.findViewById(R.id.iv_meizhi);
-
-                thumbView.getGlobalVisibleRect(bounds);
-
-                if (mSolidWidth * mSolidHeight == 0) {
-                    mPadding[0] = thumbView.getPaddingLeft();
-                    mPadding[1] = thumbView.getPaddingTop();
-                    mPadding[2] = thumbView.getPaddingRight();
-                    mPadding[3] = thumbView.getPaddingBottom();
-                    mSolidWidth = bounds.width();
-                    mSolidHeight = bounds.height();
-                }
-
-                bounds.left = bounds.left + mPadding[0];
-                bounds.top = bounds.top + mPadding[1];
-                bounds.right = bounds.left + mSolidWidth - mPadding[2];
-                bounds.bottom = bounds.top + mSolidHeight - mPadding[3];
-            } else {
-                bounds.left = i % 3 * mSolidWidth + mPadding[0];
-                bounds.top = mRVBounds.bottom + mPadding[1];
-                bounds.right = bounds.left + mSolidWidth - mPadding[2];
-                bounds.bottom = bounds.top + mSolidHeight - mPadding[3];
-            }
-            bounds.offset(0, -mStatusBarHeight);
-
-            mPresenter.mGankData.get(i).bounds = bounds;
-        }
-    }
-
-    /**
-     * 从第一个完整可见item逆序遍历，如果初始位置为0，则不执行方法内循环
-     */
-    private void computeBoundsBackward(int firstCompletelyVisiblePos) {
-        for (int i = firstCompletelyVisiblePos - 1; i >= 0; i--) {
-            View itemView = mGridLayoutManager.findViewByPosition(i);
-            Rect bounds = new Rect();
-
-            if (itemView != null) {
-                ImageView thumbView = (ImageView) itemView.findViewById(R.id.iv_meizhi);
-
-                thumbView.getGlobalVisibleRect(bounds);
-
-                bounds.left = bounds.left + mPadding[0];
-                bounds.bottom = bounds.bottom - mPadding[3];
-                bounds.right = bounds.left + mSolidWidth - mPadding[2];
-                bounds.top = bounds.bottom - mSolidHeight + mPadding[1];
-            } else {
-                bounds.left = i % 3 * mSolidWidth + mPadding[0];
-                bounds.bottom = mRVBounds.top - mPadding[3];
-                bounds.right = bounds.left + mSolidWidth - mPadding[2];
-                bounds.top = bounds.bottom - mSolidHeight + mPadding[1];
-            }
-            bounds.offset(0, -mStatusBarHeight);
-
-            mPresenter.mGankData.get(i).bounds = bounds;
-        }
-    }
 
     @Override
     public void firstPageLoadFinish() {
@@ -191,7 +85,6 @@ public class HomeFragment extends BaseFragment implements HomeContract.View, Swi
     public void setGankData(List<Gank.ResultsBean> results) {
         if (mHomeAdapter == null) {
             mHomeAdapter = new HomeAdapter(mActivity, R.layout.item_home, results);
-            mGridLayoutManager = new GridLayoutManager(mActivity, 2);
             pull_to_refresh.setLayoutManager(new GridLayoutManager(mActivity, 2));
             pull_to_refresh.setAdapter(mHomeAdapter);
             addHeadView();

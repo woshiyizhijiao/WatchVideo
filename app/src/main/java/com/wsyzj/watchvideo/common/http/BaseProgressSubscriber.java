@@ -1,4 +1,4 @@
-package com.wsyzj.watchvideo.common.base.http;
+package com.wsyzj.watchvideo.common.http;
 
 import com.wsyzj.watchvideo.common.base.BaseProgressDialog;
 

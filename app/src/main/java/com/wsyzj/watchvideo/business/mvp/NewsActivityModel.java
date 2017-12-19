@@ -1,8 +1,8 @@
 package com.wsyzj.watchvideo.business.mvp;
 
 import com.wsyzj.watchvideo.business.bean.NewsTitle;
-import com.wsyzj.watchvideo.common.base.http.BaseRetrofit;
-import com.wsyzj.watchvideo.common.base.http.BaseRxSchedulers;
+import com.wsyzj.watchvideo.common.http.BaseRetrofit;
+import com.wsyzj.watchvideo.common.http.BaseRxSchedulers;
 import com.wsyzj.watchvideo.common.tools.Constant;
 
 import io.reactivex.Flowable;

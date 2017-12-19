@@ -3,7 +3,7 @@ package com.wsyzj.watchvideo.common.tools;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 
-import com.wsyzj.watchvideo.BaseApp;
+import com.wsyzj.watchvideo.business.BaseApp;
 
 
 /**

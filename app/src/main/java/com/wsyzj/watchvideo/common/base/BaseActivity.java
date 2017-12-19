@@ -11,10 +11,10 @@ import com.gyf.barlibrary.ImmersionBar;
 import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
 import com.wsyzj.watchvideo.common.base.mvp.IView;
-import com.wsyzj.watchvideo.common.base.http.BaseRetrofit;
+import com.wsyzj.watchvideo.common.http.BaseRetrofit;
 import com.wsyzj.watchvideo.common.tools.EventBusUtils;
 import com.wsyzj.watchvideo.common.tools.ToastUtils;
-import com.wsyzj.watchvideo.common.base.widget.BaseTitleView;
+import com.wsyzj.watchvideo.common.widget.BaseTitleView;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;

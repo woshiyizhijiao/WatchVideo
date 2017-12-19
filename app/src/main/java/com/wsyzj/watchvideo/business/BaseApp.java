@@ -1,4 +1,4 @@
-package com.wsyzj.watchvideo;
+package com.wsyzj.watchvideo.business;
 
 import android.app.Application;
 

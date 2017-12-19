@@ -5,7 +5,7 @@ import android.os.Bundle;
 import com.wsyzj.watchvideo.business.activity.NewsActivity;
 import com.wsyzj.watchvideo.business.bean.News;
 import com.wsyzj.watchvideo.common.base.BaseFragment;
-import com.wsyzj.watchvideo.common.base.http.BaseTSubscriber;
+import com.wsyzj.watchvideo.common.http.BaseTSubscriber;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
 import com.wsyzj.watchvideo.common.tools.Constant;
 

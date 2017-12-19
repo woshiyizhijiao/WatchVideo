@@ -2,7 +2,7 @@ package com.wsyzj.watchvideo.common.tools;
 
 import android.widget.Toast;
 
-import com.wsyzj.watchvideo.BaseApp;
+import com.wsyzj.watchvideo.business.BaseApp;
 
 
 /**

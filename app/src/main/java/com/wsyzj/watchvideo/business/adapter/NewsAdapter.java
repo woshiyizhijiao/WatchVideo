@@ -9,7 +9,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.business.bean.News;
-import com.wsyzj.watchvideo.common.base.http.ImageLoader;
+import com.wsyzj.watchvideo.common.http.ImageLoader;
 
 import java.util.List;
 

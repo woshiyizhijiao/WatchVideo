@@ -24,7 +24,7 @@ import com.wsyzj.watchvideo.business.mvp.MusicPresenter;
 import com.wsyzj.watchvideo.business.service.PlayMusicService;
 import com.wsyzj.watchvideo.common.base.BaseFragment;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
-import com.wsyzj.watchvideo.common.base.widget.BasePullToRefreshView;
+import com.wsyzj.watchvideo.common.widget.BasePullToRefreshView;
 
 import java.util.List;
 

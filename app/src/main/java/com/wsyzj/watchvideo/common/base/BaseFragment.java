@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 
 import com.wsyzj.watchvideo.common.base.mvp.IPresenter;
 import com.wsyzj.watchvideo.common.base.mvp.IView;
-import com.wsyzj.watchvideo.common.base.http.BaseRetrofit;
+import com.wsyzj.watchvideo.common.http.BaseRetrofit;
 import com.wsyzj.watchvideo.common.tools.ToastUtils;
 
 import butterknife.ButterKnife;

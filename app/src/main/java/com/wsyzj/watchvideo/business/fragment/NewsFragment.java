@@ -13,8 +13,8 @@ import com.wsyzj.watchvideo.business.mvp.NewsFragmentContract;
 import com.wsyzj.watchvideo.business.mvp.NewsFragmentPresenter;
 import com.wsyzj.watchvideo.common.base.BaseFragment;
 import com.wsyzj.watchvideo.common.base.mvp.IPresenter;
-import com.wsyzj.watchvideo.common.base.widget.BasePullToRefreshView;
 import com.wsyzj.watchvideo.common.tools.IntentUtils;
+import com.wsyzj.watchvideo.common.widget.BasePullToRefreshView;
 
 import java.util.List;
 

@@ -1,6 +1,7 @@
-package com.wsyzj.watchvideo.common.base.http;
+package com.wsyzj.watchvideo.common.http;
 
 import com.wsyzj.watchvideo.common.tools.Constant;
+import com.wsyzj.watchvideo.common.tools.LogUtils;
 import com.wsyzj.watchvideo.common.tools.ToastUtils;
 
 import java.net.ConnectException;
@@ -10,19 +11,18 @@ import java.net.UnknownHostException;
 import io.reactivex.subscribers.DisposableSubscriber;
 
 /**
- * 创建时间 : 2017/10/26
- * 编写人 : 焦洋
- * 功能描述 :
+ * author : 焦洋
+ * time   : 2017/11/2  9:55
+ * desc   : 有一些数据没有继承BaseEntity
  */
-
-public abstract class BaseSubscriber<T> extends DisposableSubscriber<BaseEntity<T>> {
+public abstract class BaseTSubscriber<T> extends DisposableSubscriber<T> {
 
     @Override
-    public void onNext(BaseEntity<T> baseEntity) {
-        if (baseEntity.code == Constant.NetMessage.NET_CODE_SUCCESS) {
-            onSuccess(baseEntity.data);
+    public void onNext(T data) {
+        if (data != null) {
+            onSuccess(data);
         } else {
-            ToastUtils.showToast(baseEntity.msg);
+            ToastUtils.showToast("没有数据，可能错误啦");
         }
     }
 
@@ -39,6 +39,7 @@ public abstract class BaseSubscriber<T> extends DisposableSubscriber<BaseEntity<
             errorMsg = throwable.getMessage();
         }
         ToastUtils.showToast(errorMsg);
+        LogUtils.e(throwable.toString());
     }
 
     @Override
@@ -46,5 +47,6 @@ public abstract class BaseSubscriber<T> extends DisposableSubscriber<BaseEntity<
 
     }
 
-    public abstract void onSuccess(T data);
+    public abstract void onSuccess(Object data);
+
 }

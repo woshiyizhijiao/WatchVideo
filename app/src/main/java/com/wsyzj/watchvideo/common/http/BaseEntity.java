@@ -1,4 +1,4 @@
-package com.wsyzj.watchvideo.common.base.http;
+package com.wsyzj.watchvideo.common.http;
 
 /**
  * 创建时间 : 2017/10/26

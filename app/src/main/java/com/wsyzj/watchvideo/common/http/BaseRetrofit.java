@@ -1,6 +1,6 @@
-package com.wsyzj.watchvideo.common.base.http;
+package com.wsyzj.watchvideo.common.http;
 
-import com.wsyzj.watchvideo.BaseApp;
+import com.wsyzj.watchvideo.business.BaseApp;
 import com.wsyzj.watchvideo.common.tools.Constant;
 
 import java.util.HashMap;

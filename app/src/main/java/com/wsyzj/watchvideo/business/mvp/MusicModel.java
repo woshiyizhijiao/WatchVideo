@@ -4,8 +4,8 @@ import android.os.Build;
 
 import com.wsyzj.watchvideo.business.bean.Music;
 import com.wsyzj.watchvideo.business.bean.Song;
-import com.wsyzj.watchvideo.common.base.http.BaseRetrofit;
-import com.wsyzj.watchvideo.common.base.http.BaseRxSchedulers;
+import com.wsyzj.watchvideo.common.http.BaseRetrofit;
+import com.wsyzj.watchvideo.common.http.BaseRxSchedulers;
 
 import io.reactivex.Flowable;
 

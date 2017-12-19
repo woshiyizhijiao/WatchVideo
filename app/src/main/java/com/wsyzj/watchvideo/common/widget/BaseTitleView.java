@@ -1,4 +1,4 @@
-package com.wsyzj.watchvideo.common.base.widget;
+package com.wsyzj.watchvideo.common.widget;
 
 import android.app.Activity;
 import android.content.Context;

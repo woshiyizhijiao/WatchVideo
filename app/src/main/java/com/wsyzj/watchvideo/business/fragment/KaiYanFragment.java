@@ -12,7 +12,7 @@ import com.wsyzj.watchvideo.business.mvp.KaiYanContract;
 import com.wsyzj.watchvideo.business.mvp.KaiYanPresenter;
 import com.wsyzj.watchvideo.common.base.BaseFragment;
 import com.wsyzj.watchvideo.common.base.mvp.IPresenter;
-import com.wsyzj.watchvideo.common.base.widget.BasePullToRefreshView;
+import com.wsyzj.watchvideo.common.widget.BasePullToRefreshView;
 
 import java.util.List;
 

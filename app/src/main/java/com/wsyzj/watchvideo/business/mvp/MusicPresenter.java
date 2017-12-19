@@ -3,7 +3,7 @@ package com.wsyzj.watchvideo.business.mvp;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
 import com.wsyzj.watchvideo.business.bean.Music;
 import com.wsyzj.watchvideo.business.bean.Song;
-import com.wsyzj.watchvideo.common.base.http.BaseTSubscriber;
+import com.wsyzj.watchvideo.common.http.BaseTSubscriber;
 
 import java.util.ArrayList;
 import java.util.List;

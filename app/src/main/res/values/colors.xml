@@ -21,6 +21,13 @@
     <color name="c777777">#777777</color>
     <color name="c888888">#888888</color>
     <color name="c999999">#999999</color>
+    <color name="c20000000">#20000000</color>
 
-    <color name="c20000000">#40000000</color>
+    <color name="cff5252">#FF5252</color>
+    <color name="c9c27b0">#9C27B0</color>
+    <color name="c673ab7">#673AB7</color>
+    <color name="cff5722">#FF5722</color>
+    <color name="c8bc34a">#8BC34A</color>
+    <color name="cffeb3b">#FFEB3B</color>
+
 </resources>

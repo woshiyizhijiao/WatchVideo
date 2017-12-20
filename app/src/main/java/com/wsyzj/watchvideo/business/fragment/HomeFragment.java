@@ -12,6 +12,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.business.adapter.HomeAdapter;
 import com.wsyzj.watchvideo.business.adapter.HomeDouBanAdapter;
+import com.wsyzj.watchvideo.business.adapter.NewsTitleAdapter;
 import com.wsyzj.watchvideo.business.bean.DouBan;
 import com.wsyzj.watchvideo.business.bean.Gank;
 import com.wsyzj.watchvideo.business.bean.MeiRiYiWen;
@@ -26,6 +27,7 @@ import com.wsyzj.watchvideo.common.tools.IntentUtils;
 import com.wsyzj.watchvideo.common.tools.UiUtils;
 import com.wsyzj.watchvideo.common.widget.BasePullToRefreshView;
 
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
@@ -33,7 +35,7 @@ import butterknife.BindView;
 /**
  * @author 焦洋
  * @date 2017/12/12 14:02
- * @Description: 主页
+ * @Description: 推荐
  */
 public class HomeFragment extends BaseFragment implements HomeContract.View, SwipeRefreshLayout.OnRefreshListener, BaseQuickAdapter.RequestLoadMoreListener {
 
@@ -109,7 +111,37 @@ public class HomeFragment extends BaseFragment implements HomeContract.View, Swi
     private void addHeadView() {
         if (mHomeAdapter.getHeaderLayoutCount() == 0) {
             mHeadView = UiUtils.inflate(R.layout.item_header_home);
+            addNewsTitleData();
             pull_to_refresh.addHeadView(mHeadView);
+        }
+    }
+
+    /**
+     * 添加几个新闻标题的数据
+     */
+    private void addNewsTitleData() {
+        final String[] titles = {"今日头条", "新浪", "网易", "腾讯新闻", "糗事百科", "内涵段子"};
+        final String[] urls = {
+                "http://www.qq.com/",
+                "https://www.toutiao.com/",
+                "https://www.toutiao.com/",
+                "http://www.qq.com/",
+                "https://www.toutiao.com/",
+                "https://www.toutiao.com/",
+        };
+
+        if (mHeadView != null) {
+            RecyclerView rv_news = (RecyclerView) mHeadView.findViewById(R.id.rv_news);
+            NewsTitleAdapter adapter = new NewsTitleAdapter(R.layout.item_news_title, Arrays.asList(titles));
+            rv_news.setLayoutManager(new GridLayoutManager(mActivity, 3));
+            rv_news.setAdapter(adapter);
+
+            adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                    IntentUtils.webView(mActivity, titles[position], urls[position]);
+                }
+            });
         }
     }
 

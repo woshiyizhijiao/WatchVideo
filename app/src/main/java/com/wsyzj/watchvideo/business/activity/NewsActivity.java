@@ -17,6 +17,8 @@ import com.wsyzj.watchvideo.common.base.BaseFragment;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
 import com.wsyzj.watchvideo.common.tools.Constant;
 
+import net.youmi.android.nm.sp.SpotManager;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,6 +67,12 @@ public class NewsActivity extends BaseActivity implements NewsActivityContract.V
     @Override
     protected void initData(Bundle savedInstanceState) {
         mPresenter.getNewsTitle();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        SpotManager.getInstance(this).onAppExit();
     }
 
     /**

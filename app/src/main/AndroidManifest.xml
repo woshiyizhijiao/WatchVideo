@@ -47,6 +47,18 @@
         // 音乐播放服务
         <service android:name=".business.service.PlayMusicService"/>
 
+        // 第三方sdk
+        // 有米
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.youmi.android.offerdemo.fileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true"/>
+
+        <meta-data
+            android:name="android.support.FILE_PROVIDER_PATHS"
+            android:resource="@xml/file_provider"/>
+
     </application>
 
 </manifest>

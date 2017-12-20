@@ -1,10 +1,12 @@
 package com.wsyzj.watchvideo.business.activity;
 
+import android.Manifest;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 
 import com.gyf.barlibrary.ImmersionBar;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.business.BaseApp;
 import com.wsyzj.watchvideo.common.base.BaseActivity;
@@ -13,6 +15,12 @@ import com.wsyzj.watchvideo.common.tools.Constant;
 import com.wsyzj.watchvideo.common.tools.IntentUtils;
 
 import net.youmi.android.AdManager;
+import net.youmi.android.nm.sp.SplashViewSettings;
+import net.youmi.android.nm.sp.SpotManager;
+import net.youmi.android.nm.sp.SpotRequestListener;
+
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
 
 /**
  * 创建时间 : 2017/10/23
@@ -78,40 +86,40 @@ public class SplashActivity extends BaseActivity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        SpotManager.getInstance(this).onDestroy();
+    }
+
     /**
      * 6.0以上需要申请权限，6.0
      */
     private void enterMain() {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-//                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
-//                    getPermissions();
-//                } else {
-                IntentUtils.news(SplashActivity.this);
-                finish();
-//                }
-            }
-        }, 1000);
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+            getPermissions();
+        } else {
+            showBanner();
+        }
     }
 
     /**
      * 获取用户权限
      */
     public void getPermissions() {
-//        new RxPermissions(this).request(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-//                .subscribe(new Consumer<Boolean>() {
-//                    @Override
-//                    public void accept(@NonNull Boolean aBoolean) throws Exception {
-//                        if (aBoolean) {
-//                            IntentUtils.news(SplashActivity.this);
-//                            finish();
-//                        } else {
-//                            // 拒绝权限需提示用户开启
-//                            showMissingPermissionDialog();
-//                        }
-//                    }
-//                });
+        new RxPermissions(this).request(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .subscribe(new Consumer<Boolean>() {
+                    @Override
+                    public void accept(@NonNull Boolean aBoolean) throws Exception {
+                        if (aBoolean) {
+                            IntentUtils.news(SplashActivity.this);
+                            finish();
+                        } else {
+                            // 拒绝权限需提示用户开启
+                            showMissingPermissionDialog();
+                        }
+                    }
+                });
     }
 
     public void showMissingPermissionDialog() {
@@ -138,5 +146,37 @@ public class SplashActivity extends BaseActivity {
 
         builder.setCancelable(false);
         builder.show();
+    }
+
+    /**
+     * 展示广告
+     */
+    private void showBanner() {
+        // 预加载开屏广告
+        SpotManager.getInstance(this).requestSpot(new SpotRequestListener() {
+            @Override
+            public void onRequestSuccess() {
+                IntentUtils.news(SplashActivity.this);
+                finish();
+            }
+
+            @Override
+            public void onRequestFailed(int i) {
+                IntentUtils.news(SplashActivity.this);
+                finish();
+            }
+        });
+
+        SplashViewSettings splashViewSettings = new SplashViewSettings();
+        // 设置展示失败是否自动跳转至设定的窗口 默认自动跳转
+        splashViewSettings.setAutoJumpToTargetWhenShowFailed(true);
+        // 置开屏结束后跳转的窗口
+        splashViewSettings.setTargetClass(SplashActivity.class);
+//         使用默认布局参数
+//        splashViewSettings.setSplashViewContainer(ViewGroup splashViewContainer);
+//        // 使用自定义布局参数
+//        splashViewSettings.setSplashViewContainer(ViewGroup splashViewContainer, ViewGroup.LayoutParams splashViewLayoutParams);
+        // 展示开屏广告
+//        SpotManager.getInstance(Context context).showSplash(Context context, SplashViewSettings splashViewSettings, SpotListener spotListener);
     }
 }

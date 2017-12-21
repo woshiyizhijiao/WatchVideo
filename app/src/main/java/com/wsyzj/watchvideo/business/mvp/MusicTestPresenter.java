@@ -1,29 +1,30 @@
 package com.wsyzj.watchvideo.business.mvp;
 
+import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
 import com.wsyzj.watchvideo.business.bean.Music;
 import com.wsyzj.watchvideo.business.bean.Song;
-import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
 import com.wsyzj.watchvideo.common.http.BaseTSubscriber;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author 焦洋
- * @date 2017/12/21 11:02
- * @Description: $desc$
+ * @author: wsyzj
+ * @date: 2017-09-17 17:16
+ * @comment:
  */
-public class MusicPresenter extends BasePresenter<MusicContract.View, MusicContract.Model> implements MusicContract.Presenter {
+public class MusicTestPresenter extends BasePresenter<MusicTestContract.View, MusicTestContract.Model> implements MusicTestContract.Presenter {
 
-    private MusicContract.View mView;
-    private MusicContract.Model mModel;
+    private MusicTestContract.View mView;
+    private MusicTestContract.Model mModel;
 
     private int mPage = 1;
+    public int mCurrentPos;
     private List<Music.SongListBean> mSongs = new ArrayList<>();
 
-    public MusicPresenter(MusicContract.View view) {
+    public MusicTestPresenter(MusicTestContract.View view) {
         mView = view;
-        mModel = new MusicModel();
+        mModel = new MusicTestModel();
     }
 
     /**
@@ -51,7 +52,7 @@ public class MusicPresenter extends BasePresenter<MusicContract.View, MusicContr
                             }
                             mView.setMusicList(mSongs);
                         } else {
-                            mView.setLoadMoreState(0);
+                            mView.setLoadMoreState(0, 0);
                         }
                         mView.setRefreshing(false);
                     }
@@ -60,9 +61,7 @@ public class MusicPresenter extends BasePresenter<MusicContract.View, MusicContr
     }
 
     /**
-     * 获取歌曲的播放列表
-     *
-     * @param songid
+     * 获取音乐播放链接
      */
     @Override
     public void getMusicPlayPath(String songid) {
@@ -78,5 +77,33 @@ public class MusicPresenter extends BasePresenter<MusicContract.View, MusicContr
                         mView.dismissProgress();
                     }
                 });
+    }
+
+    /**
+     * 上一首
+     */
+    @Override
+    public void previous() {
+        if (mCurrentPos != 0) {
+            mCurrentPos = mCurrentPos - 1;
+        } else {
+            mCurrentPos = mSongs.size() - 1;
+        }
+        Music.SongListBean bean = mSongs.get(mCurrentPos);
+        getMusicPlayPath(bean.song_id);
+    }
+
+    /**
+     * 下一首
+     */
+    @Override
+    public void next() {
+        if (mCurrentPos == mSongs.size() - 1) {
+            mCurrentPos = 0;
+        } else {
+            mCurrentPos++;
+        }
+        Music.SongListBean bean = mSongs.get(mCurrentPos);
+        getMusicPlayPath(bean.song_id);
     }
 }

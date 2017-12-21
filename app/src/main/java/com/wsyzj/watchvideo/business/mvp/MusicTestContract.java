@@ -1,27 +1,29 @@
 package com.wsyzj.watchvideo.business.mvp;
 
-import com.wsyzj.watchvideo.business.bean.Music;
-import com.wsyzj.watchvideo.business.bean.Song;
 import com.wsyzj.watchvideo.common.base.mvp.BaseIModel;
 import com.wsyzj.watchvideo.common.base.mvp.BaseIPresenter;
 import com.wsyzj.watchvideo.common.base.mvp.BaseIView;
+import com.wsyzj.watchvideo.business.bean.Music;
+import com.wsyzj.watchvideo.business.bean.Song;
 
 import java.util.List;
 
 import io.reactivex.Flowable;
 
+
 /**
- * @author 焦洋
- * @date 2017/12/21 11:02
- * @Description: $desc$
+ * @author: wsyzj
+ * @date: 2017-09-17 17:18
+ * @comment:
  */
-public class MusicContract {
+public class MusicTestContract {
+
     public interface View extends BaseIView {
         void setMusicList(List<Music.SongListBean> musicList);
 
         void setRefreshing(boolean refreshing);
 
-        void setLoadMoreState(int totalCount);
+        void setLoadMoreState(int totalCount, int currentCount);
 
         void setSongInfo(Song song);
     }
@@ -36,5 +38,9 @@ public class MusicContract {
         void getMusicList(boolean refreshing);
 
         void getMusicPlayPath(String songid);
+
+        void previous();
+
+        void next();
     }
 }

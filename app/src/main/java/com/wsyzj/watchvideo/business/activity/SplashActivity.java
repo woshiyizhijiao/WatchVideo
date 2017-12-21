@@ -112,7 +112,7 @@ public class SplashActivity extends BaseActivity {
                     @Override
                     public void accept(@NonNull Boolean aBoolean) throws Exception {
                         if (aBoolean) {
-                            IntentUtils.news(SplashActivity.this);
+                            IntentUtils.main(SplashActivity.this);
                             finish();
                         } else {
                             // 拒绝权限需提示用户开启
@@ -156,13 +156,13 @@ public class SplashActivity extends BaseActivity {
         SpotManager.getInstance(this).requestSpot(new SpotRequestListener() {
             @Override
             public void onRequestSuccess() {
-                IntentUtils.news(SplashActivity.this);
+                IntentUtils.main(SplashActivity.this);
                 finish();
             }
 
             @Override
             public void onRequestFailed(int i) {
-                IntentUtils.news(SplashActivity.this);
+                IntentUtils.main(SplashActivity.this);
                 finish();
             }
         });

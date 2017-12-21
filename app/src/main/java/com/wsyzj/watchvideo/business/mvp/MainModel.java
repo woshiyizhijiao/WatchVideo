@@ -12,7 +12,7 @@ import io.reactivex.Flowable;
  * @date 2017/12/6 9:51
  * @Description: $desc$
  */
-public class NewsActivityModel implements NewsActivityContract.Model {
+public class MainModel implements MainContract.Model {
 
     @Override
     public Flowable<NewsTitle> getNewsTitle() {

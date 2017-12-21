@@ -1,5 +1,6 @@
 package com.wsyzj.watchvideo.common.base;
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -9,8 +10,8 @@ import android.widget.LinearLayout;
 
 import com.gyf.barlibrary.ImmersionBar;
 import com.wsyzj.watchvideo.R;
-import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
 import com.wsyzj.watchvideo.common.base.mvp.BaseIView;
+import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
 import com.wsyzj.watchvideo.common.http.BaseRetrofit;
 import com.wsyzj.watchvideo.common.tools.EventBusUtils;
 import com.wsyzj.watchvideo.common.tools.ToastUtils;
@@ -38,6 +39,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);  // 固定竖屏
         initImmersionBar();
         createPresenter();
         layout();

@@ -10,15 +10,15 @@ import com.wsyzj.watchvideo.common.tools.Constant;
  * @date 2017/12/6 9:50
  * @Description: $desc$
  */
-public class NewsActivityPresenter extends BasePresenter<NewsActivityContract.View, NewsActivityContract.Model>
-        implements NewsActivityContract.Presenter {
+public class MainPresenter extends BasePresenter<MainContract.View, MainContract.Model>
+        implements MainContract.Presenter {
 
-    private NewsActivityContract.View mView;
-    private NewsActivityContract.Model mModel;
+    private MainContract.View mView;
+    private MainContract.Model mModel;
 
-    public NewsActivityPresenter(NewsActivityContract.View view) {
+    public MainPresenter(MainContract.View view) {
         mView = view;
-        mModel = new NewsActivityModel();
+        mModel = new MainModel();
     }
 
     /**

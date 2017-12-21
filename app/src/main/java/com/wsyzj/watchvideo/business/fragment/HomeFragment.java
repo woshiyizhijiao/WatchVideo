@@ -72,7 +72,6 @@ public class HomeFragment extends BaseFragment implements HomeContract.View, Swi
         mPresenter.getGankData(true);
     }
 
-
     @Override
     public void firstPageLoadFinish() {
         EventBusUtils.sendEvent(new BaseEvent(Constant.EventBusC.NEW_FIRST_PAGE_LOAD_FINISH));
@@ -120,14 +119,14 @@ public class HomeFragment extends BaseFragment implements HomeContract.View, Swi
      * 添加几个新闻标题的数据
      */
     private void addNewsTitleData() {
-        final String[] titles = {"今日头条", "新浪", "网易", "腾讯新闻", "糗事百科", "内涵段子"};
+        final String[] titles = {"新浪新闻", "搜狐新闻", "腾讯新闻", "网易新闻", "糗事百科", "内涵段子"};
         final String[] urls = {
-                "http://www.qq.com/",
-                "https://www.toutiao.com/",
-                "https://www.toutiao.com/",
-                "http://www.qq.com/",
-                "https://www.toutiao.com/",
-                "https://www.toutiao.com/",
+                "http://news.sina.com.cn/",
+                "http://news.sohu.com/",
+                "http://news.qq.com/",
+                "http://news.163.com/",
+                "https://www.qiushibaike.com/",
+                "http://neihanshequ.com/",
         };
 
         if (mHeadView != null) {

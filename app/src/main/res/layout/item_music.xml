@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:background="@color/white"
+                android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_index"
+        android:layout_width="55dp"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:textColor="@color/c777777"
+        android:textSize="14sp"
+        tools:text="1"/>
+
+    <TextView
+        android:id="@+id/tv_song_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="55dp"
+        android:layout_marginTop="7dp"
+        android:layout_toRightOf="@id/tv_index"
+        android:singleLine="true"
+        android:textColor="@color/c333333"
+        android:textSize="14sp"
+        tools:text="夜空中最亮的星"/>
+
+    <TextView
+        android:id="@+id/tv_song_singer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="7dp"
+        android:layout_marginRight="55dp"
+        android:layout_toRightOf="@id/tv_index"
+        android:singleLine="true"
+        android:textColor="@color/c777777"
+        android:textSize="14sp"
+        tools:text="逃跑计划 南山"/>
+
+    <ImageView
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dp"
+        android:src="@drawable/ic_action_more"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="55dp"
+        android:background="@color/cdddddd"/>
+
+</RelativeLayout>

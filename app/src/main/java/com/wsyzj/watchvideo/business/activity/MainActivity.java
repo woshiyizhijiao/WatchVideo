@@ -3,20 +3,40 @@ package com.wsyzj.watchvideo.business.activity;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 
 import com.wsyzj.watchvideo.R;
-import com.wsyzj.watchvideo.business.fragment.KaiYanFragment;
+import com.wsyzj.watchvideo.business.adapter.VpAdapter;
+import com.wsyzj.watchvideo.business.fragment.HomeFragment;
 import com.wsyzj.watchvideo.business.fragment.MusicFragment;
+import com.wsyzj.watchvideo.business.fragment.NewsFragment;
+import com.wsyzj.watchvideo.business.mvp.MainContract;
+import com.wsyzj.watchvideo.business.mvp.MainPresenter;
 import com.wsyzj.watchvideo.common.base.BaseActivity;
+import com.wsyzj.watchvideo.common.base.BaseEvent;
 import com.wsyzj.watchvideo.common.base.BaseFragment;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
+import com.wsyzj.watchvideo.common.tools.Constant;
+
+import net.youmi.android.nm.sp.SpotManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 
-public class MainActivity extends BaseActivity implements TabLayout.OnTabSelectedListener, ViewPager.OnPageChangeListener {
+/**
+ * @author 焦洋
+ * @date 2017/12/6 10:03
+ * @Description: $desc$
+ */
+public class MainActivity extends BaseActivity implements MainContract.View, TabLayout.OnTabSelectedListener {
+
+    public final static String BUNDLE_TITLE_INDEX = "bundle_title_index";
+    public final static String BUNDLE_CURRENT_TITLE = "bundle_current_title";
+
+    @BindView(R.id.swipe_refresh)
+    SwipeRefreshLayout swipe_refresh;
 
     @BindView(R.id.tabLayout)
     TabLayout tabLayout;
@@ -24,11 +44,12 @@ public class MainActivity extends BaseActivity implements TabLayout.OnTabSelecte
     @BindView(R.id.viewPager)
     ViewPager viewPager;
 
-    private String[] mTabs = {"微信精选", "视频", "音乐",};
+    private MainPresenter mPresenter;
 
     @Override
     protected BasePresenter presenter() {
-        return null;
+        mPresenter = new MainPresenter(this);
+        return mPresenter;
     }
 
     @Override
@@ -39,56 +60,55 @@ public class MainActivity extends BaseActivity implements TabLayout.OnTabSelecte
 
     @Override
     protected void initView() {
+        swipe_refresh.setRefreshing(true);
         tabLayout.addOnTabSelectedListener(this);
         tabLayout.setupWithViewPager(viewPager);
-        viewPager.setOnPageChangeListener(this);
     }
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-        initTab();
-        initVpData();
+        mPresenter.getNewsTitle();
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-//        JZVideoPlayer.releaseAllVideos();
-    }
-
-//    @Override
-//    public void onBackPressed() {
-//        if (JZVideoPlayer.backPress()) {
-//            return;
-//        }
-//        super.onBackPressed();
-//    }
-
-    /**
-     * 初始化tab
-     */
-    private void initTab() {
-        for (int x = 0; x < mTabs.length; x++) {
-            tabLayout.addTab(tabLayout.newTab().setText(mTabs[x]));
-        }
+    protected void onDestroy() {
+        super.onDestroy();
+        SpotManager.getInstance(this).onAppExit();
     }
 
     /**
-     * 设置tab
+     * 设置新闻标题
+     *
+     * @param newsTitle
      */
-    private void initVpData() {
+    @Override
+    public void setNewsTitle(List<String> newsTitle) {
         List<BaseFragment> fragments = new ArrayList<>();
-        fragments.add(new KaiYanFragment());
+        fragments.add(new HomeFragment());
         fragments.add(new MusicFragment());
 
-//        VpAdapter vpAdapter = new VpAdapter(getSupportFragmentManager(), this, fragments, mTabs);
-//        viewPager.setAdapter(vpAdapter);
+        if (newsTitle != null) {
+            for (int i = 0; i < newsTitle.size(); i++) {
+                tabLayout.addTab(tabLayout.newTab().setText(newsTitle.get(i)));
+                Bundle bundle = new Bundle();
+                bundle.putInt(BUNDLE_TITLE_INDEX, i);
+                bundle.putString(BUNDLE_CURRENT_TITLE, newsTitle.get(i));
+
+                NewsFragment newsFragment = new NewsFragment();
+                newsFragment.setArguments(bundle);
+                fragments.add(newsFragment);
+            }
+            newsTitle.add(0, "推荐");
+            newsTitle.add(1, "音乐");
+        }
+
+        VpAdapter vpAdapter = new VpAdapter(getSupportFragmentManager(), this, fragments, newsTitle);
+        viewPager.setAdapter(vpAdapter);
     }
 
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
         viewPager.setCurrentItem(tab.getPosition());
-//        JZVideoPlayer.releaseAllVideos();
     }
 
     @Override
@@ -102,17 +122,19 @@ public class MainActivity extends BaseActivity implements TabLayout.OnTabSelecte
     }
 
     @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-//        JZVideoPlayer.releaseAllVideos();
+    protected boolean isRegisterEventBus() {
+        return true;
     }
 
     @Override
-    public void onPageSelected(int position) {
-
-    }
-
-    @Override
-    public void onPageScrollStateChanged(int state) {
-
+    protected void receiveEvent(BaseEvent event) {
+        super.receiveEvent(event);
+        switch (event.code) {
+            case Constant.EventBusC.NEW_FIRST_PAGE_LOAD_FINISH:
+                swipe_refresh.setEnabled(false);
+                break;
+            default:
+                break;
+        }
     }
 }

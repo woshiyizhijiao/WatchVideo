@@ -10,11 +10,11 @@ import com.wsyzj.watchvideo.common.http.BaseRxSchedulers;
 import io.reactivex.Flowable;
 
 /**
- * @author 焦洋
- * @date 2017/12/21 11:02
- * @Description: $desc$
+ * @author: wsyzj
+ * @date: 2017-09-17 17:19
+ * @comment:
  */
-public class MusicModel implements MusicContract.Model {
+public class MusicTestModel implements MusicTestContract.Model {
 
     @Override
     public Flowable<Music> getMusicList(int page) {

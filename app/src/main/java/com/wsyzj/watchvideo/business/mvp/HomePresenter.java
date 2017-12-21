@@ -71,14 +71,20 @@ public class HomePresenter extends BasePresenter<HomeContract.View, HomeContract
                             mView.setGankData(mGankData);
                         }
                         mView.setRefreshing(false);
-
-                        if (isFirstLoad) {
-                            mView.firstPageLoadFinish();
-                            isFirstLoad = false;
-                        }
+                        setFirstPageLoadFinish();
                     }
                 });
         mView.addDisposable(baseTSubscriber);
+    }
+
+    /**
+     * 第一个界面的数据加载完场
+     */
+    private void setFirstPageLoadFinish() {
+        if (isFirstLoad) {
+            mView.firstPageLoadFinish();
+            isFirstLoad = false;
+        }
     }
 
     /**
@@ -103,6 +109,7 @@ public class HomePresenter extends BasePresenter<HomeContract.View, HomeContract
                         @Override
                         public void run() {
                             mView.setMeiRiYiWenData(meiRiYiWen);
+                            setFirstPageLoadFinish();
                         }
                     });
                 } catch (IOException e) {
@@ -125,6 +132,7 @@ public class HomePresenter extends BasePresenter<HomeContract.View, HomeContract
                         List<DouBan.SubjectsBean> subjects = douBan.subjects;
                         if (subjects != null) {
                             mView.setTheatersList(subjects);
+                            setFirstPageLoadFinish();
                         }
                     }
                 });

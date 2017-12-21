@@ -8,7 +8,6 @@ import android.provider.Settings;
 import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.business.activity.MainActivity;
 import com.wsyzj.watchvideo.business.activity.MeiRiYiWenActivity;
-import com.wsyzj.watchvideo.business.activity.NewsActivity;
 import com.wsyzj.watchvideo.business.activity.PreviewLargeActivity;
 import com.wsyzj.watchvideo.business.activity.WebViewActivity;
 import com.wsyzj.watchvideo.business.bean.Gank;
@@ -47,15 +46,6 @@ public class IntentUtils {
      */
     public static void main(Activity activity) {
         defaultStartActivity(activity, MainActivity.class);
-    }
-
-    /**
-     * 新闻界面
-     *
-     * @param activity
-     */
-    public static void news(Activity activity) {
-        defaultStartActivity(activity, NewsActivity.class);
     }
 
     /**

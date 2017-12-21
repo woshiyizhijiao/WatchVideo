@@ -14,7 +14,7 @@ import io.reactivex.Flowable;
  * @date 2017/12/6 9:50
  * @Description: $desc$
  */
-public class NewsActivityContract {
+public class MainContract {
     public interface View extends BaseIView {
         void setNewsTitle(List<String> newsTitle);
     }

@@ -21,7 +21,7 @@ import com.wsyzj.watchvideo.business.bean.Music;
 import com.wsyzj.watchvideo.business.bean.Song;
 import com.wsyzj.watchvideo.business.mvp.MusicTestContract;
 import com.wsyzj.watchvideo.business.mvp.MusicTestPresenter;
-import com.wsyzj.watchvideo.business.service.PlayMusicService;
+import com.wsyzj.watchvideo.business.service.PlayMusicTestService;
 import com.wsyzj.watchvideo.common.base.BaseFragment;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
 import com.wsyzj.watchvideo.common.widget.BasePullToRefreshView;
@@ -61,7 +61,7 @@ public class MusicTestFragment extends BaseFragment implements MusicTestContract
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case MSG_CHANGED_MEDIA_PROGRESS:
-                    int currentPosition = mPlayMusicBinder.getCurrentPosition();
+                    int currentPosition = mPlayTestMusicBinder.getCurrentPosition();
                     sb_progress.setProgress(currentPosition / 1000);
                     mHandler.sendEmptyMessageDelayed(MSG_CHANGED_MEDIA_PROGRESS, UPDATE_SONG_PROGRESS_TIME);
                     break;
@@ -70,7 +70,7 @@ public class MusicTestFragment extends BaseFragment implements MusicTestContract
             }
         }
     };
-    private PlayMusicService.PlayMusicBinder mPlayMusicBinder;
+    private PlayMusicTestService.PlayTestMusicBinder mPlayTestMusicBinder;
 
     @Override
     protected BasePresenter presenter() {
@@ -109,7 +109,7 @@ public class MusicTestFragment extends BaseFragment implements MusicTestContract
      * 开启音乐的服务
      */
     private void initPlayMusicService() {
-        mPlayMusicService = new Intent(mActivity, PlayMusicService.class);
+        mPlayMusicService = new Intent(mActivity, PlayMusicTestService.class);
         mActivity.startService(mPlayMusicService);
         mActivity.bindService(mPlayMusicService, mConn, Activity.BIND_AUTO_CREATE);
     }
@@ -117,9 +117,9 @@ public class MusicTestFragment extends BaseFragment implements MusicTestContract
     private ServiceConnection mConn = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            mPlayMusicBinder = (PlayMusicService.PlayMusicBinder) service;
+            mPlayTestMusicBinder = (PlayMusicTestService.PlayTestMusicBinder) service;
             mIsRegister = true;
-            mPlayMusicBinder.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            mPlayTestMusicBinder.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
                     mPresenter.next();
@@ -199,7 +199,7 @@ public class MusicTestFragment extends BaseFragment implements MusicTestContract
     public void setSongInfo(Song song) {
         sb_progress.setMax(song.bitrate.file_duration);
         sb_progress.setProgress(0);
-        mPlayMusicBinder.play(song.bitrate.file_link);
+        mPlayTestMusicBinder.play(song.bitrate.file_link);
         mHandler.sendEmptyMessageDelayed(MSG_CHANGED_MEDIA_PROGRESS, UPDATE_SONG_PROGRESS_TIME);
     }
 
@@ -208,12 +208,12 @@ public class MusicTestFragment extends BaseFragment implements MusicTestContract
      */
     @OnClick(R.id.frame_player)
     public void player() {
-        if (mPlayMusicBinder.isPlaying()) {
-            mPlayMusicBinder.pause();
+        if (mPlayTestMusicBinder.isPlaying()) {
+            mPlayTestMusicBinder.pause();
             img_player_state.setImageResource(R.drawable.btn_playback_pause);
             mHandler.removeMessages(MSG_CHANGED_MEDIA_PROGRESS);
         } else {
-            mPlayMusicBinder.start();
+            mPlayTestMusicBinder.start();
             img_player_state.setImageResource(R.drawable.btn_playback_play);
             mHandler.sendEmptyMessageDelayed(MSG_CHANGED_MEDIA_PROGRESS, UPDATE_SONG_PROGRESS_TIME);
         }
@@ -255,6 +255,6 @@ public class MusicTestFragment extends BaseFragment implements MusicTestContract
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
         int progress = seekBar.getProgress();
-        mPlayMusicBinder.seekTo(progress * 1000);
+        mPlayTestMusicBinder.seekTo(progress * 1000);
     }
 }

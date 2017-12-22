@@ -151,4 +151,8 @@ public class BasePullToRefreshView extends LinearLayout implements BaseQuickAdap
     public RecyclerView getRecycler() {
         return recycler;
     }
+
+    public SwipeRefreshLayout getSwipeRefresh() {
+        return swipe_refresh;
+    }
 }

@@ -36,5 +36,9 @@ public class MusicContract {
         void getMusicList(boolean refreshing);
 
         void getMusicPlayPath(String songid);
+
+        void previous();
+
+        void next();
     }
 }

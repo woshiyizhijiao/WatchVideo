@@ -124,7 +124,8 @@ public class MusicFragment extends BaseFragment implements MusicContract.View, B
     public void onDestroy() {
         super.onDestroy();
         mHandler.removeMessages(MSG_CHANGED_MEDIA_PROGRESS);
-        if (isRegisterPlayService) {
+        if (isRegisterPlayService && mConn != null) {
+            mPlayMusicBinder.onDestroy();
             mActivity.unbindService(mConn);
         }
     }

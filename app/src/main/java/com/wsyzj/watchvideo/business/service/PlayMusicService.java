@@ -69,6 +69,17 @@ public class PlayMusicService extends Service {
         }
 
         /**
+         * 销毁
+         */
+        public void onDestroy() {
+            if (mPlayer != null) {
+                mPlayer.reset();
+                mPlayer.release();
+                mPlayer = null;
+            }
+        }
+
+        /**
          * 是否在播放
          *
          * @return

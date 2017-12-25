@@ -119,19 +119,21 @@ public class HomeFragment extends BaseFragment implements HomeContract.View, Swi
      * 添加几个新闻标题的数据
      */
     private void addNewsTitleData() {
-        final String[] titles = {"新浪新闻", "搜狐新闻", "腾讯新闻", "网易新闻", "糗事百科", "内涵段子"};
+        final String[] titles = {"搜狐新闻", "腾讯新闻", "网易新闻", "抖音短视频", "糗事百科", "内涵段子"};
+        int[] resId = {R.drawable.icon_souhu_title, R.drawable.icon_tengxun_title, R.drawable.icon_wangyi_title,
+                R.drawable.icon_douyin_title, R.drawable.icon_qiushibaike_title, R.drawable.icon_neihanduanzi_title};
         final String[] urls = {
-                "http://news.sina.com.cn/",
                 "http://news.sohu.com/",
                 "http://news.qq.com/",
                 "http://news.163.com/",
+                "https://www.qiushibaike.com/",
                 "https://www.qiushibaike.com/",
                 "http://neihanshequ.com/",
         };
 
         if (mHeadView != null) {
             RecyclerView rv_news = (RecyclerView) mHeadView.findViewById(R.id.rv_news);
-            NewsTitleAdapter adapter = new NewsTitleAdapter(R.layout.item_news_title, Arrays.asList(titles));
+            NewsTitleAdapter adapter = new NewsTitleAdapter(R.layout.item_news_title, Arrays.asList(titles), resId);
             rv_news.setLayoutManager(new GridLayoutManager(mActivity, 3));
             rv_news.setAdapter(adapter);
 

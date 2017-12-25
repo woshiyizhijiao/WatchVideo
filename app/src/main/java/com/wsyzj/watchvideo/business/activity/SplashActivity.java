@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 
 import com.gyf.barlibrary.ImmersionBar;
 import com.tbruyelle.rxpermissions2.RxPermissions;
@@ -31,6 +32,14 @@ import io.reactivex.functions.Consumer;
 public class SplashActivity extends BaseActivity {
 
     private boolean isToAuthorize;  // 是否拒绝授权
+
+    @Override
+    protected void initImmersionBar() {
+        mImmersionBar = ImmersionBar.with(this);
+        mImmersionBar.statusBarColor(R.color.black);
+        mImmersionBar.fitsSystemWindows(true);
+        mImmersionBar.init();
+    }
 
     @Override
     protected BasePresenter presenter() {
@@ -73,12 +82,6 @@ public class SplashActivity extends BaseActivity {
     }
 
     @Override
-    protected void initImmersionBar() {
-        mImmersionBar = ImmersionBar.with(this);
-        mImmersionBar.fullScreen(true).init();
-    }
-
-    @Override
     protected void onRestart() {
         super.onRestart();
         if (isToAuthorize) {
@@ -96,11 +99,16 @@ public class SplashActivity extends BaseActivity {
      * 6.0以上需要申请权限，6.0
      */
     private void enterMain() {
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
-            getPermissions();
-        } else {
-            showBanner();
-        }
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+                    getPermissions();
+                } else {
+                    showBanner();
+                }
+            }
+        }, 1500);
     }
 
     /**

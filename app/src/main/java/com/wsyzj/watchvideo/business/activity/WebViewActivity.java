@@ -17,6 +17,10 @@ import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.common.base.BaseActivity;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
 
+import net.youmi.android.nm.cm.ErrorCode;
+import net.youmi.android.nm.sp.SpotListener;
+import net.youmi.android.nm.sp.SpotManager;
+
 import butterknife.BindView;
 
 /**
@@ -33,6 +37,24 @@ public class WebViewActivity extends BaseActivity implements View.OnClickListene
     ProgressBar progressBar;
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        SpotManager.getInstance(this).onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        SpotManager.getInstance(this).onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        SpotManager.getInstance(this).onDestroy();
+    }
+
+    @Override
     protected BasePresenter presenter() {
         return null;
     }
@@ -45,6 +67,11 @@ public class WebViewActivity extends BaseActivity implements View.OnClickListene
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void initView() {
+        /**
+         * 插屏banner
+         */
+        SpotManager.getInstance(this).setImageType(SpotManager.IMAGE_TYPE_VERTICAL);
+        SpotManager.getInstance(this).setAnimationType(SpotManager.ANIMATION_TYPE_ADVANCED);
         baseTitleView.setNavigationOnClickListener(this);
         webViewSettings();
     }
@@ -52,6 +79,7 @@ public class WebViewActivity extends BaseActivity implements View.OnClickListene
     @Override
     protected void initData(Bundle savedInstanceState) {
         getExtras();
+        showSpot();
     }
 
     /**
@@ -102,18 +130,70 @@ public class WebViewActivity extends BaseActivity implements View.OnClickListene
         });
     }
 
+    /**
+     * 插屏广告
+     */
+    private void showSpot() {
+        SpotManager.getInstance(this).showSpot(this, new SpotListener() {
+
+            @Override
+            public void onShowSuccess() {
+                showToast("插屏展示成功");
+            }
+
+            @Override
+            public void onShowFailed(int errorCode) {
+                switch (errorCode) {
+                    case ErrorCode.NON_NETWORK:
+                        showToast("网络异常");
+                        break;
+                    case ErrorCode.NON_AD:
+                        showToast("暂无插屏广告");
+                        break;
+                    case ErrorCode.RESOURCE_NOT_READY:
+                        showToast("插屏资源还没准备好");
+                        break;
+                    case ErrorCode.SHOW_INTERVAL_LIMITED:
+                        showToast("请勿频繁展示");
+                        break;
+                    case ErrorCode.WIDGET_NOT_IN_VISIBILITY_STATE:
+                        showToast("请设置插屏为可见状态");
+                        break;
+                    default:
+                        showToast("插屏展示失败,请稍后再试");
+                        break;
+                }
+            }
+
+            @Override
+            public void onSpotClosed() {
+                showToast("插屏被关闭");
+            }
+
+            @Override
+            public void onSpotClicked(boolean isWebPage) {
+                showToast("插屏被点击 是否是网页广告？%s" + (isWebPage ? "是" : "不是"));
+            }
+        });
+    }
+
     @Override
     public void onBackPressed() {
-        if (webView.canGoBack()) {
-            webView.goBack();
-        } else {
-            super.onBackPressed();
-        }
+        goBack();
     }
 
     @Override
     public void onClick(View v) {
-        if (webView.canGoBack()) {
+        goBack();
+    }
+
+    /**
+     * 返回上一级
+     */
+    private void goBack() {
+        if (SpotManager.getInstance(this).isSpotShowing()) {
+            SpotManager.getInstance(this).hideSpot();
+        } else if (webView.canGoBack()) {
             webView.goBack();
         } else {
             super.onBackPressed();

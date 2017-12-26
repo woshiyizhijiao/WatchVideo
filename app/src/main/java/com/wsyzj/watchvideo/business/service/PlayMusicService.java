@@ -125,7 +125,9 @@ public class PlayMusicService extends Service {
         }
 
         public void setOnCompletionListener(MediaPlayer.OnCompletionListener onCompletionListener) {
-            mPlayer.setOnCompletionListener(onCompletionListener);
+            if (mPlayer != null) {
+                mPlayer.setOnCompletionListener(onCompletionListener);
+            }
         }
     }
 }

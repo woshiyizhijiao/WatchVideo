@@ -40,14 +40,6 @@
         android:textSize="14sp"
         tools:text="逃跑计划 南山"/>
 
-    <ImageView
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="10dp"
-        android:src="@drawable/ic_action_more"/>
-
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"

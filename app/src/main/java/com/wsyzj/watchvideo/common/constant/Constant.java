@@ -1,4 +1,4 @@
-package com.wsyzj.watchvideo.common.tools;
+package com.wsyzj.watchvideo.common.constant;
 
 /**
  * 创建时间 : 2017/10/26
@@ -17,6 +17,7 @@ public class Constant {
     public final static String GANK_IO_URL = "http://gank.io/api/data/";
     public final static String MEIRIYIWEN_URL = "https://interface.meiriyiwen.com/";
     public final static String DOUBAN_URL = "https://api.douban.com/v2/movie/";
+    public final static String UPDATE_VERSION_URL = "http://www.pgyer.com/apiv1/app/";
 
     /**
      * 网络请求
@@ -50,17 +51,23 @@ public class Constant {
     }
 
     /**
-     * EventBus通知的action
-     */
-    public static class EventBusC {
-        public final static int NEW_FIRST_PAGE_LOAD_FINISH = 0x1000;    // 新闻第一个page加载完成
-    }
-
-    /**
      * 第三方sdk需要的key等信息
      */
     public static class Youmi {
         public final static String APP_ID = "832292121bce6ebc";
         public final static String APP_SECRET = "88371d6d90c54630";
+    }
+
+    /**
+     * 蒲公英
+     */
+    public static class PuGongYing {
+        public final static String API_KEY = "6b927c9eae959ae1190bfe0439faf570";
+        public final static String USER_KEY = "eccfca9978aa37b677458085437bda26";
+        public final static String APP_KEY = "8971c5e41d4b18d5afd19d114cadbbb4";
+
+        public static String getAppUpdateUrl() {
+            return UPDATE_VERSION_URL + "install?appKey=" + APP_KEY + "&_api_key=" + API_KEY;
+        }
     }
 }

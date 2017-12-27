@@ -138,41 +138,41 @@ public class WebViewActivity extends BaseActivity implements View.OnClickListene
 
             @Override
             public void onShowSuccess() {
-                showToast("插屏展示成功");
+//                showToast("插屏展示成功");
             }
 
             @Override
             public void onShowFailed(int errorCode) {
                 switch (errorCode) {
                     case ErrorCode.NON_NETWORK:
-                        showToast("网络异常");
+//                        showToast("网络异常");
                         break;
                     case ErrorCode.NON_AD:
-                        showToast("暂无插屏广告");
+//                        showToast("暂无插屏广告");
                         break;
                     case ErrorCode.RESOURCE_NOT_READY:
-                        showToast("插屏资源还没准备好");
+//                        showToast("插屏资源还没准备好");
                         break;
                     case ErrorCode.SHOW_INTERVAL_LIMITED:
-                        showToast("请勿频繁展示");
+//                        showToast("请勿频繁展示");
                         break;
                     case ErrorCode.WIDGET_NOT_IN_VISIBILITY_STATE:
-                        showToast("请设置插屏为可见状态");
+//                        showToast("请设置插屏为可见状态");
                         break;
                     default:
-                        showToast("插屏展示失败,请稍后再试");
+//                        showToast("插屏展示失败,请稍后再试");
                         break;
                 }
             }
 
             @Override
             public void onSpotClosed() {
-                showToast("插屏被关闭");
+//                showToast("插屏被关闭");
             }
 
             @Override
             public void onSpotClicked(boolean isWebPage) {
-                showToast("插屏被点击 是否是网页广告？%s" + (isWebPage ? "是" : "不是"));
+//                showToast("插屏被点击 是否是网页广告？%s" + (isWebPage ? "是" : "不是"));
             }
         });
     }

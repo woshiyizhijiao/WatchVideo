@@ -3,7 +3,7 @@ package com.wsyzj.watchvideo.business.mvp;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
 import com.wsyzj.watchvideo.business.bean.NewsTitle;
 import com.wsyzj.watchvideo.common.http.BaseTSubscriber;
-import com.wsyzj.watchvideo.common.tools.Constant;
+import com.wsyzj.watchvideo.common.constant.Constant;
 
 /**
  * @author 焦洋

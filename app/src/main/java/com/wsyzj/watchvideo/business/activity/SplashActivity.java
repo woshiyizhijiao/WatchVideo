@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
+import android.widget.RelativeLayout;
 
 import com.gyf.barlibrary.ImmersionBar;
 import com.tbruyelle.rxpermissions2.RxPermissions;
@@ -11,14 +12,16 @@ import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.business.BaseApp;
 import com.wsyzj.watchvideo.common.base.BaseActivity;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
-import com.wsyzj.watchvideo.common.tools.Constant;
+import com.wsyzj.watchvideo.common.constant.Constant;
 import com.wsyzj.watchvideo.common.tools.IntentUtils;
 
 import net.youmi.android.AdManager;
 import net.youmi.android.nm.cm.ErrorCode;
+import net.youmi.android.nm.sp.SplashViewSettings;
+import net.youmi.android.nm.sp.SpotListener;
 import net.youmi.android.nm.sp.SpotManager;
-import net.youmi.android.nm.sp.SpotRequestListener;
 
+import butterknife.BindView;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 
@@ -38,6 +41,10 @@ public class SplashActivity extends BaseActivity {
             Manifest.permission.READ_PHONE_STATE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
+
+    @BindView(R.id.rl_splash)
+    RelativeLayout rl_splash;
+
     private boolean isToAuthorize;  // 是否拒绝授权
 
     @Override
@@ -106,16 +113,11 @@ public class SplashActivity extends BaseActivity {
      * 6.0以上需要申请权限，6.0
      */
     private void enterMain() {
-//        new Handler().postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
             getPermissions();
         } else {
             showBanner();
         }
-//            }
-//        }, 1500);
     }
 
     /**
@@ -166,33 +168,57 @@ public class SplashActivity extends BaseActivity {
      * 展示广告(开屏广告)
      */
     private void showBanner() {
-        SpotManager.getInstance(this).requestSpot(new SpotRequestListener() {
+
+        // 对开屏进行设置
+        SplashViewSettings splashViewSettings = new SplashViewSettings();
+        // 设置是否展示失败自动跳转，默认自动跳转
+//        splashViewSettings.setAutoJumpToTargetWhenShowFailed(false);
+        // 设置跳转的窗口类
+        splashViewSettings.setTargetClass(MainActivity.class);
+        // 设置开屏的容器
+        splashViewSettings.setSplashViewContainer(rl_splash);
+
+        // 展示开屏广告
+        SpotManager.getInstance(this).showSplash(this, splashViewSettings, new SpotListener() {
+
             @Override
-            public void onRequestSuccess() {
-                showToast("展示广告成功");
-                IntentUtils.main(SplashActivity.this);
-                finish();
+            public void onShowSuccess() {
+
             }
 
             @Override
-            public void onRequestFailed(int errorCode) {
+            public void onShowFailed(int errorCode) {
                 switch (errorCode) {
                     case ErrorCode.NON_NETWORK:
-                        showToast("网络异常");
-                        IntentUtils.main(SplashActivity.this);
-                        finish();
+//                        showToast("网络异常");
                         break;
                     case ErrorCode.NON_AD:
-                        showToast("暂无视频广告");
-                        IntentUtils.main(SplashActivity.this);
-                        finish();
+//                        showToast("暂无开屏广告");
+                        break;
+                    case ErrorCode.RESOURCE_NOT_READY:
+//                        showToast("开屏资源还没准备好");
+                        break;
+                    case ErrorCode.SHOW_INTERVAL_LIMITED:
+//                        showToast("开屏展示间隔限制");
+                        break;
+                    case ErrorCode.WIDGET_NOT_IN_VISIBILITY_STATE:
+//                        showToast("开屏控件处在不可见状态");
                         break;
                     default:
-                        showToast("请稍后再试");
-                        IntentUtils.main(SplashActivity.this);
-                        finish();
+//                        showToast("errorCode: %d" + errorCode);
                         break;
                 }
+            }
+
+            @Override
+            public void onSpotClosed() {
+//                showToast("开屏被关闭");
+            }
+
+            @Override
+            public void onSpotClicked(boolean isWebPage) {
+//                showToast("开屏被点击");
+//                showToast("开屏被点击 + 是否是网页广告？%s" + (isWebPage ? "是" : "不是"));
             }
         });
     }

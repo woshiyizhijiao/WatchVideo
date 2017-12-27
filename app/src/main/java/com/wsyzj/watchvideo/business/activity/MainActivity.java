@@ -8,7 +8,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.business.adapter.VpAdapter;
 import com.wsyzj.watchvideo.business.fragment.HomeFragment;
-import com.wsyzj.watchvideo.business.fragment.MusicFragment;
 import com.wsyzj.watchvideo.business.fragment.NewsFragment;
 import com.wsyzj.watchvideo.business.mvp.MainContract;
 import com.wsyzj.watchvideo.business.mvp.MainPresenter;
@@ -16,7 +15,7 @@ import com.wsyzj.watchvideo.common.base.BaseActivity;
 import com.wsyzj.watchvideo.common.base.BaseEvent;
 import com.wsyzj.watchvideo.common.base.BaseFragment;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
-import com.wsyzj.watchvideo.common.tools.Constant;
+import com.wsyzj.watchvideo.common.constant.EventBusConstant;
 
 import net.youmi.android.nm.sp.SpotManager;
 
@@ -85,7 +84,7 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
     public void setNewsTitle(List<String> newsTitle) {
         List<BaseFragment> fragments = new ArrayList<>();
         fragments.add(new HomeFragment());
-        fragments.add(new MusicFragment());
+//        fragments.add(new MusicFragment());
 
         if (newsTitle != null) {
             for (int i = 0; i < newsTitle.size(); i++) {
@@ -99,7 +98,7 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
                 fragments.add(newsFragment);
             }
             newsTitle.add(0, "推荐");
-            newsTitle.add(1, "音乐");
+//            newsTitle.add(1, "音乐");
         }
 
         VpAdapter vpAdapter = new VpAdapter(getSupportFragmentManager(), this, fragments, newsTitle);
@@ -130,7 +129,7 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
     protected void receiveEvent(BaseEvent event) {
         super.receiveEvent(event);
         switch (event.code) {
-            case Constant.EventBusC.NEW_FIRST_PAGE_LOAD_FINISH:
+            case EventBusConstant.NEW_FIRST_PAGE_LOAD_FINISH:
                 swipe_refresh.setEnabled(false);
                 break;
             default:

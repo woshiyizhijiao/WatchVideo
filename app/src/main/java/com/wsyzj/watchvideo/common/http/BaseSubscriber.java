@@ -1,6 +1,6 @@
 package com.wsyzj.watchvideo.common.http;
 
-import com.wsyzj.watchvideo.common.tools.Constant;
+import com.wsyzj.watchvideo.common.constant.Constant;
 import com.wsyzj.watchvideo.common.tools.ToastUtils;
 
 import java.net.ConnectException;

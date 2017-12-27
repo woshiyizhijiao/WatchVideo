@@ -21,7 +21,7 @@ import com.wsyzj.watchvideo.business.mvp.HomePresenter;
 import com.wsyzj.watchvideo.common.base.BaseEvent;
 import com.wsyzj.watchvideo.common.base.BaseFragment;
 import com.wsyzj.watchvideo.common.base.mvp.BaseIPresenter;
-import com.wsyzj.watchvideo.common.tools.Constant;
+import com.wsyzj.watchvideo.common.constant.Constant;
 import com.wsyzj.watchvideo.common.tools.EventBusUtils;
 import com.wsyzj.watchvideo.common.tools.IntentUtils;
 import com.wsyzj.watchvideo.common.tools.UiUtils;

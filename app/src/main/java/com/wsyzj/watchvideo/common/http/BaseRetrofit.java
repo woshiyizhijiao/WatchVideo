@@ -1,7 +1,7 @@
 package com.wsyzj.watchvideo.common.http;
 
 import com.wsyzj.watchvideo.business.BaseApp;
-import com.wsyzj.watchvideo.common.tools.Constant;
+import com.wsyzj.watchvideo.common.constant.Constant;
 
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;

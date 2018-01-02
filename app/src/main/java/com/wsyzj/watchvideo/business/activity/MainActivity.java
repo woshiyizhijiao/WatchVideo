@@ -1,10 +1,15 @@
 package com.wsyzj.watchvideo.business.activity;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 
+import com.pgyersdk.javabean.AppBean;
+import com.pgyersdk.update.PgyUpdateManager;
+import com.pgyersdk.update.UpdateManagerListener;
 import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.business.adapter.VpAdapter;
 import com.wsyzj.watchvideo.business.fragment.HomeFragment;
@@ -12,7 +17,7 @@ import com.wsyzj.watchvideo.business.fragment.NewsFragment;
 import com.wsyzj.watchvideo.business.mvp.MainContract;
 import com.wsyzj.watchvideo.business.mvp.MainPresenter;
 import com.wsyzj.watchvideo.common.base.BaseActivity;
-import com.wsyzj.watchvideo.common.base.BaseEvent;
+import com.wsyzj.watchvideo.common.base.BaseEventBus;
 import com.wsyzj.watchvideo.common.base.BaseFragment;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
 import com.wsyzj.watchvideo.common.constant.EventBusConstant;
@@ -67,6 +72,7 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
     @Override
     protected void initData(Bundle savedInstanceState) {
         mPresenter.getNewsTitle();
+        pgyUpdateApp();
     }
 
     @Override
@@ -126,7 +132,7 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
     }
 
     @Override
-    protected void receiveEvent(BaseEvent event) {
+    protected void receiveEvent(BaseEventBus event) {
         super.receiveEvent(event);
         switch (event.code) {
             case EventBusConstant.NEW_FIRST_PAGE_LOAD_FINISH:
@@ -135,5 +141,36 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
             default:
                 break;
         }
+    }
+
+    /**
+     * 蒲公英更新
+     */
+    private void pgyUpdateApp() {
+        PgyUpdateManager.register(MainActivity.this, new UpdateManagerListener() {
+            @Override
+            public void onUpdateAvailable(final String result) {
+                showToast("更新信息" + result);
+                // 将新版本信息封装到AppBean中
+                final AppBean appBean = getAppBeanFromString(result);
+                new AlertDialog.Builder(MainActivity.this)
+                        .setTitle("更新")
+                        .setMessage("")
+                        .setNegativeButton(
+                                "确定",
+                                new DialogInterface.OnClickListener() {
+
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        startDownloadTask(MainActivity.this, appBean.getDownloadURL());
+                                    }
+                                }).show();
+            }
+
+            @Override
+            public void onNoUpdateAvailable() {
+//                showToast("更新检测失败");
+            }
+        });
     }
 }

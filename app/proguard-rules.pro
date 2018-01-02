@@ -128,3 +128,8 @@
 
 # jsoup
 -keeppackagenames org.jsoup.nodes
+
+# 蒲公英
+-libraryjars libs/pgyer_sdk_x.x.jar
+-dontwarn com.pgyersdk.**
+-keep class com.pgyersdk.** { *; }

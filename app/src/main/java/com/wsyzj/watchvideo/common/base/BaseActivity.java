@@ -107,7 +107,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventBus(BaseEvent event) {
+    public void onEventBus(BaseEventBus event) {
         if (event != null) {
             receiveEvent(event);
         }
@@ -118,7 +118,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
      *
      * @param event 事件
      */
-    protected void receiveEvent(BaseEvent event) {
+    protected void receiveEvent(BaseEventBus event) {
 
     }
 

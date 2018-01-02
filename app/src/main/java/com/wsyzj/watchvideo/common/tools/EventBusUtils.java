@@ -1,6 +1,6 @@
 package com.wsyzj.watchvideo.common.tools;
 
-import com.wsyzj.watchvideo.common.base.BaseEvent;
+import com.wsyzj.watchvideo.common.base.BaseEventBus;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -18,11 +18,11 @@ public class EventBusUtils {
         EventBus.getDefault().unregister(subscriber);
     }
 
-    public static void sendEvent(BaseEvent event) {
+    public static void sendEvent(BaseEventBus event) {
         EventBus.getDefault().post(event);
     }
 
-    public static void sendStickyEvent(BaseEvent event) {
+    public static void sendStickyEvent(BaseEventBus event) {
         EventBus.getDefault().postSticky(event);
     }
 }

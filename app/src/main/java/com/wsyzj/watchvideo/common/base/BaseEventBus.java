@@ -5,16 +5,16 @@ package com.wsyzj.watchvideo.common.base;
  * @date 2017/12/7 9:50
  * @Description: $desc$
  */
-public class BaseEvent<T> {
+public class BaseEventBus<T> {
 
     public int code;
     public T data;
 
-    public BaseEvent(int code) {
+    public BaseEventBus(int code) {
         this.code = code;
     }
 
-    public BaseEvent(int code, T data) {
+    public BaseEventBus(int code, T data) {
         this.code = code;
         this.data = data;
     }

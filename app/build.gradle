@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.3"
+    buildToolsVersion '26.0.2'
 
     defaultConfig {
         applicationId "com.wsyzj.watchvideo"
@@ -44,11 +44,11 @@ dependencies {
     /**
      * 兼容包
      */
-    compile 'com.android.support:appcompat-v7:25.3.1'                     // v7兼容包
-    compile 'com.android.support:support-v4:25.3.1'                       // v4
-    compile 'com.android.support:cardview-v7:25.3.1'                      // cardview
-    compile 'com.android.support:recyclerview-v7:25.3.1'                  // RecyclerView替代ListView
-    compile 'com.android.support:design:25.3.1'                           // design
+    compile 'com.android.support:appcompat-v7:25.4.0'                     // v7兼容包
+    compile 'com.android.support:support-v4:25.4.0'                       // v4
+    compile 'com.android.support:cardview-v7:25.4.0'                      // cardview
+    compile 'com.android.support:recyclerview-v7:25.4.0'                  // RecyclerView替代ListView
+    compile 'com.android.support:design:25.4.0'                           // design
 
     /**
      * 第三方库(功能型)
@@ -70,10 +70,12 @@ dependencies {
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.22'      // RecyclerView通用适配器
     //    compile 'cn.jzvd:jiaozivideoplayer:6.1.1'                        // 视频播放
     compile 'com.gyf.barlibrary:barlibrary:2.3.0'                          // 沉浸式兼容库
-    compile 'com.github.chrisbanes:PhotoView:1.3.0'                        // 图片缩放
+    compile 'com.github.chrisbanes:PhotoView:2.1.3'                        // 图片缩放
 
     /**
      * jar aar
      */
     compile name: 'YoumiSdk_v7.5.0_2017-07-18', ext: 'aar'                 // 有米
+//    implementation files('libs/pgyer_sdk_2.8.1.jar')
+    compile files('libs/pgyer_sdk_2.8.1.jar')
 }

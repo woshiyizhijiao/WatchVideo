@@ -34,6 +34,6 @@ public class ImageLoader {
      * @param imageView   ImageView
      */
     public static void with(Context context, String path, int placeholder, int errorResIs, ImageView imageView) {
-        Glide.with(context).load(path).placeholder(placeholder).error(errorResIs).into(imageView);
+//        Glide.with(context).load(path).placeholder(placeholder).error(errorResIs).into(imageView);
     }
 }

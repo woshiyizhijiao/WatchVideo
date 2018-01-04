@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.getkeepsafe.dexcount'    // 查看方法数
 
 android {
     compileSdkVersion 25

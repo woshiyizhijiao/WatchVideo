@@ -1,8 +1,7 @@
 package com.wsyzj.watchvideo.common.http;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.wsyzj.watchvideo.common.constant.Constant;
-import com.wsyzj.watchvideo.common.tools.LogUtils;
-import com.wsyzj.watchvideo.common.tools.ToastUtils;
 
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
@@ -22,7 +21,7 @@ public abstract class BaseTSubscriber<T> extends DisposableSubscriber<T> {
         if (data != null) {
             onSuccess(data);
         } else {
-            ToastUtils.showToast("没有数据，可能错误啦");
+            ToastUtils.showShort("没有数据，可能错误啦");
         }
     }
 
@@ -38,8 +37,7 @@ public abstract class BaseTSubscriber<T> extends DisposableSubscriber<T> {
         } else {
             errorMsg = throwable.getMessage();
         }
-        ToastUtils.showToast(errorMsg);
-        LogUtils.e(throwable.toString());
+        ToastUtils.showShort(errorMsg);
     }
 
     @Override

@@ -1,10 +1,18 @@
 package com.wsyzj.watchvideo.business.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.view.ViewPager;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.SpanUtils;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.gyf.barlibrary.ImmersionBar;
 import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.business.adapter.PreviewLargeAdapter;
@@ -12,11 +20,14 @@ import com.wsyzj.watchvideo.business.bean.Gank;
 import com.wsyzj.watchvideo.common.base.BaseActivity;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
 import com.wsyzj.watchvideo.common.tools.DisplayUtils;
-import com.wsyzj.watchvideo.common.tools.SpanUtils;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * @author 焦洋
@@ -30,6 +41,9 @@ public class PreviewLargeActivity extends BaseActivity implements ViewPager.OnPa
 
     @BindView(R.id.tv_current_count)
     TextView tv_current_count;
+
+    @BindView(R.id.tv_save_photo)
+    TextView tv_save_photo;
 
     private int mCurrentPos;
     private List<Gank.ResultsBean> mGankData;
@@ -49,8 +63,7 @@ public class PreviewLargeActivity extends BaseActivity implements ViewPager.OnPa
 
     @Override
     protected int contentView() {
-        baseTitleView.setTbBackgroundColor(R.color.black);
-        baseTitleView.setNavigationIcon(R.drawable.ic_clear);
+        baseTitleView.hide();
         return R.layout.activity_preview_large;
     }
 
@@ -109,5 +122,57 @@ public class PreviewLargeActivity extends BaseActivity implements ViewPager.OnPa
                 .append("/" + String.valueOf(mGankData.size()))
                 .setFontSize(DisplayUtils.sp2px(this, 20))
                 .create());
+    }
+
+    /**
+     * 保存图片到相册
+     */
+    @OnClick(R.id.tv_save_photo)
+    public void savePhotoToSDCard() {
+        showProgress();
+        String url = mGankData.get(view_pager.getCurrentItem()).url;
+        Glide.with(this).load(url).asBitmap().into(new SimpleTarget<Bitmap>() {
+            @Override
+            public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                boolean isSuccess = saveImageToGallery(PreviewLargeActivity.this, resource);
+                if (!isSuccess) {
+                    showToast("保存失败，请重试！");
+                }
+                dismissProgress();
+            }
+        });
+    }
+
+    /**
+     * 保存图片到本地
+     *
+     * @param context
+     * @param bmp
+     * @return
+     */
+    public static boolean saveImageToGallery(Context context, Bitmap bmp) {
+        String storePath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "dearxy";
+        File appDir = new File(storePath);
+        if (!appDir.exists()) {
+            appDir.mkdir();
+        }
+        String fileName = System.currentTimeMillis() + ".jpg";
+        File file = new File(appDir, fileName);
+        try {
+            FileOutputStream fos = new FileOutputStream(file);
+            boolean isSuccess = bmp.compress(Bitmap.CompressFormat.JPEG, 60, fos);
+            fos.flush();
+            fos.close();
+            Uri uri = Uri.fromFile(file);
+            context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri));
+            if (isSuccess) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

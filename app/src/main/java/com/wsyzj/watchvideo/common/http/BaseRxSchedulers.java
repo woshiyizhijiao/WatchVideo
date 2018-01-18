@@ -3,8 +3,7 @@ package com.wsyzj.watchvideo.common.http;
 import android.app.ProgressDialog;
 import android.content.Context;
 
-import com.wsyzj.watchvideo.business.BaseApp;
-import com.wsyzj.watchvideo.common.tools.NetUtils;
+import com.blankj.utilcode.util.NetworkUtils;
 
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscription;
@@ -38,7 +37,7 @@ public class BaseRxSchedulers {
                         .doOnSubscribe(new Consumer<Subscription>() {
                             @Override
                             public void accept(@NonNull Subscription subscription) throws Exception {
-                                if (!NetUtils.isConnected(BaseApp.getApp())) {
+                                if (!NetworkUtils.isConnected()) {
                                     subscription.cancel();
                                 }
                             }
@@ -61,7 +60,7 @@ public class BaseRxSchedulers {
                         .doOnSubscribe(new Consumer<Subscription>() {
                             @Override
                             public void accept(@NonNull final Subscription subscription) throws Exception {
-                                if (!NetUtils.isConnected(context)) {
+                                if (!NetworkUtils.isConnected()) {
                                     subscription.cancel();
                                 } else {
                                     //启动进度显示，取消进度时会取消请求

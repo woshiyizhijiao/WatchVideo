@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
              android:background="@color/black"
@@ -10,16 +11,32 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
+
     <TextView
         android:id="@+id/tv_current_count"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_gravity="right|bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
         android:background="@color/c20000000"
-        android:gravity="right|center_vertical"
-        android:paddingRight="30dp"
-        android:text="1/10"
+        android:padding="20dp"
         android:textColor="@color/white"
-        android:textSize="20sp"/>
+        android:textSize="20sp"
+        android:textStyle="bold|italic"
+        tools:text="1/10"/>
+
+    <TextView
+        android:id="@+id/tv_save_photo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:padding="20dp"
+        android:text="保存"
+        android:textColor="@color/white"
+        android:textSize="16sp"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_clear"/>
 
 </FrameLayout>

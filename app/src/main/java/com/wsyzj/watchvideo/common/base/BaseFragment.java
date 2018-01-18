@@ -8,10 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.wsyzj.watchvideo.common.base.mvp.BaseIPresenter;
 import com.wsyzj.watchvideo.common.base.mvp.BaseIView;
 import com.wsyzj.watchvideo.common.http.BaseRetrofit;
-import com.wsyzj.watchvideo.common.tools.ToastUtils;
 
 import butterknife.ButterKnife;
 import io.reactivex.disposables.Disposable;
@@ -116,7 +116,7 @@ public abstract class BaseFragment<P extends BaseIPresenter> extends Fragment im
      */
     @Override
     public void showToast(String message) {
-        ToastUtils.showToast(message);
+        ToastUtils.showShort(message);
     }
 
     /**

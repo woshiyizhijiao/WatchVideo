@@ -72,7 +72,7 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
     @Override
     protected void initData(Bundle savedInstanceState) {
         mPresenter.getNewsTitle();
-        pgyUpdateApp();
+//        pgyUpdateApp();
     }
 
     @Override

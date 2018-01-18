@@ -8,13 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.gyf.barlibrary.ImmersionBar;
 import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.common.base.mvp.BaseIView;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
 import com.wsyzj.watchvideo.common.http.BaseRetrofit;
 import com.wsyzj.watchvideo.common.tools.EventBusUtils;
-import com.wsyzj.watchvideo.common.tools.ToastUtils;
 import com.wsyzj.watchvideo.common.widget.BaseTitleView;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -175,7 +175,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
      */
     @Override
     public void showToast(String message) {
-        ToastUtils.showToast(message);
+        ToastUtils.showShort(message);
     }
 
     /**

@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.view.ViewPager;
+import android.view.View;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.SpanUtils;
@@ -85,6 +86,17 @@ public class PreviewLargeActivity extends BaseActivity implements ViewPager.OnPa
         Intent intent = getIntent();
         mCurrentPos = intent.getIntExtra("position", 0);
         mGankData = (List<Gank.ResultsBean>) intent.getSerializableExtra("ganks");
+    }
+
+    @OnClick(R.id.fl_back)
+    public void bkOnClick(View view) {
+        switch (view.getId()) {
+            case R.id.fl_back:
+                finish();
+                break;
+            default:
+                break;
+        }
     }
 
     /**

@@ -32,11 +32,12 @@
         // 主界面
         <activity
             android:name=".business.activity.MainActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:screenOrientation="portrait"/>
+            android:configChanges="orientation|screenSize|keyboardHidden"/>
 
         // WebView
-        <activity android:name=".business.activity.WebViewActivity"/>
+        <activity
+            android:name=".business.activity.WebViewActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"/>
 
         // 每日一文
         <activity android:name=".business.activity.MeiRiYiWenActivity"/>
@@ -64,7 +65,7 @@
 
         </provider>
 
-        <!--// 蒲公英-->
+        // 蒲公英
         <meta-data
             android:name="PGYER_APPID"
             android:value="8971c5e41d4b18d5afd19d114cadbbb4">

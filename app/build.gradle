@@ -20,12 +20,15 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled true
-            shrinkResources true
+            minifyEnabled true      // 是否混淆 删除没有引用的代码
+            shrinkResources true    // 删除无用资源文件
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 
+    /**
+     * 引入aar文件
+     */
     repositories {
         flatDir {
             dirs 'libs'
@@ -79,5 +82,5 @@ dependencies {
      */
     compile name: 'YoumiSdk_v7.5.0_2017-07-18', ext: 'aar'                 // 有米
 //    implementation files('libs/pgyer_sdk_2.8.1.jar')
-    compile files('libs/pgyer_sdk_2.8.1.jar')
+    compile files('libs/pgyer_sdk_2.8.1.jar')                              // 蒲公英
 }

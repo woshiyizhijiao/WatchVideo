@@ -38,8 +38,8 @@ public class SplashActivity extends BaseActivity {
      */
     private final static String[] REQUEST_PERMISSION = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.READ_PHONE_STATE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
 
     @BindView(R.id.rl_splash)

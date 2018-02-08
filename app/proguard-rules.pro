@@ -130,6 +130,6 @@
 -keeppackagenames org.jsoup.nodes
 
 # 蒲公英
--libraryjars libs/pgyer_sdk_x.x.jar
+#-libraryjars libs/pgyer_sdk_2.8.1.jar
 -dontwarn com.pgyersdk.**
 -keep class com.pgyersdk.** { *; }

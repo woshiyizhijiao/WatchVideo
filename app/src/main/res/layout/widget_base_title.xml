@@ -34,6 +34,7 @@
             android:layout_marginRight="48dp"
             android:ellipsize="end"
             android:gravity="center"
+            android:singleLine="true"
             android:textColor="@color/white"
             android:textSize="18sp"
             tools:text="标题"/>

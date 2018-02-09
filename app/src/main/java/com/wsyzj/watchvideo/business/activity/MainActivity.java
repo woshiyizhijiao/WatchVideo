@@ -150,12 +150,10 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
         PgyUpdateManager.register(MainActivity.this, new UpdateManagerListener() {
             @Override
             public void onUpdateAvailable(final String result) {
-                showToast("更新信息" + result);
-                // 将新版本信息封装到AppBean中
                 final AppBean appBean = getAppBeanFromString(result);
                 new AlertDialog.Builder(MainActivity.this)
-                        .setTitle("更新")
-                        .setMessage("")
+                        .setTitle(appBean.getVersionName() + "新版本更新")
+                        .setMessage(appBean.getReleaseNote())
                         .setNegativeButton(
                                 "确定",
                                 new DialogInterface.OnClickListener() {

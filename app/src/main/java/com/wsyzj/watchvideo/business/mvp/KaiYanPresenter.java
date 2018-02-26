@@ -34,7 +34,6 @@ public class KaiYanPresenter extends BasePresenter<KaiYanContract.View, KaiYanCo
                         KaiYan kaiYan = (KaiYan) data;
                         mDatas = kaiYan.dataList;
                         mView.setVideoList(mDatas);
-                        mView.setRefreshing(false);
                     }
                 });
         mView.addDisposable(baseTSubscriber);

@@ -1,10 +1,12 @@
 package com.wsyzj.watchvideo.business.fragment;
 
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.business.adapter.NewsAdapter;
 import com.wsyzj.watchvideo.business.bean.News;
@@ -24,7 +26,7 @@ import butterknife.BindView;
  * @date 2017/12/6 9:47
  * @Description: 新闻的标签
  */
-public class NewsFragment extends BaseFragment implements NewsFragmentContract.View, SwipeRefreshLayout.OnRefreshListener, BaseQuickAdapter.RequestLoadMoreListener {
+public class NewsFragment extends BaseFragment implements NewsFragmentContract.View, OnRefreshListener, OnRefreshLoadMoreListener {
 
     @BindView(R.id.pull_to_refresh)
     BasePullToRefreshView pull_to_refresh;
@@ -45,9 +47,8 @@ public class NewsFragment extends BaseFragment implements NewsFragmentContract.V
 
     @Override
     public void initView(View view) {
-        setRefreshing(true);
         pull_to_refresh.setOnRefreshListener(this);
-        pull_to_refresh.setRequestLoadMoreListener(this);
+        pull_to_refresh.setOnRefreshLoadMoreListener(this);
     }
 
     @Override
@@ -80,11 +81,6 @@ public class NewsFragment extends BaseFragment implements NewsFragmentContract.V
         });
     }
 
-    @Override
-    public void setRefreshing(boolean refreshing) {
-        pull_to_refresh.setRefreshing(refreshing);
-    }
-
     /**
      * 设置加载状态
      *
@@ -99,7 +95,7 @@ public class NewsFragment extends BaseFragment implements NewsFragmentContract.V
      * 下拉刷新
      */
     @Override
-    public void onRefresh() {
+    public void onRefresh(RefreshLayout refreshLayout) {
         mPresenter.getNewsListByTitle(true);
     }
 
@@ -107,7 +103,7 @@ public class NewsFragment extends BaseFragment implements NewsFragmentContract.V
      * 加载更多
      */
     @Override
-    public void onLoadMoreRequested() {
+    public void onLoadMore(RefreshLayout refreshLayout) {
         mPresenter.getNewsListByTitle(false);
     }
 }

@@ -70,7 +70,6 @@ public class HomePresenter extends BasePresenter<HomeContract.View, HomeContract
 
                             mView.setGankData(mGankData);
                         }
-                        mView.setRefreshing(false);
                         setFirstPageLoadFinish();
                     }
                 });

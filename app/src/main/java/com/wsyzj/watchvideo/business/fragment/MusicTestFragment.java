@@ -8,7 +8,6 @@ import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.ImageView;
@@ -37,8 +36,7 @@ import butterknife.OnClick;
  * 功能描述 : 音乐
  */
 
-public class MusicTestFragment extends BaseFragment implements MusicTestContract.View, SwipeRefreshLayout.OnRefreshListener, BaseQuickAdapter.OnItemClickListener,
-        BaseQuickAdapter.RequestLoadMoreListener, SeekBar.OnSeekBarChangeListener {
+public class MusicTestFragment extends BaseFragment implements MusicTestContract.View, BaseQuickAdapter.OnItemClickListener, SeekBar.OnSeekBarChangeListener {
     private static final int UPDATE_SONG_PROGRESS_TIME = 500;   // 更新音乐进度的时间
     private static final int MSG_CHANGED_MEDIA_PROGRESS = 101;  // 监听音乐播放进度
 
@@ -85,8 +83,8 @@ public class MusicTestFragment extends BaseFragment implements MusicTestContract
 
     @Override
     public void initView(View view) {
-        pull_to_refresh.setOnRefreshListener(this);
-        pull_to_refresh.setRequestLoadMoreListener(this);
+//        pull_to_refresh.setOnRefreshListener(this);
+//        pull_to_refresh.setRequestLoadMoreListener(this);
         sb_progress.setOnSeekBarChangeListener(this);
     }
 
@@ -150,27 +148,27 @@ public class MusicTestFragment extends BaseFragment implements MusicTestContract
         }
     }
 
-    /**
-     * 下拉刷新
-     */
-    @Override
-    public void onRefresh() {
-        mPresenter.getMusicList(true);
-    }
+//    /**
+//     * 下拉刷新
+//     */
+//    @Override
+//    public void onRefresh() {
+//        mPresenter.getMusicList(true);
+//    }
 
 
     @Override
     public void setRefreshing(boolean refreshing) {
-        pull_to_refresh.setRefreshing(refreshing);
+//        pull_to_refresh.setRefreshing(refreshing);
     }
 
     /**
      * 加载更多
      */
-    @Override
-    public void onLoadMoreRequested() {
-        mPresenter.getMusicList(false);
-    }
+//    @Override
+//    public void onLoadMoreRequested() {
+//        mPresenter.getMusicList(false);
+//    }
 
     /**
      * 加载更多的状态

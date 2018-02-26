@@ -8,13 +8,11 @@ import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.business.adapter.MusicAdapter;
 import com.wsyzj.watchvideo.business.bean.Music;
@@ -30,14 +28,13 @@ import com.wsyzj.watchvideo.common.widget.BasePullToRefreshView;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 
 /**
  * @author 焦洋
  * @date 2017/12/21 11:00
  * @Description: $desc$
  */
-public class MusicFragment extends BaseFragment implements MusicContract.View, BaseQuickAdapter.RequestLoadMoreListener, SwipeRefreshLayout.OnRefreshListener, BaseQuickAdapter.OnItemClickListener {
+public class MusicFragment extends BaseFragment implements MusicContract.View {
 
     private static final int UPDATE_SONG_PROGRESS_TIME = 500;   // 更新音乐进度的时间
     private static final int MSG_CHANGED_MEDIA_PROGRESS = 101;  // 监听音乐播放进度
@@ -110,8 +107,8 @@ public class MusicFragment extends BaseFragment implements MusicContract.View, B
 
     @Override
     public void initView(View view) {
-        pull_to_refresh.setOnRefreshListener(this);
-        pull_to_refresh.setRequestLoadMoreListener(this);
+//        pull_to_refresh.setOnRefreshListener(this);
+//        pull_to_refresh.setRequestLoadMoreListener(this);
     }
 
     @Override
@@ -137,12 +134,12 @@ public class MusicFragment extends BaseFragment implements MusicContract.View, B
      */
     @Override
     public void setMusicList(List<Music.SongListBean> musicList) {
-        pull_to_refresh.getSwipeRefresh().setEnabled(false);
+//        pull_to_refresh.getSwipeRefresh().setEnabled(false);
         if (mMusicAdapter == null) {
             mMusicAdapter = new MusicAdapter(R.layout.item_music, musicList);
             pull_to_refresh.setLayoutManager(new LinearLayoutManager(mActivity));
             pull_to_refresh.setAdapter(mMusicAdapter);
-            mMusicAdapter.setOnItemClickListener(this);
+//            mMusicAdapter.setOnItemClickListener(this);
         } else {
             mMusicAdapter.setNewData(musicList);
         }
@@ -157,7 +154,7 @@ public class MusicFragment extends BaseFragment implements MusicContract.View, B
 
     @Override
     public void setRefreshing(boolean refreshing) {
-        pull_to_refresh.setRefreshing(refreshing);
+//        pull_to_refresh.setRefreshing(refreshing);
     }
 
     @Override
@@ -182,53 +179,53 @@ public class MusicFragment extends BaseFragment implements MusicContract.View, B
         isPlayMusic = true;
     }
 
-    /**
-     * 下拉刷新
-     */
-    @Override
-    public void onRefresh() {
-        mPresenter.getMusicList(true);
-    }
+//    /**
+//     * 下拉刷新
+//     */
+//    @Override
+//    public void onRefresh() {
+//        mPresenter.getMusicList(true);
+//    }
+//
+//    /**
+//     * 下载更多
+//     */
+//    @Override
+//    public void onLoadMoreRequested() {
+//        mPresenter.getMusicList(false);
+//    }
+//
+//    @OnClick({R.id.iv_play_pause, R.id.iv_previous, R.id.iv_next})
+//    public void bkOnClick(View view) {
+//        switch (view.getId()) {
+//            case R.id.iv_play_pause:
+//                if (mPlayMusicBinder.isPlaying()) {
+//                    isPlayMusic = false;
+//                    mPlayMusicBinder.pause();
+//                    iv_play_pause.setImageResource(R.drawable.ic_play_circle_filled_white_black_48dp);
+//                    mHandler.removeMessages(MSG_CHANGED_MEDIA_PROGRESS);
+//                } else {
+//                    isPlayMusic = true;
+//                    mPlayMusicBinder.start();
+//                    iv_play_pause.setImageResource(R.drawable.ic_pause_circle_filled_black_48dp);
+//                    mHandler.sendEmptyMessageDelayed(MSG_CHANGED_MEDIA_PROGRESS, UPDATE_SONG_PROGRESS_TIME);
+//                }
+//                break;
+//            case R.id.iv_previous:
+//                mPresenter.previous();
+//                break;
+//            case R.id.iv_next:
+//                mPresenter.next();
+//                break;
+//            default:
+//                break;
+//        }
+//    }
 
-    /**
-     * 下载更多
-     */
-    @Override
-    public void onLoadMoreRequested() {
-        mPresenter.getMusicList(false);
-    }
-
-    @OnClick({R.id.iv_play_pause, R.id.iv_previous, R.id.iv_next})
-    public void bkOnClick(View view) {
-        switch (view.getId()) {
-            case R.id.iv_play_pause:
-                if (mPlayMusicBinder.isPlaying()) {
-                    isPlayMusic = false;
-                    mPlayMusicBinder.pause();
-                    iv_play_pause.setImageResource(R.drawable.ic_play_circle_filled_white_black_48dp);
-                    mHandler.removeMessages(MSG_CHANGED_MEDIA_PROGRESS);
-                } else {
-                    isPlayMusic = true;
-                    mPlayMusicBinder.start();
-                    iv_play_pause.setImageResource(R.drawable.ic_pause_circle_filled_black_48dp);
-                    mHandler.sendEmptyMessageDelayed(MSG_CHANGED_MEDIA_PROGRESS, UPDATE_SONG_PROGRESS_TIME);
-                }
-                break;
-            case R.id.iv_previous:
-                mPresenter.previous();
-                break;
-            case R.id.iv_next:
-                mPresenter.next();
-                break;
-            default:
-                break;
-        }
-    }
-
-    @Override
-    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        mPresenter.mCurrentPos = position;
-        Music.SongListBean bean = mMusicAdapter.getData().get(position);
-        mPresenter.getMusicPlayPath(bean.song_id);
-    }
+//    @Override
+//    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+//        mPresenter.mCurrentPos = position;
+//        Music.SongListBean bean = mMusicAdapter.getData().get(position);
+//        mPresenter.getMusicPlayPath(bean.song_id);
+//    }
 }

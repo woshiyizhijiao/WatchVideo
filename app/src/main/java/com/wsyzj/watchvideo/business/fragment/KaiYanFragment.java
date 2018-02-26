@@ -1,10 +1,10 @@
 package com.wsyzj.watchvideo.business.fragment;
 
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.business.adapter.VideoAdapter;
 import com.wsyzj.watchvideo.business.bean.KaiYan;
@@ -23,7 +23,7 @@ import butterknife.BindView;
  * time   : 2017/11/2  12:17
  * desc   :
  */
-public class KaiYanFragment extends BaseFragment implements KaiYanContract.View, SwipeRefreshLayout.OnRefreshListener, RecyclerView.OnChildAttachStateChangeListener {
+public class KaiYanFragment extends BaseFragment implements KaiYanContract.View, OnRefreshListener {
 
     @BindView(R.id.pull_to_refresh)
     BasePullToRefreshView pull_to_refresh;
@@ -45,7 +45,6 @@ public class KaiYanFragment extends BaseFragment implements KaiYanContract.View,
     @Override
     public void initView(View view) {
         pull_to_refresh.setOnRefreshListener(this);
-        pull_to_refresh.getRecycler().addOnChildAttachStateChangeListener(this);
     }
 
     @Override
@@ -57,18 +56,8 @@ public class KaiYanFragment extends BaseFragment implements KaiYanContract.View,
      * 刷新列表
      */
     @Override
-    public void onRefresh() {
+    public void onRefresh(RefreshLayout refreshLayout) {
         mPresenter.getKaiYanList();
-    }
-
-    /**
-     * 下拉状态
-     *
-     * @param refreshing
-     */
-    @Override
-    public void setRefreshing(boolean refreshing) {
-        pull_to_refresh.setRefreshing(refreshing);
     }
 
     /**
@@ -88,13 +77,4 @@ public class KaiYanFragment extends BaseFragment implements KaiYanContract.View,
         pull_to_refresh.setLoadMoreState(0);
     }
 
-    @Override
-    public void onChildViewAttachedToWindow(View view) {
-
-    }
-
-    @Override
-    public void onChildViewDetachedFromWindow(View view) {
-//        JZVideoPlayer.releaseAllVideos();
-    }
 }

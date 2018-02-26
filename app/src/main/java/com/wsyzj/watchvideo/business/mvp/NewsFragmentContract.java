@@ -20,8 +20,6 @@ public class NewsFragmentContract {
 
         void setNewsList(List<News.ResultBeanX.ResultBean.ListBean> list);
 
-        void setRefreshing(boolean refreshing);
-
         void setLoadMoreState(int totalCount);
     }
 

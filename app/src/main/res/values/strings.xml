@@ -9,6 +9,4 @@
     <string name="unknown">未知</string>
     <string name="copyright">Copyright © 2015–2017 wsyzj</string>
 
-    <string name="widget_base_load_more_state_loading">使劲加载中</string>
-
 </resources>

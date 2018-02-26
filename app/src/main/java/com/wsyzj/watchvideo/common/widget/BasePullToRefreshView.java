@@ -2,7 +2,6 @@ package com.wsyzj.watchvideo.common.widget;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -10,23 +9,24 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.wsyzj.watchvideo.R;
 
 /**
- * @author: wsyzj
- * @date: 2017-08-22 22:33
- * @comment: 下拉刷新
+ * <pre>
+ *     author : 焦洋
+ *     e-mail : jiao35478729@163.com
+ *     time   : 2018/02/26
+ *     desc   : 统一使用下拉刷新和加载更多
+ * </pre>
  */
-public class BasePullToRefreshView extends LinearLayout implements BaseQuickAdapter.RequestLoadMoreListener {
-    private SwipeRefreshLayout swipe_refresh;
-    private RecyclerView recycler;
+public class BasePullToRefreshView extends LinearLayout {
+
+    private SmartRefreshLayout smart_refresh;
+    private RecyclerView recycler_view;
     private BaseQuickAdapter mBaseQuickAdapter;
-
-    private BaseQuickAdapter.RequestLoadMoreListener mRequestLoadMoreListener;
-
-    public void setRequestLoadMoreListener(BaseQuickAdapter.RequestLoadMoreListener requestLoadMoreListener) {
-        mRequestLoadMoreListener = requestLoadMoreListener;
-    }
 
     public BasePullToRefreshView(Context context) {
         super(context);
@@ -46,35 +46,10 @@ public class BasePullToRefreshView extends LinearLayout implements BaseQuickAdap
     private void init(Context context) {
         setOrientation(LinearLayout.VERTICAL);
         View view = LayoutInflater.from(context).inflate(R.layout.widget_base_pull_to_refresh, null);
-        swipe_refresh = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
-        recycler = (RecyclerView) view.findViewById(R.id.recycler);
+        smart_refresh = (SmartRefreshLayout) view.findViewById(R.id.smart_refresh);
+        recycler_view = (RecyclerView) view.findViewById(R.id.recycler_view);
 
-        setRefreshing(true);
         addView(view);
-    }
-
-    /**
-     * 设置刷新状态
-     *
-     * @param refreshing
-     */
-    public void setRefreshing(final boolean refreshing) {
-        if (refreshing) {
-            swipe_refresh.setRefreshing(refreshing);
-        } else {
-            swipe_refresh.setRefreshing(refreshing);
-        }
-    }
-
-    /**
-     * 下拉刷新
-     *
-     * @param listener
-     */
-    public void setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener listener) {
-        if (listener != null) {
-            swipe_refresh.setOnRefreshListener(listener);
-        }
     }
 
     /**
@@ -84,9 +59,7 @@ public class BasePullToRefreshView extends LinearLayout implements BaseQuickAdap
      */
     public void setAdapter(BaseQuickAdapter adapter) {
         mBaseQuickAdapter = adapter;
-        recycler.setAdapter(adapter);
-        adapter.setLoadMoreView(new BaseLoadMoreView());
-        adapter.setOnLoadMoreListener(this, recycler);
+        recycler_view.setAdapter(adapter);
     }
 
     /**
@@ -113,35 +86,54 @@ public class BasePullToRefreshView extends LinearLayout implements BaseQuickAdap
      * @param layoutManager
      */
     public void setLayoutManager(RecyclerView.LayoutManager layoutManager) {
-        recycler.setLayoutManager(layoutManager);
+        recycler_view.setLayoutManager(layoutManager);
     }
 
     /**
-     * 下拉刷新监听
+     * 下拉刷新
+     *
+     * @param onRefreshListener
      */
-    @Override
-    public void onLoadMoreRequested() {
-        if (mRequestLoadMoreListener != null) {
-            mRequestLoadMoreListener.onLoadMoreRequested();
+    public void setOnRefreshListener(OnRefreshListener onRefreshListener) {
+        if (onRefreshListener != null) {
+            smart_refresh.setOnRefreshListener(onRefreshListener);
         }
+    }
+
+    /**
+     * 加载更多
+     *
+     * @param onRefreshLoadMoreListener
+     */
+    public void setOnRefreshLoadMoreListener(OnRefreshLoadMoreListener onRefreshLoadMoreListener) {
+        if (onRefreshLoadMoreListener != null) {
+            smart_refresh.setOnRefreshLoadMoreListener(onRefreshLoadMoreListener);
+        }
+    }
+
+    /**
+     * 结束刷新
+     */
+    public void finishRefresh() {
+        smart_refresh.finishRefresh();
     }
 
     /**
      * 设置下拉之后的监听
      */
     public void setLoadMoreState(int totalCount) {
-        swipe_refresh.setRefreshing(false);
-        RecyclerView.Adapter adapter = recycler.getAdapter();
+        RecyclerView.Adapter adapter = recycler_view.getAdapter();
         if (adapter != null && adapter instanceof BaseQuickAdapter) {
             BaseQuickAdapter quickAdapter = (BaseQuickAdapter) adapter;
             int itemCount = quickAdapter.getItemCount();
             if (totalCount > itemCount) {
-                quickAdapter.loadMoreComplete();
+                smart_refresh.finishLoadMore();
             } else {
-                quickAdapter.loadMoreEnd();
+                smart_refresh.finishLoadMoreWithNoMoreData();
             }
         }
     }
+
 
     /**
      * 获取recycler的实例
@@ -149,10 +141,6 @@ public class BasePullToRefreshView extends LinearLayout implements BaseQuickAdap
      * @return
      */
     public RecyclerView getRecycler() {
-        return recycler;
-    }
-
-    public SwipeRefreshLayout getSwipeRefresh() {
-        return swipe_refresh;
+        return recycler_view;
     }
 }

@@ -1,6 +1,5 @@
 package com.wsyzj.watchvideo.business.fragment;
 
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +8,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.business.adapter.HomeAdapter;
 import com.wsyzj.watchvideo.business.adapter.HomeDouBanAdapter;
@@ -37,7 +39,7 @@ import butterknife.BindView;
  * @date 2017/12/12 14:02
  * @Description: 推荐
  */
-public class HomeFragment extends BaseFragment implements HomeContract.View, SwipeRefreshLayout.OnRefreshListener, BaseQuickAdapter.RequestLoadMoreListener {
+public class HomeFragment extends BaseFragment implements HomeContract.View, OnRefreshListener, OnRefreshLoadMoreListener {
 
     @BindView(R.id.pull_to_refresh)
     BasePullToRefreshView pull_to_refresh;
@@ -59,9 +61,8 @@ public class HomeFragment extends BaseFragment implements HomeContract.View, Swi
 
     @Override
     public void initView(View view) {
-        setRefreshing(false);
         pull_to_refresh.setOnRefreshListener(this);
-        pull_to_refresh.setRequestLoadMoreListener(this);
+        pull_to_refresh.setOnRefreshLoadMoreListener(this);
     }
 
     @Override
@@ -195,14 +196,6 @@ public class HomeFragment extends BaseFragment implements HomeContract.View, Swi
     }
 
     /**
-     * @param refreshing
-     */
-    @Override
-    public void setRefreshing(boolean refreshing) {
-        pull_to_refresh.setRefreshing(refreshing);
-    }
-
-    /**
      * 上拉/下拉的状态
      *
      * @param totalCount
@@ -210,21 +203,19 @@ public class HomeFragment extends BaseFragment implements HomeContract.View, Swi
     @Override
     public void setLoadMoreState(int totalCount) {
         pull_to_refresh.setLoadMoreState(totalCount);
+        pull_to_refresh.finishRefresh();
     }
 
     /**
      * 下拉刷新
      */
     @Override
-    public void onRefresh() {
+    public void onRefresh(RefreshLayout refreshLayout) {
         mPresenter.getGankData(true);
     }
 
-    /**
-     * 加载更多
-     */
     @Override
-    public void onLoadMoreRequested() {
+    public void onLoadMore(RefreshLayout refreshLayout) {
         mPresenter.getGankData(false);
     }
 }

@@ -9,6 +9,7 @@ import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.business.activity.MainActivity;
 import com.wsyzj.watchvideo.business.activity.MeiRiYiWenActivity;
 import com.wsyzj.watchvideo.business.activity.PreviewLargeActivity;
+import com.wsyzj.watchvideo.business.activity.TestActivity;
 import com.wsyzj.watchvideo.business.activity.WebViewActivity;
 import com.wsyzj.watchvideo.business.bean.Gank;
 
@@ -82,6 +83,16 @@ public class IntentUtils {
         Intent intent = new Intent(activity, PreviewLargeActivity.class);
         intent.putExtra("position", position);
         intent.putExtra("ganks", (Serializable) ganks);
+        startIntentActivity(activity, intent);
+    }
+
+    /**
+     * 测试
+     *
+     * @param activity
+     */
+    public static void test(Activity activity) {
+        Intent intent = new Intent(activity, TestActivity.class);
         startIntentActivity(activity, intent);
     }
 }

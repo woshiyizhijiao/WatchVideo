@@ -26,8 +26,6 @@ public class HomeContract {
 
         void setGankData(List<Gank.ResultsBean> results);
 
-        void setRefreshing(boolean refreshing);
-
         void setLoadMoreState(int totalCount);
 
         void setMeiRiYiWenData(MeiRiYiWen meiRiYiWen);

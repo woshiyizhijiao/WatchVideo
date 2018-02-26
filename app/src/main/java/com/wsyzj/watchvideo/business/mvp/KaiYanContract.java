@@ -19,7 +19,6 @@ public class KaiYanContract {
     public interface View extends BaseIView {
         void setVideoList(List<KaiYan.DataListBean> itemList);
 
-        void setRefreshing(boolean refreshing);
     }
 
     public interface Model extends BaseIModel {

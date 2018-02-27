@@ -89,6 +89,7 @@ public class NewsFragment extends BaseFragment implements NewsFragmentContract.V
     @Override
     public void setLoadMoreState(int totalCount) {
         pull_to_refresh.setLoadMoreState(totalCount);
+        pull_to_refresh.finishRefresh();
     }
 
     /**

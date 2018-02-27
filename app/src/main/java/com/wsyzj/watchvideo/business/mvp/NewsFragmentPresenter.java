@@ -6,8 +6,8 @@ import com.wsyzj.watchvideo.business.activity.MainActivity;
 import com.wsyzj.watchvideo.business.bean.News;
 import com.wsyzj.watchvideo.common.base.BaseFragment;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
-import com.wsyzj.watchvideo.common.http.BaseTSubscriber;
 import com.wsyzj.watchvideo.common.constant.Constant;
+import com.wsyzj.watchvideo.common.http.BaseTSubscriber;
 
 import java.util.List;
 
@@ -21,8 +21,8 @@ public class NewsFragmentPresenter extends BasePresenter<NewsFragmentContract.Vi
     private NewsFragmentContract.View mView;
     private NewsFragmentContract.Model mModel;
 
-    private int mStart;
-    private int mNum;
+    private int mStart = 0;
+    private int mNum = 40;
     private int mTitleIndex;
     private String mCurrentTitle;
     private List<News.ResultBeanX.ResultBean.ListBean> mNewsList;
@@ -54,7 +54,6 @@ public class NewsFragmentPresenter extends BasePresenter<NewsFragmentContract.Vi
         } else {
             mStart++;
         }
-
         BaseTSubscriber<News> baseTSubscriber = mModel.getNewsListByTitle(mCurrentTitle, mStart, mNum)
                 .subscribeWith(new BaseTSubscriber<News>() {
                     @Override

@@ -9,4 +9,7 @@
     <string name="unknown">未知</string>
     <string name="copyright">Copyright © 2015–2017 wsyzj</string>
 
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
 </resources>

@@ -4,8 +4,11 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.Toolbar;
 
 import com.pgyersdk.javabean.AppBean;
 import com.pgyersdk.update.PgyUpdateManager;
@@ -32,12 +35,15 @@ import butterknife.BindView;
 /**
  * @author 焦洋
  * @date 2017/12/6 10:03
- * @Description: $desc$
+ * @Description: 主界面
  */
 public class MainActivity extends BaseActivity implements MainContract.View, TabLayout.OnTabSelectedListener {
 
-    public final static String BUNDLE_TITLE_INDEX = "bundle_title_index";
-    public final static String BUNDLE_CURRENT_TITLE = "bundle_current_title";
+    @BindView(R.id.drawer_layout)
+    DrawerLayout drawer_layout;
+
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout swipe_refresh;
@@ -64,6 +70,11 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
 
     @Override
     protected void initView() {
+        setSupportActionBar(toolbar);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer_layout.addDrawerListener(toggle);
+        toggle.syncState();
+
         swipe_refresh.setRefreshing(true);
         tabLayout.addOnTabSelectedListener(this);
         tabLayout.setupWithViewPager(viewPager);
@@ -90,21 +101,19 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
     public void setNewsTitle(List<String> newsTitle) {
         List<BaseFragment> fragments = new ArrayList<>();
         fragments.add(new HomeFragment());
-//        fragments.add(new MusicFragment());
 
         if (newsTitle != null) {
             for (int i = 0; i < newsTitle.size(); i++) {
                 tabLayout.addTab(tabLayout.newTab().setText(newsTitle.get(i)));
                 Bundle bundle = new Bundle();
-                bundle.putInt(BUNDLE_TITLE_INDEX, i);
-                bundle.putString(BUNDLE_CURRENT_TITLE, newsTitle.get(i));
+                bundle.putInt(NewsFragment.BUNDLE_TITLE_INDEX, i);
+                bundle.putString(NewsFragment.BUNDLE_CURRENT_TITLE, newsTitle.get(i));
 
                 NewsFragment newsFragment = new NewsFragment();
                 newsFragment.setArguments(bundle);
                 fragments.add(newsFragment);
             }
             newsTitle.add(0, "推荐");
-//            newsTitle.add(1, "音乐");
         }
 
         VpAdapter vpAdapter = new VpAdapter(getSupportFragmentManager(), this, fragments, newsTitle);

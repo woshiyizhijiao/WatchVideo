@@ -73,7 +73,7 @@ dependencies {
      */
     compile "com.github.CymChad:BaseRecyclerViewAdapterHelper:$BaseRecyclerViewAdapterHelper"       // RecyclerView通用适配器
     //    compile 'cn.jzvd:jiaozivideoplayer:6.1.1'                                                 // 视频播放
-    compile "com.gyf.barlibrary:barlibrary:$barlibrary"                                             // 沉浸式兼容库
+    compile "com.jaeger.statusbarutil:library:$statusbarutil"                                       // 沉浸式兼容库
     compile "com.github.chrisbanes:PhotoView:$PhotoView"                                            // 图片缩放
     compile "com.blankj:utilcode:$utilcode"                                                         // 工具类
     compile "com.scwang.smartrefresh:SmartRefreshLayout:$SmartRefreshLayout"                        // 下拉刷新，加载更多

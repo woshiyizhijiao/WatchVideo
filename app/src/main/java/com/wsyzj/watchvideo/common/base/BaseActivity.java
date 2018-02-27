@@ -9,12 +9,13 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.blankj.utilcode.util.ToastUtils;
-import com.gyf.barlibrary.ImmersionBar;
+import com.jaeger.library.StatusBarUtil;
 import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.common.base.mvp.BaseIView;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
 import com.wsyzj.watchvideo.common.http.BaseRetrofit;
 import com.wsyzj.watchvideo.common.tools.EventBusUtils;
+import com.wsyzj.watchvideo.common.tools.UiUtils;
 import com.wsyzj.watchvideo.common.widget.BaseTitleView;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -32,16 +33,16 @@ import io.reactivex.disposables.Disposable;
 public abstract class BaseActivity<P extends BasePresenter> extends AppCompatActivity implements BaseIView {
 
     private P mPresenter;
-    public ImmersionBar mImmersionBar;
     public BaseTitleView baseTitleView;
     public BaseProgressDialog mBaseDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);  // 固定竖屏
-        initImmersionBar();
+        // 固定竖屏
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         createPresenter();
+        setStatusBar();
         layout();
         initView();
         initData(savedInstanceState);
@@ -49,13 +50,20 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     }
 
     /**
-     * 初始化沉浸式
+     * MVP模式的Presenter
      */
-    protected void initImmersionBar() {
-        mImmersionBar = ImmersionBar.with(this);
-        mImmersionBar.statusBarColor(R.color.colorPrimaryDark);
-        mImmersionBar.fitsSystemWindows(true);
-        mImmersionBar.init();
+    private void createPresenter() {
+        mPresenter = presenter();
+        if (mPresenter != null) {
+            mPresenter.attachView(this);
+        }
+    }
+
+    /**
+     * 设置沉浸式
+     */
+    protected void setStatusBar() {
+        StatusBarUtil.setColor(this, UiUtils.getColor(R.color.colorPrimary));
     }
 
     /**
@@ -81,15 +89,6 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         ButterKnife.bind(this);
     }
 
-    /**
-     * MVP模式的Presenter
-     */
-    private void createPresenter() {
-        mPresenter = presenter();
-        if (mPresenter != null) {
-            mPresenter.attachView(this);
-        }
-    }
 
     /**
      * 是否使用EventBus
@@ -132,9 +131,6 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         }
         if (mPresenter != null) {
             mPresenter.detachView();
-        }
-        if (mImmersionBar != null) {
-            mImmersionBar.destroy();
         }
         if (isRegisterEventBus()) {
             EventBusUtils.unregister(this);

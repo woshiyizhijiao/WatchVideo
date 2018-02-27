@@ -14,13 +14,14 @@ import com.blankj.utilcode.util.SpanUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
-import com.gyf.barlibrary.ImmersionBar;
+import com.jaeger.library.StatusBarUtil;
 import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.business.adapter.PreviewLargeAdapter;
 import com.wsyzj.watchvideo.business.bean.Gank;
 import com.wsyzj.watchvideo.common.base.BaseActivity;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
 import com.wsyzj.watchvideo.common.tools.DisplayUtils;
+import com.wsyzj.watchvideo.common.tools.UiUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -50,16 +51,14 @@ public class PreviewLargeActivity extends BaseActivity implements ViewPager.OnPa
     private List<Gank.ResultsBean> mGankData;
 
     @Override
-    protected void initImmersionBar() {
-        mImmersionBar = ImmersionBar.with(this);
-        mImmersionBar.statusBarColor(R.color.black);
-        mImmersionBar.fitsSystemWindows(true);
-        mImmersionBar.init();
+    protected BasePresenter presenter() {
+        return null;
     }
 
     @Override
-    protected BasePresenter presenter() {
-        return null;
+    protected void setStatusBar() {
+        super.setStatusBar();
+        StatusBarUtil.setColor(this, UiUtils.getColor(R.color.black));
     }
 
     @Override

@@ -2,8 +2,8 @@ package com.wsyzj.watchvideo.business.mvp;
 
 import android.os.Bundle;
 
-import com.wsyzj.watchvideo.business.activity.MainActivity;
 import com.wsyzj.watchvideo.business.bean.News;
+import com.wsyzj.watchvideo.business.fragment.NewsFragment;
 import com.wsyzj.watchvideo.common.base.BaseFragment;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
 import com.wsyzj.watchvideo.common.constant.Constant;
@@ -40,8 +40,8 @@ public class NewsFragmentPresenter extends BasePresenter<NewsFragmentContract.Vi
     @Override
     public void getArguments(BaseFragment fragment) {
         Bundle arguments = fragment.getArguments();
-        mTitleIndex = arguments.getInt(MainActivity.BUNDLE_TITLE_INDEX, 0);
-        mCurrentTitle = arguments.getString(MainActivity.BUNDLE_CURRENT_TITLE, "");
+        mTitleIndex = arguments.getInt(NewsFragment.BUNDLE_TITLE_INDEX, 0);
+        mCurrentTitle = arguments.getString(NewsFragment.BUNDLE_CURRENT_TITLE, "");
     }
 
     /**

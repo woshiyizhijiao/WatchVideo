@@ -28,6 +28,9 @@ import butterknife.BindView;
  */
 public class NewsFragment extends BaseFragment implements NewsFragmentContract.View, OnRefreshListener, OnRefreshLoadMoreListener {
 
+    public final static String BUNDLE_TITLE_INDEX = "bundle_title_index";
+    public final static String BUNDLE_CURRENT_TITLE = "bundle_current_title";
+
     @BindView(R.id.pull_to_refresh)
     BasePullToRefreshView pull_to_refresh;
 

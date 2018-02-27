@@ -6,7 +6,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.widget.RelativeLayout;
 
-import com.gyf.barlibrary.ImmersionBar;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.business.BaseApp;
@@ -46,14 +45,6 @@ public class SplashActivity extends BaseActivity {
     RelativeLayout rl_splash;
 
     private boolean isToAuthorize;  // 是否拒绝授权
-
-    @Override
-    protected void initImmersionBar() {
-        mImmersionBar = ImmersionBar.with(this);
-        mImmersionBar.statusBarColor(R.color.black);
-        mImmersionBar.fitsSystemWindows(true);
-        mImmersionBar.init();
-    }
 
     @Override
     protected void onRestart() {

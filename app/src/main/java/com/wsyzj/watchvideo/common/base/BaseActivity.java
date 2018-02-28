@@ -42,10 +42,10 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         // 固定竖屏
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         createPresenter();
-        setStatusBar();
         layout();
         initView();
         initData(savedInstanceState);
+        setStatusBar();
         registerEventBus();
     }
 

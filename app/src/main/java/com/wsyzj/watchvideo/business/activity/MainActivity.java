@@ -2,14 +2,22 @@ package com.wsyzj.watchvideo.business.activity;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 
+import com.blankj.utilcode.util.CacheUtils;
+import com.jaeger.library.StatusBarUtil;
 import com.pgyersdk.javabean.AppBean;
 import com.pgyersdk.update.PgyUpdateManager;
 import com.pgyersdk.update.UpdateManagerListener;
@@ -22,8 +30,10 @@ import com.wsyzj.watchvideo.business.mvp.MainPresenter;
 import com.wsyzj.watchvideo.common.base.BaseActivity;
 import com.wsyzj.watchvideo.common.base.BaseEventBus;
 import com.wsyzj.watchvideo.common.base.BaseFragment;
+import com.wsyzj.watchvideo.common.base.BaseThreadManager;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
 import com.wsyzj.watchvideo.common.constant.EventBusConstant;
+import com.wsyzj.watchvideo.common.http.ImageLoader;
 
 import net.youmi.android.nm.sp.SpotManager;
 
@@ -37,10 +47,13 @@ import butterknife.BindView;
  * @date 2017/12/6 10:03
  * @Description: 主界面
  */
-public class MainActivity extends BaseActivity implements MainContract.View, TabLayout.OnTabSelectedListener {
+public class MainActivity extends BaseActivity implements MainContract.View, TabLayout.OnTabSelectedListener, NavigationView.OnNavigationItemSelectedListener {
 
     @BindView(R.id.drawer_layout)
     DrawerLayout drawer_layout;
+
+    @BindView(R.id.nav_view)
+    NavigationView nav_view;
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -55,6 +68,13 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
     ViewPager viewPager;
 
     private MainPresenter mPresenter;
+
+    @Override
+    protected void setStatusBar() {
+        super.setStatusBar();
+        int colorPrimary = getResources().getColor(R.color.colorPrimary);
+        StatusBarUtil.setColorForDrawerLayout(this, drawer_layout, colorPrimary, StatusBarUtil.DEFAULT_STATUS_BAR_ALPHA);
+    }
 
     @Override
     protected BasePresenter presenter() {
@@ -78,6 +98,11 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
         swipe_refresh.setRefreshing(true);
         tabLayout.addOnTabSelectedListener(this);
         tabLayout.setupWithViewPager(viewPager);
+        nav_view.setNavigationItemSelectedListener(this);
+
+        View nav_header_main = nav_view.getHeaderView(0);
+        ImageView iv_nav_header_bg = (ImageView) nav_header_main.findViewById(R.id.iv_nav_header_bg);
+        ImageLoader.with(this, "https://images.pexels.com/photos/112352/pexels-photo-112352.jpeg?w=1260&h=750&auto=compress&cs=tinysrgb", iv_nav_header_bg);
     }
 
     @Override
@@ -90,6 +115,15 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
     protected void onDestroy() {
         super.onDestroy();
         SpotManager.getInstance(this).onAppExit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
+            drawer_layout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 
     /**
@@ -177,6 +211,32 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
             @Override
             public void onNoUpdateAvailable() {
 //                showToast("更新检测失败");
+            }
+        });
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.nav_clear_cache) {
+            clearCache();
+        }
+        drawer_layout.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    /**
+     * 清除缓存
+     */
+    private void clearCache() {
+        BaseThreadManager.getInstance().createLongPool().execute(new Runnable() {
+            @Override
+            public void run() {
+                CacheUtils instance = CacheUtils.getInstance();
+                long cacheSize = instance.getCacheSize();
+                instance.clear();
+                showToast("共清除" + cacheSize + "M缓存");
             }
         });
     }

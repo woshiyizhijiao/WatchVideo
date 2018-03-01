@@ -14,8 +14,8 @@ import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.common.base.mvp.BaseIView;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
 import com.wsyzj.watchvideo.common.http.BaseRetrofit;
-import com.wsyzj.watchvideo.common.tools.EventBusUtils;
-import com.wsyzj.watchvideo.common.tools.UiUtils;
+import com.wsyzj.watchvideo.common.utils.EventBusUtils;
+import com.wsyzj.watchvideo.common.utils.UiUtils;
 import com.wsyzj.watchvideo.common.widget.BaseTitleView;
 
 import org.greenrobot.eventbus.Subscribe;

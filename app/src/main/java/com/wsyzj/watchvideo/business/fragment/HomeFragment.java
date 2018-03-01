@@ -24,9 +24,9 @@ import com.wsyzj.watchvideo.common.base.BaseEventBus;
 import com.wsyzj.watchvideo.common.base.BaseFragment;
 import com.wsyzj.watchvideo.common.base.mvp.BaseIPresenter;
 import com.wsyzj.watchvideo.common.constant.EventBusConstant;
-import com.wsyzj.watchvideo.common.tools.EventBusUtils;
-import com.wsyzj.watchvideo.common.tools.IntentUtils;
-import com.wsyzj.watchvideo.common.tools.UiUtils;
+import com.wsyzj.watchvideo.common.utils.EventBusUtils;
+import com.wsyzj.watchvideo.common.utils.IntentUtils;
+import com.wsyzj.watchvideo.common.utils.UiUtils;
 import com.wsyzj.watchvideo.common.widget.BasePullToRefreshView;
 
 import java.util.Arrays;

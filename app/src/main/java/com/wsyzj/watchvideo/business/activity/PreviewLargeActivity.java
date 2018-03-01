@@ -20,8 +20,8 @@ import com.wsyzj.watchvideo.business.adapter.PreviewLargeAdapter;
 import com.wsyzj.watchvideo.business.bean.Gank;
 import com.wsyzj.watchvideo.common.base.BaseActivity;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
-import com.wsyzj.watchvideo.common.tools.DisplayUtils;
-import com.wsyzj.watchvideo.common.tools.UiUtils;
+import com.wsyzj.watchvideo.common.utils.DisplayUtils;
+import com.wsyzj.watchvideo.common.utils.UiUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;

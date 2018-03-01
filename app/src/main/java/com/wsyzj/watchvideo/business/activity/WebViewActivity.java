@@ -103,6 +103,8 @@ public class WebViewActivity extends BaseActivity implements View.OnClickListene
     private void webViewSettings() {
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);
+        settings.setUseWideViewPort(true);
+        settings.setLoadWithOverviewMode(true);
 
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
             settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);

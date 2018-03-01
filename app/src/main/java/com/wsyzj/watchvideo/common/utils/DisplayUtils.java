@@ -1,4 +1,4 @@
-package com.wsyzj.watchvideo.common.tools;
+package com.wsyzj.watchvideo.common.utils;
 
 import android.content.Context;
 

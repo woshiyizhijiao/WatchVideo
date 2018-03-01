@@ -15,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.blankj.utilcode.util.CacheUtils;
 import com.jaeger.library.StatusBarUtil;
@@ -27,13 +28,16 @@ import com.wsyzj.watchvideo.business.fragment.HomeFragment;
 import com.wsyzj.watchvideo.business.fragment.NewsFragment;
 import com.wsyzj.watchvideo.business.mvp.MainContract;
 import com.wsyzj.watchvideo.business.mvp.MainPresenter;
+import com.wsyzj.watchvideo.business.utils.DataUtils;
 import com.wsyzj.watchvideo.common.base.BaseActivity;
 import com.wsyzj.watchvideo.common.base.BaseEventBus;
 import com.wsyzj.watchvideo.common.base.BaseFragment;
 import com.wsyzj.watchvideo.common.base.BaseThreadManager;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
+import com.wsyzj.watchvideo.common.constant.Constant;
 import com.wsyzj.watchvideo.common.constant.EventBusConstant;
 import com.wsyzj.watchvideo.common.http.ImageLoader;
+import com.wsyzj.watchvideo.common.utils.IntentUtils;
 
 import net.youmi.android.nm.sp.SpotManager;
 
@@ -66,6 +70,9 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
 
     @BindView(R.id.viewPager)
     ViewPager viewPager;
+
+    private ImageView iv_nav_header_bg;
+    private TextView tv_nav_header_text;
 
     private MainPresenter mPresenter;
 
@@ -101,14 +108,16 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
         nav_view.setNavigationItemSelectedListener(this);
 
         View nav_header_main = nav_view.getHeaderView(0);
-        ImageView iv_nav_header_bg = (ImageView) nav_header_main.findViewById(R.id.iv_nav_header_bg);
-        ImageLoader.with(this, "https://images.pexels.com/photos/112352/pexels-photo-112352.jpeg?w=1260&h=750&auto=compress&cs=tinysrgb", iv_nav_header_bg);
+        iv_nav_header_bg = (ImageView) nav_header_main.findViewById(R.id.iv_nav_header_bg);
+        tv_nav_header_text = (TextView) nav_header_main.findViewById(R.id.tv_nav_header_text);
+
     }
 
     @Override
     protected void initData(Bundle savedInstanceState) {
         mPresenter.getNewsTitle();
         pgyUpdateApp();
+        setNavHeaderBg();
     }
 
     @Override
@@ -152,6 +161,14 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
 
         VpAdapter vpAdapter = new VpAdapter(getSupportFragmentManager(), this, fragments, newsTitle);
         viewPager.setAdapter(vpAdapter);
+    }
+
+    /**
+     * 设置侧滑bg图片
+     */
+    private void setNavHeaderBg() {
+        ImageLoader.with(this, DataUtils.getNavHeaderBgStr(), iv_nav_header_bg);
+        tv_nav_header_text.setText(DataUtils.getNavHeaderBgText());
     }
 
     @Override
@@ -219,17 +236,42 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.nav_clear_cache) {
-            clearCache();
+        if (id == R.id.nav_service) {
+            navLifeDialog();
+        } else if (id == R.id.nav_game) {
+            IntentUtils.webView(this, "小游戏", Constant.URL_GAME_H5);
+        } else if (id == R.id.nav_clear_cache) {
+            navClearCache();
         }
         drawer_layout.closeDrawer(GravityCompat.START);
         return true;
     }
 
     /**
+     * 生活服务弹窗
+     */
+    private void navLifeDialog() {
+        String[] titles = {"手机归属地查询", "繁体字转换"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setItems(titles, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case 0:
+                        IntentUtils.webView(MainActivity.this, "手机归属地查询", Constant.URL_PHONT_QUERY);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
+        builder.show();
+    }
+
+    /**
      * 清除缓存
      */
-    private void clearCache() {
+    private void navClearCache() {
         BaseThreadManager.getInstance().createLongPool().execute(new Runnable() {
             @Override
             public void run() {

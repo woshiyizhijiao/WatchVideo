@@ -9,7 +9,7 @@ import com.github.chrisbanes.photoview.PhotoView;
 import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.business.bean.Gank;
 import com.wsyzj.watchvideo.common.http.ImageLoader;
-import com.wsyzj.watchvideo.common.tools.UiUtils;
+import com.wsyzj.watchvideo.common.utils.UiUtils;
 
 import java.util.List;
 

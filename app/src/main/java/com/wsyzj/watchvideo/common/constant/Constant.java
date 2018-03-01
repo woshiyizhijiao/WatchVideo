@@ -19,6 +19,10 @@ public class Constant {
     public final static String DOUBAN_URL = "https://api.douban.com/v2/movie/";
     public final static String UPDATE_VERSION_URL = "http://www.pgyer.com/apiv1/app/";
 
+    // 小游戏链接的h5
+    public final static String URL_GAME_H5 = "http://www.4399.com/";
+    public final static String URL_PHONT_QUERY = "http://www.hao123.com/haoserver/showjicc.htm";
+
     /**
      * 网络请求
      */
@@ -34,13 +38,6 @@ public class Constant {
     }
 
     /**
-     * 微信
-     */
-    public static class WeChat {
-        public final static int WECHAT_CHOICENESS_ERROR_CODE = 0;
-    }
-
-    /**
      * 京东万象
      */
     public static class JingDong {
@@ -51,7 +48,7 @@ public class Constant {
     }
 
     /**
-     * 第三方sdk需要的key等信息
+     * 有米
      */
     public static class Youmi {
         public final static String APP_ID = "832292121bce6ebc";

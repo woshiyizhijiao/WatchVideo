@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="200dp"
-              android:background="@color/red"
-              android:orientation="vertical">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="200dp"
+             android:background="@color/cf5f5f5">
 
     <ImageView
         android:id="@+id/iv_nav_header_bg"
@@ -11,4 +11,16 @@
         android:layout_height="match_parent"
         android:scaleType="centerCrop"/>
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/tv_nav_header_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:lineSpacingExtra="8dp"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        tools:text="做你害怕的事情\n你会发现不过如此"/>
+
+</FrameLayout>

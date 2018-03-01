@@ -5,6 +5,16 @@
 
     <group android:checkableBehavior="none">
         <item
+            android:id="@+id/nav_service"
+            android:icon="@drawable/ic_menu_service"
+            android:title="便民服务"/>
+
+        <item
+            android:id="@+id/nav_game"
+            android:icon="@drawable/ic_menu_game"
+            android:title="小游戏"/>
+
+        <item
             android:id="@+id/nav_clear_cache"
             android:icon="@android:drawable/ic_menu_delete"
             android:title="清除缓存"/>

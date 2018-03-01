@@ -7,7 +7,7 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.wsyzj.watchvideo.R;
-import com.wsyzj.watchvideo.common.tools.DrawableUtils;
+import com.wsyzj.watchvideo.common.utils.DrawableUtils;
 
 import java.util.List;
 

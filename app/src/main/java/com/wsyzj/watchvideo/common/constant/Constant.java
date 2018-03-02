@@ -21,7 +21,10 @@ public class Constant {
 
     // 小游戏链接的h5
     public final static String URL_GAME_H5 = "http://www.4399.com/";
-    public final static String URL_PHONT_QUERY = "http://www.hao123.com/haoserver/showjicc.htm";
+    public final static String URL_SERVICE_EXPRESSAGE = "http://m.ip138.com/kuaidi/";
+    public final static String URL_SERVICE_PHONT_QUERY = "http://m.ip138.com/mobile.html";
+    public final static String URL_SERVICE_WEATHER = "http://qq.ip138.com/tianqi/";
+    public final static String URL_SERVICE_RAILWAY_TICKET = "http://qq.ip138.com/huoche/";
 
     /**
      * 网络请求
@@ -45,6 +48,8 @@ public class Constant {
         public final static String JINGDONG_KEY = "9280e20dec44795b1a0bb724a24834c3";
         public final static int JINGDONG_CODE = 10000;
         public final static int JINGDONG_STATUS = 0;
+
+        public final static String JINGDONG_CHANNEL_NEWS = "https://way.jd.com/showapi/";
     }
 
     /**

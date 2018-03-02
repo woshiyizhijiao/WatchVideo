@@ -1,9 +1,9 @@
 package com.wsyzj.watchvideo.business.mvp;
 
+import com.wsyzj.watchvideo.business.bean.NewsChannel;
 import com.wsyzj.watchvideo.common.base.mvp.BaseIModel;
 import com.wsyzj.watchvideo.common.base.mvp.BaseIPresenter;
 import com.wsyzj.watchvideo.common.base.mvp.BaseIView;
-import com.wsyzj.watchvideo.business.bean.NewsTitle;
 
 import java.util.List;
 
@@ -16,14 +16,14 @@ import io.reactivex.Flowable;
  */
 public class MainContract {
     public interface View extends BaseIView {
-        void setNewsTitle(List<String> newsTitle);
+        void setChannelList(List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> channelList);
     }
 
     public interface Model extends BaseIModel {
-        Flowable<NewsTitle> getNewsTitle();
+        Flowable<NewsChannel> getNewsChannel();
     }
 
     interface Presenter extends BaseIPresenter<View> {
-        void getNewsTitle();
+        void getNewsChannel();
     }
 }

@@ -115,8 +115,13 @@ public abstract class BaseFragment<P extends BaseIPresenter> extends Fragment im
      * @param message
      */
     @Override
-    public void showToast(String message) {
-        ToastUtils.showShort(message);
+    public void showToast(final String message) {
+        mActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ToastUtils.showShort(message);
+            }
+        });
     }
 
     /**

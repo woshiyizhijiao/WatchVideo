@@ -24,8 +24,9 @@ import com.pgyersdk.update.PgyUpdateManager;
 import com.pgyersdk.update.UpdateManagerListener;
 import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.business.adapter.VpAdapter;
+import com.wsyzj.watchvideo.business.bean.NewsChannel;
 import com.wsyzj.watchvideo.business.fragment.HomeFragment;
-import com.wsyzj.watchvideo.business.fragment.NewsFragment;
+import com.wsyzj.watchvideo.business.fragment.NewsChannelFragment;
 import com.wsyzj.watchvideo.business.mvp.MainContract;
 import com.wsyzj.watchvideo.business.mvp.MainPresenter;
 import com.wsyzj.watchvideo.business.utils.DataUtils;
@@ -115,7 +116,7 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-        mPresenter.getNewsTitle();
+        mPresenter.getNewsChannel();
         pgyUpdateApp();
         setNavHeaderBg();
     }
@@ -138,28 +139,33 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
     /**
      * 设置新闻标题
      *
-     * @param newsTitle
+     * @param channelList
      */
     @Override
-    public void setNewsTitle(List<String> newsTitle) {
+    public void setChannelList(List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> channelList) {
         List<BaseFragment> fragments = new ArrayList<>();
         fragments.add(new HomeFragment());
 
-        if (newsTitle != null) {
-            for (int i = 0; i < newsTitle.size(); i++) {
-                tabLayout.addTab(tabLayout.newTab().setText(newsTitle.get(i)));
-                Bundle bundle = new Bundle();
-                bundle.putInt(NewsFragment.BUNDLE_TITLE_INDEX, i);
-                bundle.putString(NewsFragment.BUNDLE_CURRENT_TITLE, newsTitle.get(i));
+        if (channelList != null) {
+            for (int i = 0; i < channelList.size(); i++) {
+                NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean channelListBean = channelList.get(i);
+                tabLayout.addTab(tabLayout.newTab().setText(channelListBean.name));
 
-                NewsFragment newsFragment = new NewsFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString(NewsChannelFragment.BUNDLE_CHANNEL_ID, channelListBean.channelId);
+                bundle.putString(NewsChannelFragment.BUNDLE_CHANNEL_NAME, channelListBean.name);
+
+                NewsChannelFragment newsFragment = new NewsChannelFragment();
                 newsFragment.setArguments(bundle);
                 fragments.add(newsFragment);
             }
-            newsTitle.add(0, "推荐");
+
+            NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean channelListBean = new NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean();
+            channelListBean.name = "推荐";
+            channelList.add(0, channelListBean);
         }
 
-        VpAdapter vpAdapter = new VpAdapter(getSupportFragmentManager(), this, fragments, newsTitle);
+        VpAdapter vpAdapter = new VpAdapter(getSupportFragmentManager(), this, fragments, channelList);
         viewPager.setAdapter(vpAdapter);
     }
 
@@ -251,14 +257,23 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
      * 生活服务弹窗
      */
     private void navLifeDialog() {
-        String[] titles = {"手机归属地查询", "繁体字转换"};
+        final String[] titles = {"快递查询", "手机归属地查询", "天气查询", "列车时刻查询"};
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setItems(titles, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {
                     case 0:
-                        IntentUtils.webView(MainActivity.this, "手机归属地查询", Constant.URL_PHONT_QUERY);
+                        IntentUtils.webView(MainActivity.this, titles[which], Constant.URL_SERVICE_EXPRESSAGE);
+                        break;
+                    case 1:
+                        IntentUtils.webView(MainActivity.this, titles[which], Constant.URL_SERVICE_PHONT_QUERY);
+                        break;
+                    case 2:
+                        IntentUtils.webView(MainActivity.this, titles[which], Constant.URL_SERVICE_WEATHER);
+                        break;
+                    case 3:
+                        IntentUtils.webView(MainActivity.this, titles[which], Constant.URL_SERVICE_RAILWAY_TICKET);
                         break;
                     default:
                         break;
@@ -282,4 +297,5 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
             }
         });
     }
+
 }

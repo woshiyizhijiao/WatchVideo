@@ -1,9 +1,9 @@
 package com.wsyzj.watchvideo.business.mvp;
 
-import com.wsyzj.watchvideo.business.bean.NewsTitle;
+import com.wsyzj.watchvideo.business.bean.NewsChannel;
+import com.wsyzj.watchvideo.common.constant.Constant;
 import com.wsyzj.watchvideo.common.http.BaseRetrofit;
 import com.wsyzj.watchvideo.common.http.BaseRxSchedulers;
-import com.wsyzj.watchvideo.common.constant.Constant;
 
 import io.reactivex.Flowable;
 
@@ -15,10 +15,10 @@ import io.reactivex.Flowable;
 public class MainModel implements MainContract.Model {
 
     @Override
-    public Flowable<NewsTitle> getNewsTitle() {
+    public Flowable<NewsChannel> getNewsChannel() {
         return BaseRetrofit
-                .jingDong()
-                .getNewsTitle(Constant.JingDong.JINGDONG_KEY)
-                .compose(BaseRxSchedulers.<NewsTitle>io_main());
+                .jingDongNewsChannel()
+                .getNewsChannel(Constant.JingDong.JINGDONG_KEY)
+                .compose(BaseRxSchedulers.<NewsChannel>io_main());
     }
 }

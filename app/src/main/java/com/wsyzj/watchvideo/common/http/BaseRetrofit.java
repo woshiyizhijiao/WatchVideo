@@ -134,4 +134,13 @@ public class BaseRetrofit {
     public static BaseRetrofitApi douBan() {
         return getBaseRetrofitApi(Constant.DOUBAN_URL);
     }
+
+    /**
+     * 狗东
+     *
+     * @return
+     */
+    public static BaseRetrofitApi jingDongNewsChannel() {
+        return getBaseRetrofitApi(Constant.JingDong.JINGDONG_CHANNEL_NEWS);
+    }
 }

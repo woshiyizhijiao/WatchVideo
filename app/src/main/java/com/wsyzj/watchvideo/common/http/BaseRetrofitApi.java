@@ -5,6 +5,8 @@ import com.wsyzj.watchvideo.business.bean.Gank;
 import com.wsyzj.watchvideo.business.bean.KaiYan;
 import com.wsyzj.watchvideo.business.bean.Music;
 import com.wsyzj.watchvideo.business.bean.News;
+import com.wsyzj.watchvideo.business.bean.NewsChannel;
+import com.wsyzj.watchvideo.business.bean.NewsDetails;
 import com.wsyzj.watchvideo.business.bean.NewsTitle;
 import com.wsyzj.watchvideo.business.bean.Song;
 
@@ -110,4 +112,24 @@ public interface BaseRetrofitApi {
      */
     @POST("in_theaters")
     Flowable<DouBan> getTheatersList(@Query("apikey") String apikey, @Query("city") String city, @Query("start") int start, @Query("count") int count);
+
+    /**
+     * 获取新闻的标题
+     *
+     * @return
+     */
+    @POST("channel_news")
+    Flowable<NewsChannel> getNewsChannel(@Query("appkey") String appkey);
+
+    /**
+     * 每个新闻频道下的列表
+     *
+     * @param channelId
+     * @param channelName
+     * @param title
+     * @param page
+     * @return
+     */
+    @POST("search_news")
+    Flowable<NewsDetails> getNewsList(@Query("appkey") String appkey, @Query("channelId") String channelId, @Query("channelName") String channelName, @Query("title") String title, @Query("page") int page);
 }

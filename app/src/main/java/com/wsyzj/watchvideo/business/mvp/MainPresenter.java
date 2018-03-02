@@ -1,9 +1,9 @@
 package com.wsyzj.watchvideo.business.mvp;
 
+import com.wsyzj.watchvideo.business.bean.NewsChannel;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
-import com.wsyzj.watchvideo.business.bean.NewsTitle;
-import com.wsyzj.watchvideo.common.http.BaseTSubscriber;
 import com.wsyzj.watchvideo.common.constant.Constant;
+import com.wsyzj.watchvideo.common.http.BaseTSubscriber;
 
 /**
  * @author 焦洋
@@ -25,21 +25,20 @@ public class MainPresenter extends BasePresenter<MainContract.View, MainContract
      * 获取新闻的标题
      */
     @Override
-    public void getNewsTitle() {
-        BaseTSubscriber<NewsTitle> baseTSubscriber = mModel.getNewsTitle().subscribeWith(new BaseTSubscriber<NewsTitle>() {
-            @Override
-            public void onSuccess(Object data) {
-                NewsTitle newsTitle = (NewsTitle) data;
-                if (newsTitle.code == Constant.JingDong.JINGDONG_CODE) {
-                    NewsTitle.ResultBean result = newsTitle.result;
-                    if (result.status == Constant.JingDong.JINGDONG_STATUS) {
-                        mView.setNewsTitle(result.result);
+    public void getNewsChannel() {
+        BaseTSubscriber<NewsChannel> baseTSubscriber = mModel
+                .getNewsChannel()
+                .subscribeWith(new BaseTSubscriber<NewsChannel>() {
+                    @Override
+                    public void onSuccess(Object data) {
+                        NewsChannel newsChannel = (NewsChannel) data;
+                        if (Constant.JingDong.JINGDONG_CODE == newsChannel.code) {
+                            mView.setChannelList(newsChannel.result.showapi_res_body.channelList);
+                        } else {
+                            mView.showToast(newsChannel.msg);
+                        }
                     }
-                } else {
-                    mView.setNewsTitle(null);
-                }
-            }
-        });
+                });
         mView.addDisposable(baseTSubscriber);
     }
 }

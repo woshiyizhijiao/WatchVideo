@@ -150,6 +150,7 @@ public class DataUtils {
         list.add("当你到达山顶 请注意\n接下来要走的都是下坡路");
         list.add("天快要塌的事\n过后也觉得没什么大不了");
         list.add("实在想不明白\n事情要从多个角度看");
+        list.add("什么时候可以像你这样优秀");
         Random random = new Random();
         int i = random.nextInt(list.size());
         return list.get(i);

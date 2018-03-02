@@ -10,6 +10,7 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.ConvertUtils;
 import com.blankj.utilcode.util.SpanUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
@@ -20,7 +21,6 @@ import com.wsyzj.watchvideo.business.adapter.PreviewLargeAdapter;
 import com.wsyzj.watchvideo.business.bean.Gank;
 import com.wsyzj.watchvideo.common.base.BaseActivity;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
-import com.wsyzj.watchvideo.common.utils.DisplayUtils;
 import com.wsyzj.watchvideo.common.utils.UiUtils;
 
 import java.io.File;
@@ -129,9 +129,9 @@ public class PreviewLargeActivity extends BaseActivity implements ViewPager.OnPa
     private void setCurrentCount(int position) {
         tv_current_count.setText(new SpanUtils()
                 .append(String.valueOf(position + 1))
-                .setFontSize(DisplayUtils.sp2px(this, 20))
+                .setFontSize(ConvertUtils.sp2px(20))
                 .append("/" + String.valueOf(mGankData.size()))
-                .setFontSize(DisplayUtils.sp2px(this, 20))
+                .setFontSize(ConvertUtils.sp2px(20))
                 .create());
     }
 

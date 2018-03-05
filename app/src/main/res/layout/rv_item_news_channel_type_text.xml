@@ -4,23 +4,49 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:background="@color/white"
-              android:orientation="vertical"
-              android:padding="10dp">
+              android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:background="@color/cdddddd"/>
 
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="match_parent"
-        android:textSize="18sp"
         android:layout_height="wrap_content"
-        tools:text="这个是新闻的标题，为什么这么多新闻连个图片都没有呢"
-        android:textColor="@color/c333333"/>
+        android:lineSpacingExtra="6dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp"
+        android:textColor="@color/c333333"
+        android:textSize="18sp"
+        tools:text="这个是新闻的标题，为什么这么多新闻连个图片都没有呢"/>
 
-    <TextView
-        android:id="@+id/tv_source"
-        tools:text="这个是作者"
-        android:textSize="14sp"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:orientation="horizontal"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <TextView
+            android:id="@+id/tv_source"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            tools:text="这个是作者"/>
+
+        <TextView
+            android:id="@+id/tv_pubDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:textSize="14sp"
+            tools:text="7分钟前"/>
+
+    </LinearLayout>
 
 </LinearLayout>

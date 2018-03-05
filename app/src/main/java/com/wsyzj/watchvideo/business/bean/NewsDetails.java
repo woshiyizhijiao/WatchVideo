@@ -14,7 +14,8 @@ import java.util.List;
  */
 public class NewsDetails {
     public final static int TYPE_TEXT = 0;
-    public final static int TYPE_IMGS = 1;
+    public final static int TYPE_SINGLE = 1;
+    public final static int TYPE_IMGS = 2;
 
     /**
      * charge : false
@@ -90,10 +91,13 @@ public class NewsDetails {
 
                     @Override
                     public int getItemType() {
-                        if (imageurls.size() != 0) {
-                            return TYPE_IMGS;
-                        } else {
+                        int size = imageurls.size();
+                        if (size == 0) {
                             return TYPE_TEXT;
+                        } else if (size == 1) {
+                            return TYPE_SINGLE;
+                        } else {
+                            return TYPE_IMGS;
                         }
                     }
 

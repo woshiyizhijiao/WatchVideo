@@ -49,6 +49,7 @@ public class BasePullToRefreshView extends LinearLayout {
         smart_refresh = (SmartRefreshLayout) view.findViewById(R.id.smart_refresh);
         recycler_view = (RecyclerView) view.findViewById(R.id.recycler_view);
 
+        smart_refresh.autoRefresh();
         addView(view);
     }
 

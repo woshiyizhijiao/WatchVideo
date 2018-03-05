@@ -3,6 +3,7 @@ package com.wsyzj.watchvideo.business.fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
@@ -13,6 +14,7 @@ import com.wsyzj.watchvideo.business.mvp.NewsChannelContract;
 import com.wsyzj.watchvideo.business.mvp.NewsChannelPresenter;
 import com.wsyzj.watchvideo.common.base.BaseFragment;
 import com.wsyzj.watchvideo.common.base.mvp.BaseIPresenter;
+import com.wsyzj.watchvideo.common.utils.IntentUtils;
 import com.wsyzj.watchvideo.common.widget.BasePullToRefreshView;
 
 import java.util.List;
@@ -50,7 +52,7 @@ public class NewsChannelFragment extends BaseFragment implements NewsChannelCont
     }
 
     @Override
-    public void initView(View view) {
+    public void initView() {
         pull_to_refresh.setOnRefreshListener(this);
         pull_to_refresh.setOnRefreshLoadMoreListener(this);
     }
@@ -67,7 +69,7 @@ public class NewsChannelFragment extends BaseFragment implements NewsChannelCont
      * @param contentlist
      */
     @Override
-    public void setContentList(List<NewsDetails.ResultBean.ShowapiResBodyBean.PagebeanBean.ContentlistBean> contentlist) {
+    public void setContentList(final List<NewsDetails.ResultBean.ShowapiResBodyBean.PagebeanBean.ContentlistBean> contentlist) {
         if (mNewsChannelAdapter == null) {
             mNewsChannelAdapter = new NewsChannelAdapter(mActivity, contentlist);
             pull_to_refresh.setLayoutManager(new LinearLayoutManager(mActivity));
@@ -75,6 +77,14 @@ public class NewsChannelFragment extends BaseFragment implements NewsChannelCont
         } else {
             mNewsChannelAdapter.setNewData(contentlist);
         }
+
+        mNewsChannelAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                NewsDetails.ResultBean.ShowapiResBodyBean.PagebeanBean.ContentlistBean contentlistBean = mNewsChannelAdapter.getData().get(position);
+                IntentUtils.webView(mActivity, contentlistBean.title, contentlistBean.link);
+            }
+        });
     }
 
     @Override

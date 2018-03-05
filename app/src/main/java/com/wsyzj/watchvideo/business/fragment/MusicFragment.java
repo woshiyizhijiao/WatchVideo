@@ -9,7 +9,6 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
@@ -106,7 +105,7 @@ public class MusicFragment extends BaseFragment implements MusicContract.View {
     }
 
     @Override
-    public void initView(View view) {
+    public void initView() {
 //        pull_to_refresh.setOnRefreshListener(this);
 //        pull_to_refresh.setRequestLoadMoreListener(this);
     }

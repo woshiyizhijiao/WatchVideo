@@ -11,10 +11,8 @@ import com.wsyzj.watchvideo.business.activity.MeiRiYiWenActivity;
 import com.wsyzj.watchvideo.business.activity.PreviewLargeActivity;
 import com.wsyzj.watchvideo.business.activity.TestActivity;
 import com.wsyzj.watchvideo.business.activity.WebViewActivity;
-import com.wsyzj.watchvideo.business.bean.Gank;
 
-import java.io.Serializable;
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * @author: wsyzj
@@ -79,10 +77,10 @@ public class IntentUtils {
      *
      * @param position
      */
-    public static void previewLarge(Activity activity, int position, List<Gank.ResultsBean> ganks) {
+    public static void previewLarge(Activity activity, int position, ArrayList<String> imgUrls) {
         Intent intent = new Intent(activity, PreviewLargeActivity.class);
         intent.putExtra("position", position);
-        intent.putExtra("ganks", (Serializable) ganks);
+        intent.putStringArrayListExtra("imgUrls", imgUrls);
         startIntentActivity(activity, intent);
     }
 

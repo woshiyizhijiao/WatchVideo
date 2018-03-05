@@ -49,7 +49,7 @@ public class NewsFragment extends BaseFragment implements NewsFragmentContract.V
     }
 
     @Override
-    public void initView(View view) {
+    public void initView() {
         pull_to_refresh.setOnRefreshListener(this);
         pull_to_refresh.setOnRefreshLoadMoreListener(this);
     }

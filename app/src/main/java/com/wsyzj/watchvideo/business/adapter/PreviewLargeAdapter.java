@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 
 import com.github.chrisbanes.photoview.PhotoView;
 import com.wsyzj.watchvideo.R;
-import com.wsyzj.watchvideo.business.bean.Gank;
 import com.wsyzj.watchvideo.common.http.ImageLoader;
 import com.wsyzj.watchvideo.common.utils.UiUtils;
 
@@ -22,9 +21,9 @@ import java.util.List;
 public class PreviewLargeAdapter extends PagerAdapter {
 
     private Context mContext;
-    private List<Gank.ResultsBean> mGankData;
+    private List<String> mGankData;
 
-    public PreviewLargeAdapter(Context context, List<Gank.ResultsBean> gankData) {
+    public PreviewLargeAdapter(Context context, List<String> gankData) {
         mContext = context;
         mGankData = gankData;
     }
@@ -41,11 +40,11 @@ public class PreviewLargeAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        Gank.ResultsBean resultsBean = mGankData.get(position);
+        String url = mGankData.get(position);
 
         View view = UiUtils.inflate(R.layout.item_preview_large);
         PhotoView pv_gank = (PhotoView) view.findViewById(R.id.pv_gank);
-        ImageLoader.with(mContext, resultsBean.url, pv_gank);
+        ImageLoader.with(mContext, url, pv_gank);
         container.addView(view);
         return view;
     }

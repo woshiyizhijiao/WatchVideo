@@ -29,6 +29,7 @@ import com.wsyzj.watchvideo.common.utils.IntentUtils;
 import com.wsyzj.watchvideo.common.utils.UiUtils;
 import com.wsyzj.watchvideo.common.widget.BasePullToRefreshView;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -60,7 +61,7 @@ public class HomeFragment extends BaseFragment implements HomeContract.View, OnR
     }
 
     @Override
-    public void initView(View view) {
+    public void initView() {
         pull_to_refresh.setOnRefreshListener(this);
         pull_to_refresh.setOnRefreshLoadMoreListener(this);
     }
@@ -97,9 +98,23 @@ public class HomeFragment extends BaseFragment implements HomeContract.View, OnR
         mHomeAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                IntentUtils.previewLarge(mActivity, position, results);
+                IntentUtils.previewLarge(mActivity, position, getPreviewLargeUrl(results));
             }
         });
+    }
+
+    /**
+     * 获取预览大图的url
+     *
+     * @param results
+     * @return
+     */
+    private ArrayList<String> getPreviewLargeUrl(List<Gank.ResultsBean> results) {
+        ArrayList list = new ArrayList();
+        for (int i = 0; i < results.size(); i++) {
+            list.add(results.get(i).url);
+        }
+        return list;
     }
 
     /**

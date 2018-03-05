@@ -18,7 +18,6 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.jaeger.library.StatusBarUtil;
 import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.business.adapter.PreviewLargeAdapter;
-import com.wsyzj.watchvideo.business.bean.Gank;
 import com.wsyzj.watchvideo.common.base.BaseActivity;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
 import com.wsyzj.watchvideo.common.utils.UiUtils;
@@ -26,7 +25,7 @@ import com.wsyzj.watchvideo.common.utils.UiUtils;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.List;
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -48,7 +47,7 @@ public class PreviewLargeActivity extends BaseActivity implements ViewPager.OnPa
     TextView tv_save_photo;
 
     private int mCurrentPos;
-    private List<Gank.ResultsBean> mGankData;
+    private ArrayList<String> mImgUrls;
 
     @Override
     protected BasePresenter presenter() {
@@ -84,7 +83,7 @@ public class PreviewLargeActivity extends BaseActivity implements ViewPager.OnPa
     private void getIntentExtras() {
         Intent intent = getIntent();
         mCurrentPos = intent.getIntExtra("position", 0);
-        mGankData = (List<Gank.ResultsBean>) intent.getSerializableExtra("ganks");
+        mImgUrls = intent.getStringArrayListExtra("imgUrls");
     }
 
     @OnClick(R.id.fl_back)
@@ -102,7 +101,7 @@ public class PreviewLargeActivity extends BaseActivity implements ViewPager.OnPa
      * 设置大图的预览
      */
     private void setPreviewLargeVpData() {
-        PreviewLargeAdapter adapter = new PreviewLargeAdapter(this, mGankData);
+        PreviewLargeAdapter adapter = new PreviewLargeAdapter(this, mImgUrls);
         view_pager.setAdapter(adapter);
         view_pager.setCurrentItem(mCurrentPos);
         setCurrentCount(mCurrentPos);
@@ -130,7 +129,7 @@ public class PreviewLargeActivity extends BaseActivity implements ViewPager.OnPa
         tv_current_count.setText(new SpanUtils()
                 .append(String.valueOf(position + 1))
                 .setFontSize(ConvertUtils.sp2px(20))
-                .append("/" + String.valueOf(mGankData.size()))
+                .append("/" + String.valueOf(mImgUrls.size()))
                 .setFontSize(ConvertUtils.sp2px(20))
                 .create());
     }
@@ -141,7 +140,7 @@ public class PreviewLargeActivity extends BaseActivity implements ViewPager.OnPa
     @OnClick(R.id.tv_save_photo)
     public void savePhotoToSDCard() {
         showProgress();
-        String url = mGankData.get(view_pager.getCurrentItem()).url;
+        String url = mImgUrls.get(view_pager.getCurrentItem());
         Glide.with(this).load(url).asBitmap().into(new SimpleTarget<Bitmap>() {
             @Override
             public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {

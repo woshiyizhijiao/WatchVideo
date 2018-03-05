@@ -1,7 +1,6 @@
 package com.wsyzj.watchvideo.business.fragment;
 
 import android.support.v7.widget.LinearLayoutManager;
-import android.view.View;
 
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
@@ -43,7 +42,7 @@ public class KaiYanFragment extends BaseFragment implements KaiYanContract.View,
     }
 
     @Override
-    public void initView(View view) {
+    public void initView() {
         pull_to_refresh.setOnRefreshListener(this);
     }
 

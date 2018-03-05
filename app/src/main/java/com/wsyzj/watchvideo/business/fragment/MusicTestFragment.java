@@ -82,7 +82,7 @@ public class MusicTestFragment extends BaseFragment implements MusicTestContract
     }
 
     @Override
-    public void initView(View view) {
+    public void initView() {
 //        pull_to_refresh.setOnRefreshListener(this);
 //        pull_to_refresh.setRequestLoadMoreListener(this);
         sb_progress.setOnSeekBarChangeListener(this);

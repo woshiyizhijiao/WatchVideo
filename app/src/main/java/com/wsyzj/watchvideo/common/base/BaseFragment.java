@@ -53,7 +53,7 @@ public abstract class BaseFragment<P extends BaseIPresenter> extends Fragment im
         isViewCreated = true;
         View view = inflater.inflate(contentView(), container, false);
         ButterKnife.bind(this, view);
-        initView(view);
+
         return view;
     }
 
@@ -64,6 +64,7 @@ public abstract class BaseFragment<P extends BaseIPresenter> extends Fragment im
         if (isVisibleToUser && isViewCreated && !isLoadDataCompleted) {
             isLoadDataCompleted = true;
             createPresenter();
+            initView();
             initData();
         }
     }
@@ -74,6 +75,7 @@ public abstract class BaseFragment<P extends BaseIPresenter> extends Fragment im
         if (getUserVisibleHint()) {
             isLoadDataCompleted = true;
             createPresenter();
+            initView();
             initData();
         }
     }
@@ -138,7 +140,7 @@ public abstract class BaseFragment<P extends BaseIPresenter> extends Fragment im
 
     public abstract int contentView();
 
-    public abstract void initView(View view);
+    public abstract void initView();
 
     public abstract void initData();
 }

@@ -257,7 +257,7 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
      * 生活服务弹窗
      */
     private void navLifeDialog() {
-        final String[] titles = {"快递查询", "手机归属地查询", "天气查询", "列车时刻查询"};
+        final String[] titles = {"快递查询", "天气查询", "列车时刻查询", "手机归属地查询"};
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setItems(titles, new DialogInterface.OnClickListener() {
             @Override
@@ -267,13 +267,13 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
                         IntentUtils.webView(MainActivity.this, titles[which], Constant.URL_SERVICE_EXPRESSAGE);
                         break;
                     case 1:
-                        IntentUtils.webView(MainActivity.this, titles[which], Constant.URL_SERVICE_PHONT_QUERY);
-                        break;
-                    case 2:
                         IntentUtils.webView(MainActivity.this, titles[which], Constant.URL_SERVICE_WEATHER);
                         break;
-                    case 3:
+                    case 2:
                         IntentUtils.webView(MainActivity.this, titles[which], Constant.URL_SERVICE_RAILWAY_TICKET);
+                        break;
+                    case 3:
+                        IntentUtils.webView(MainActivity.this, titles[which], Constant.URL_SERVICE_PHONT_QUERY);
                         break;
                     default:
                         break;

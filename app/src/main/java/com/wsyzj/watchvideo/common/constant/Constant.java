@@ -21,10 +21,13 @@ public class Constant {
 
     // 小游戏链接的h5
     public final static String URL_GAME_H5 = "http://www.4399.com/";
+    public final static String URL_SERVICE_BAIDU = "http://www.baidu.com";
+    public final static String URL_SERVICE_TRANSLATE = "http://m.youdao.com/translate?vendor=fanyi.web";
     public final static String URL_SERVICE_EXPRESSAGE = "http://m.ip138.com/kuaidi/";
     public final static String URL_SERVICE_PHONT_QUERY = "http://m.ip138.com/mobile.html";
     public final static String URL_SERVICE_WEATHER = "http://qq.ip138.com/tianqi/";
     public final static String URL_SERVICE_RAILWAY_TICKET = "http://qq.ip138.com/huoche/";
+    public final static String URL_SERVICE_JIANFANZH = "http://www.hao123.com/haoserver/jianfanzh.htm";
 
     /**
      * 网络请求

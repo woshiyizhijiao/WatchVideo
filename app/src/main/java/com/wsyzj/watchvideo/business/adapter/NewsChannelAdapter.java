@@ -3,7 +3,6 @@ package com.wsyzj.watchvideo.business.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -59,7 +58,7 @@ public class NewsChannelAdapter extends BaseMultiItemQuickAdapter<NewsDetails.Re
                 final List<NewsDetails.ResultBean.ShowapiResBodyBean.PagebeanBean.ContentlistBean.ImageurlsBean> imageurls = item.imageurls;
                 for (int i = 0; i < size; i++) {
                     ImageView imageView = new ImageView(mContext);
-                    ViewGroup.MarginLayoutParams lp = new ViewGroup.MarginLayoutParams(ConvertUtils.dp2px(130), ConvertUtils.dp2px(100));
+                    LinearLayout.MarginLayoutParams lp = new LinearLayout.MarginLayoutParams(ConvertUtils.dp2px(133), ConvertUtils.dp2px(100));
                     lp.leftMargin = ConvertUtils.dp2px(10);
                     lp.rightMargin = (i == size - 1) ? ConvertUtils.dp2px(10) : 0;
                     imageView.setLayoutParams(lp);
@@ -86,25 +85,25 @@ public class NewsChannelAdapter extends BaseMultiItemQuickAdapter<NewsDetails.Re
      */
     private String countPubDate(String pubDate) {
         long second = 1000;
-        long minute = 1000 * 60;
+        long minute = second * 60;
         long hour = minute * 24;
         long month = hour * 30;
+        long year = month * 12;
 
         long nowMills = TimeUtils.getNowMills();
         long pubDateMillis = TimeUtils.string2Millis(pubDate);
 
         long time = nowMills - pubDateMillis;
-
-        if (time < second) {
+        if (time < minute) {
             return "刚刚";
-        } else if (time < minute) {
-            return time / minute + "分钟前";
         } else if (time < hour) {
-            return time / hour + "小时前";
+            return (time / minute) + "分钟前";
         } else if (time < month) {
+            return time / hour + "小时前";
+        } else if (time < year) {
             return time / month + "月前";
         } else {
-            return "刚刚";
+            return "未知";
         }
     }
 

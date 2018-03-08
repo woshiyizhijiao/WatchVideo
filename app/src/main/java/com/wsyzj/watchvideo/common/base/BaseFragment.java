@@ -2,6 +2,7 @@ package com.wsyzj.watchvideo.common.base;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -118,12 +119,16 @@ public abstract class BaseFragment<P extends BaseIPresenter> extends Fragment im
      */
     @Override
     public void showToast(final String message) {
-        mActivity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                ToastUtils.showShort(message);
-            }
-        });
+        if (mActivity.getMainLooper() != Looper.myLooper()) {
+            mActivity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    ToastUtils.showShort(message);
+                }
+            });
+        } else {
+            ToastUtils.showShort(message);
+        }
     }
 
     /**

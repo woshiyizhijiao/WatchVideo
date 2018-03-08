@@ -2,6 +2,7 @@ package com.wsyzj.watchvideo.common.base;
 
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -170,8 +171,17 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
      * @param message
      */
     @Override
-    public void showToast(String message) {
-        ToastUtils.showShort(message);
+    public void showToast(final String message) {
+        if (Looper.getMainLooper() == Looper.myLooper()) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    ToastUtils.showShort(message);
+                }
+            });
+        } else {
+            ToastUtils.showShort(message);
+        }
     }
 
     /**

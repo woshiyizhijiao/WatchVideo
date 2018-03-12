@@ -6,13 +6,17 @@ import android.net.Uri;
 import android.provider.Settings;
 
 import com.wsyzj.watchvideo.R;
+import com.wsyzj.watchvideo.business.activity.ChannelManagerActivity;
 import com.wsyzj.watchvideo.business.activity.MainActivity;
 import com.wsyzj.watchvideo.business.activity.MeiRiYiWenActivity;
 import com.wsyzj.watchvideo.business.activity.PreviewLargeActivity;
 import com.wsyzj.watchvideo.business.activity.TestActivity;
 import com.wsyzj.watchvideo.business.activity.WebViewActivity;
+import com.wsyzj.watchvideo.business.bean.NewsChannel;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author: wsyzj
@@ -21,7 +25,7 @@ import java.util.ArrayList;
  */
 public class IntentUtils {
 
-    private static void defaultStartActivity(Activity activity, Class clazz) {
+    private static void startActivity(Activity activity, Class clazz) {
         activity.startActivity(new Intent(activity, clazz));
         activity.overridePendingTransition(R.anim.anim_act_translate_enter_in, R.anim.anim_act_translate_enter_out);
     }
@@ -44,7 +48,7 @@ public class IntentUtils {
      * 到主界面
      */
     public static void main(Activity activity) {
-        defaultStartActivity(activity, MainActivity.class);
+        startActivity(activity, MainActivity.class);
     }
 
     /**
@@ -91,6 +95,15 @@ public class IntentUtils {
      */
     public static void test(Activity activity) {
         Intent intent = new Intent(activity, TestActivity.class);
+        startIntentActivity(activity, intent);
+    }
+
+    /**
+     * 频道管理
+     */
+    public static void channelManager(Activity activity, List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> newsChannel) {
+        Intent intent = new Intent(activity, ChannelManagerActivity.class);
+        intent.putExtra("newsChannel", (Serializable) newsChannel);
         startIntentActivity(activity, intent);
     }
 }

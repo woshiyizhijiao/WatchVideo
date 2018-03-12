@@ -46,6 +46,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * @author 焦洋
@@ -133,6 +134,17 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
             drawer_layout.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+        }
+    }
+
+    @OnClick({R.id.iv_channel_manager})
+    public void bkOnClick(View view) {
+        switch (view.getId()) {
+            case R.id.iv_channel_manager:
+
+                break;
+            default:
+                break;
         }
     }
 
@@ -257,7 +269,7 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
      * 生活服务弹窗
      */
     private void navLifeDialog() {
-        final String[] titles = {"百度一下", "翻译", "快递查询", "天气查询", "列车时刻查询", "手机归属地查询","简繁体字转换"};
+        final String[] titles = {"百度一下", "翻译", "快递查询", "天气查询", "列车时刻查询", "手机归属地查询", "简繁体字转换"};
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setItems(titles, new DialogInterface.OnClickListener() {
             @Override

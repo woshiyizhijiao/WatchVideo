@@ -19,6 +19,8 @@ public class MainPresenter extends BasePresenter<MainContract.View, MainContract
     private MainContract.View mView;
     private MainContract.Model mModel;
 
+    private List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> mNewChannels = new ArrayList<>();
+
     public MainPresenter(MainContract.View view) {
         mView = view;
         mModel = new MainModel();
@@ -36,7 +38,8 @@ public class MainPresenter extends BasePresenter<MainContract.View, MainContract
                     public void onSuccess(Object data) {
                         NewsChannel newsChannel = (NewsChannel) data;
                         if (Constant.JingDong.JINGDONG_CODE == newsChannel.code) {
-                            mView.setChannelList(getNewChannels(newsChannel.result.showapi_res_body.channelList));
+                            mNewChannels = getNewChannels(newsChannel.result.showapi_res_body.channelList);
+                            mView.setChannelList(mNewChannels);
                         } else {
                             mView.showToast(newsChannel.msg);
                         }

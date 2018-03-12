@@ -1,5 +1,6 @@
 package com.wsyzj.watchvideo.business.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -46,7 +47,7 @@ public class NewsChannel {
             public int totalNum;
             public List<ChannelListBean> channelList;
 
-            public static class ChannelListBean {
+            public static class ChannelListBean implements Serializable {
                 /**
                  * channelId : 5572a108b3cdc86cf39001cd
                  * name : 国内焦点

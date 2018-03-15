@@ -38,13 +38,20 @@
 
                 </android.support.design.widget.TabLayout>
 
-                <ImageView
-                    android:id="@+id/iv_channel_manager"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
+                <FrameLayout
+                    android:id="@+id/fl_channel_manager"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
                     android:layout_gravity="right|center_vertical"
-                    android:layout_marginRight="5dp"
-                    android:src="@drawable/icon_channel_manager"/>
+                    android:background="@color/colorPrimary">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/icon_news_channel_manager"/>
+
+                </FrameLayout>
 
             </FrameLayout>
 

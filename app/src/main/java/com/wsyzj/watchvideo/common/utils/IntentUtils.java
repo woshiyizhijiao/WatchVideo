@@ -12,11 +12,8 @@ import com.wsyzj.watchvideo.business.activity.MeiRiYiWenActivity;
 import com.wsyzj.watchvideo.business.activity.PreviewLargeActivity;
 import com.wsyzj.watchvideo.business.activity.TestActivity;
 import com.wsyzj.watchvideo.business.activity.WebViewActivity;
-import com.wsyzj.watchvideo.business.bean.NewsChannel;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author: wsyzj
@@ -101,9 +98,7 @@ public class IntentUtils {
     /**
      * 频道管理
      */
-    public static void channelManager(Activity activity, List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> newsChannel) {
-        Intent intent = new Intent(activity, ChannelManagerActivity.class);
-        intent.putExtra("newsChannel", (Serializable) newsChannel);
-        startIntentActivity(activity, intent);
+    public static void channelManager(Activity activity) {
+        startActivity(activity, ChannelManagerActivity.class);
     }
 }

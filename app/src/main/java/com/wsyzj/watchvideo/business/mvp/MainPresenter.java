@@ -1,9 +1,14 @@
 package com.wsyzj.watchvideo.business.mvp;
 
+import android.content.Context;
+
+import com.google.gson.Gson;
 import com.wsyzj.watchvideo.business.bean.NewsChannel;
+import com.wsyzj.watchvideo.business.utils.DataUtils;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
 import com.wsyzj.watchvideo.common.constant.Constant;
 import com.wsyzj.watchvideo.common.http.BaseTSubscriber;
+import com.wsyzj.watchvideo.common.utils.StorageUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,22 +35,30 @@ public class MainPresenter extends BasePresenter<MainContract.View, MainContract
      * 获取新闻的标题
      */
     @Override
-    public void getNewsChannel() {
-        BaseTSubscriber<NewsChannel> baseTSubscriber = mModel
-                .getNewsChannel()
-                .subscribeWith(new BaseTSubscriber<NewsChannel>() {
-                    @Override
-                    public void onSuccess(Object data) {
-                        NewsChannel newsChannel = (NewsChannel) data;
-                        if (Constant.JingDong.JINGDONG_CODE == newsChannel.code) {
-                            mNewChannels = getNewChannels(newsChannel.result.showapi_res_body.channelList);
-                            mView.setChannelList(mNewChannels);
-                        } else {
-                            mView.showToast(newsChannel.msg);
+    public void getNewsChannel(Context context) {
+        List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> newsChannelTitles = StorageUtils.getNewsChannelTitles(context);
+        if (newsChannelTitles.size() == 1) {
+            BaseTSubscriber<NewsChannel> baseTSubscriber = mModel
+                    .getNewsChannel()
+                    .subscribeWith(new BaseTSubscriber<NewsChannel>() {
+                        @Override
+                        public void onSuccess(Object data) {
+                            NewsChannel newsChannel = (NewsChannel) data;
+                            if (Constant.JingDong.JINGDONG_CODE == newsChannel.code) {
+                                Gson gson = new Gson();
+                                mNewChannels = getNewChannels(newsChannel.result.showapi_res_body.channelList);
+                                mView.setChannelList(mNewChannels);
+                                StorageUtils.putNewsChannelTitles(context, mNewChannels);
+                            } else {
+                                mView.showToast(newsChannel.msg);
+                            }
                         }
-                    }
-                });
-        mView.addDisposable(baseTSubscriber);
+                    });
+            mView.addDisposable(baseTSubscriber);
+        } else {
+            mNewChannels = DataUtils.getSelectNewsChannel(newsChannelTitles);
+            mView.setChannelList(mNewChannels);
+        }
     }
 
     /**
@@ -61,6 +74,12 @@ public class MainPresenter extends BasePresenter<MainContract.View, MainContract
                 newChannel.add(channelListBean);
             }
         }
+
+        NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean channelListBean = new NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean();
+        channelListBean.name = "推荐";
+        channelListBean.channelId = "0";
+        channelListBean.isSelect = true;
+        newChannel.add(0, channelListBean);
         return newChannel;
     }
 }

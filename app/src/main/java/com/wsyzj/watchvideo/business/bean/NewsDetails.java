@@ -13,6 +13,7 @@ import java.util.List;
  * </pre>
  */
 public class NewsDetails {
+
     public final static int TYPE_TEXT = 0;
     public final static int TYPE_SINGLE = 1;
     public final static int TYPE_IMGS = 2;

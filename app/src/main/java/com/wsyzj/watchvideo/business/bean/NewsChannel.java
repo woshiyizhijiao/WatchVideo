@@ -1,5 +1,10 @@
 package com.wsyzj.watchvideo.business.bean;
 
+import android.text.TextUtils;
+
+import com.chad.library.adapter.base.entity.MultiItemEntity;
+import com.wsyzj.watchvideo.business.mvp.ChannelManagerPresenter;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -12,6 +17,11 @@ import java.util.List;
  * </pre>
  */
 public class NewsChannel {
+
+    public static final int TYPE_MY_TEXT = 0;
+    public static final int TYPE_MY_CHANNEL = 1;
+    public static final int TYPE_RECOMMEND_TEXT = 2;
+    public static final int TYPE_RECOMMEND_CHANNEL = 3;
 
     /**
      * code : 10000
@@ -47,7 +57,7 @@ public class NewsChannel {
             public int totalNum;
             public List<ChannelListBean> channelList;
 
-            public static class ChannelListBean implements Serializable {
+            public static class ChannelListBean implements Serializable, MultiItemEntity {
                 /**
                  * channelId : 5572a108b3cdc86cf39001cd
                  * name : 国内焦点
@@ -55,8 +65,20 @@ public class NewsChannel {
 
                 public String channelId;
                 public String name;
+                public boolean isSelect = true;
 
-
+                @Override
+                public int getItemType() {
+                    if (TextUtils.equals(name, ChannelManagerPresenter.CHANNEL_MANAGER_MY_TEXT)) {
+                        return TYPE_MY_TEXT;
+                    } else if (TextUtils.equals(name, ChannelManagerPresenter.CHANNEL_MANAGER_RECOMMEND_TEXT)) {
+                        return TYPE_RECOMMEND_TEXT;
+                    } else if (isSelect) {
+                        return TYPE_MY_CHANNEL;
+                    } else {
+                        return TYPE_RECOMMEND_CHANNEL;
+                    }
+                }
             }
         }
     }

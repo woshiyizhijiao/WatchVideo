@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#388E3C</color>
     <color name="colorAccent">#4CAF50</color>
 
+    <color name="transparent">@android:color/transparent</color>
     <color name="black">#000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="red">#FFFF0000</color>
@@ -22,6 +23,7 @@
     <color name="c777777">#777777</color>
     <color name="c888888">#888888</color>
     <color name="c999999">#999999</color>
+    <color name="ce6e6e6">#e6e6e6</color>
     <color name="c20000000">#20000000</color>
 
     <color name="cff5252">#FF5252</color>

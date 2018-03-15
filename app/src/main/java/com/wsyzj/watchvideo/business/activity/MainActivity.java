@@ -12,6 +12,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -117,7 +118,7 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-        mPresenter.getNewsChannel();
+        mPresenter.getNewsChannel(this);
         pgyUpdateApp();
         setNavHeaderBg();
     }
@@ -137,11 +138,11 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
         }
     }
 
-    @OnClick({R.id.iv_channel_manager})
+    @OnClick({R.id.fl_channel_manager})
     public void bkOnClick(View view) {
         switch (view.getId()) {
-            case R.id.iv_channel_manager:
-
+            case R.id.fl_channel_manager:
+                IntentUtils.channelManager(this);
                 break;
             default:
                 break;
@@ -156,25 +157,23 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
     @Override
     public void setChannelList(List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> channelList) {
         List<BaseFragment> fragments = new ArrayList<>();
-        fragments.add(new HomeFragment());
 
         if (channelList != null) {
             for (int i = 0; i < channelList.size(); i++) {
                 NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean channelListBean = channelList.get(i);
                 tabLayout.addTab(tabLayout.newTab().setText(channelListBean.name));
+                if (TextUtils.equals("推荐", channelListBean.name)) {
+                    fragments.add(new HomeFragment());
+                } else {
+                    Bundle bundle = new Bundle();
+                    bundle.putString(NewsChannelFragment.BUNDLE_CHANNEL_ID, channelListBean.channelId);
+                    bundle.putString(NewsChannelFragment.BUNDLE_CHANNEL_NAME, channelListBean.name);
 
-                Bundle bundle = new Bundle();
-                bundle.putString(NewsChannelFragment.BUNDLE_CHANNEL_ID, channelListBean.channelId);
-                bundle.putString(NewsChannelFragment.BUNDLE_CHANNEL_NAME, channelListBean.name);
-
-                NewsChannelFragment newsFragment = new NewsChannelFragment();
-                newsFragment.setArguments(bundle);
-                fragments.add(newsFragment);
+                    NewsChannelFragment newsFragment = new NewsChannelFragment();
+                    newsFragment.setArguments(bundle);
+                    fragments.add(newsFragment);
+                }
             }
-
-            NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean channelListBean = new NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean();
-            channelListBean.name = "推荐";
-            channelList.add(0, channelListBean);
         }
 
         VpAdapter vpAdapter = new VpAdapter(getSupportFragmentManager(), this, fragments, channelList);

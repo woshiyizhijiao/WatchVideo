@@ -2,9 +2,12 @@ package com.wsyzj.watchvideo.business.mvp;
 
 import android.app.Activity;
 
+import com.wsyzj.watchvideo.business.bean.NewsChannel;
 import com.wsyzj.watchvideo.common.base.mvp.BaseIModel;
 import com.wsyzj.watchvideo.common.base.mvp.BaseIPresenter;
 import com.wsyzj.watchvideo.common.base.mvp.BaseIView;
+
+import java.util.List;
 
 /**
  * <pre>
@@ -17,7 +20,7 @@ import com.wsyzj.watchvideo.common.base.mvp.BaseIView;
 public class ChannelManagerContract {
 
     public interface View extends BaseIView {
-
+        void setChannelManagerData(List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> channelManagerData);
     }
 
     public interface Model extends BaseIModel {
@@ -25,6 +28,6 @@ public class ChannelManagerContract {
     }
 
     interface Presenter extends BaseIPresenter<View> {
-        void getExtras(Activity activity);
+        void getChannelManagerData(Activity activity);
     }
 }

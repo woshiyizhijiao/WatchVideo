@@ -1,5 +1,7 @@
 package com.wsyzj.watchvideo.business.utils;
 
+import com.wsyzj.watchvideo.business.bean.NewsChannel;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -154,5 +156,21 @@ public class DataUtils {
         Random random = new Random();
         int i = random.nextInt(list.size());
         return list.get(i);
+    }
+
+    /**
+     * 获取用户已经选择的新闻标题集合
+     *
+     * @return
+     */
+    public static List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> getSelectNewsChannel(List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> channelList) {
+        List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> selectChannel = new ArrayList<>();
+        for (int i = 0; i < channelList.size(); i++) {
+            NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean channelListBean = channelList.get(i);
+            if (channelListBean.isSelect) {
+                selectChannel.add(channelListBean);
+            }
+        }
+        return selectChannel;
     }
 }

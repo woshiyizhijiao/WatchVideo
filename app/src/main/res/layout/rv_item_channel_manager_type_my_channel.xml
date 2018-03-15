@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="60dp"
+             android:layout_gravity="center"
+             android:background="@color/white">
+
+    <TextView
+        android:id="@+id/tv_channel_name"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp"
+        android:background="@drawable/shape_rectangle_corners_4dp_solid_e6e6e6"
+        android:gravity="center"
+        android:text="推荐"
+        android:textColor="@color/c222222"
+        android:textSize="16sp"/>
+
+
+    <ImageView
+        android:id="@+id/iv_delete"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_gravity="right"
+        android:src="@drawable/icon_channel_manager_delete"/>
+
+</FrameLayout>

@@ -1,5 +1,7 @@
 package com.wsyzj.watchvideo.business.mvp;
 
+import android.content.Context;
+
 import com.wsyzj.watchvideo.business.bean.NewsChannel;
 import com.wsyzj.watchvideo.common.base.mvp.BaseIModel;
 import com.wsyzj.watchvideo.common.base.mvp.BaseIPresenter;
@@ -24,6 +26,6 @@ public class MainContract {
     }
 
     interface Presenter extends BaseIPresenter<View> {
-        void getNewsChannel();
+        void getNewsChannel(Context context);
     }
 }

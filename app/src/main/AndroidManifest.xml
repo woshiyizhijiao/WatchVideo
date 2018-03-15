@@ -19,6 +19,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        //
+        ======================================================================================界面注册
         // 闪屏
         <activity android:name=".business.activity.SplashActivity">
             <intent-filter>
@@ -48,14 +50,19 @@
         // 测试
         <activity android:name=".business.activity.TestActivity"/>
 
-        // ----服务相关
+        // 频道管理界面
+        <activity android:name=".business.activity.ChannelManagerActivity"/>
+
+        //
+        =======================================================================================服务相关
         // 音乐播放服务
         <service android:name=".business.service.PlayMusicTestService"/>
 
         // 音乐播放服务
         <service android:name=".business.service.PlayMusicService"/>
 
-        // 第三方sdk
+        //
+        =======================================================================================第三方sdk
         // 有米
         <provider
             android:name="android.support.v4.content.FileProvider"

@@ -43,7 +43,7 @@ public class StorageUtils {
             NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean channelListBean = new NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean();
             channelListBean.name = "推荐";
             channelListBean.channelId = "0";
-            channelListBean.isSelect = true;
+            channelListBean.isMyChannel = true;
             channelList.add(0, channelListBean);
             return channelList;
         } else {

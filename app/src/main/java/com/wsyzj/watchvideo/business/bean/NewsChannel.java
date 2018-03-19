@@ -65,7 +65,7 @@ public class NewsChannel {
 
                 public String channelId;
                 public String name;
-                public boolean isSelect = true;
+                public boolean isMyChannel = true;
 
                 @Override
                 public int getItemType() {
@@ -73,7 +73,7 @@ public class NewsChannel {
                         return TYPE_MY_TEXT;
                     } else if (TextUtils.equals(name, ChannelManagerPresenter.CHANNEL_MANAGER_RECOMMEND_TEXT)) {
                         return TYPE_RECOMMEND_TEXT;
-                    } else if (isSelect) {
+                    } else if (isMyChannel) {
                         return TYPE_MY_CHANNEL;
                     } else {
                         return TYPE_RECOMMEND_CHANNEL;

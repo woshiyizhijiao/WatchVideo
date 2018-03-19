@@ -63,7 +63,7 @@ public class ChannelManagerActivity extends BaseActivity implements ChannelManag
     @Override
     public void setChannelManagerData(List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> channelManagerData) {
         if (mChannelManagerAdapter == null) {
-            mChannelManagerAdapter = new ChannelManagerAdapter(channelManagerData);
+            mChannelManagerAdapter = new ChannelManagerAdapter(recycler_view, channelManagerData);
             recycler_view.setLayoutManager(new GridLayoutManager(this, 4));
             recycler_view.setAdapter(mChannelManagerAdapter);
         } else {

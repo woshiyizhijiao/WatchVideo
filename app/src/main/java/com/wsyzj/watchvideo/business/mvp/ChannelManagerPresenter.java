@@ -66,7 +66,7 @@ public class ChannelManagerPresenter extends BasePresenter<ChannelManagerContrac
         List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> recommendChannel = new ArrayList<>();
         for (int i = 0; i < newsChannelTitles.size(); i++) {
             NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean channelListBean = newsChannelTitles.get(i);
-            if (channelListBean.isSelect) {
+            if (channelListBean.isMyChannel) {
                 myChannel.add(channelListBean);
             } else {
                 recommendChannel.add(channelListBean);

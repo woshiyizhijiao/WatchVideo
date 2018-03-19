@@ -78,7 +78,7 @@ public class MainPresenter extends BasePresenter<MainContract.View, MainContract
         NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean channelListBean = new NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean();
         channelListBean.name = "推荐";
         channelListBean.channelId = "0";
-        channelListBean.isSelect = true;
+        channelListBean.isMyChannel = true;
         newChannel.add(0, channelListBean);
         return newChannel;
     }

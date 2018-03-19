@@ -1,7 +1,7 @@
 package com.wsyzj.watchvideo.business.adapter;
 
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
@@ -22,10 +22,15 @@ import java.util.List;
  */
 public class ChannelManagerAdapter extends BaseMultiItemQuickAdapter<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean, BaseViewHolder> {
 
+    private static final int MY_TEXT_COUNT = 1;
+    private static final int RECOMMEND_TEXT_COUNT = 1;
+
+    private RecyclerView mRecyclerView;
     private boolean isEditMode = true;  // 是否为编辑状态
 
-    public ChannelManagerAdapter(List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> data) {
+    public ChannelManagerAdapter(RecyclerView recyclerView, List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> data) {
         super(data);
+        mRecyclerView = recyclerView;
         addItemType(NewsChannel.TYPE_MY_TEXT, R.layout.rv_item_channel_manager_type_text);
         addItemType(NewsChannel.TYPE_MY_CHANNEL, R.layout.rv_item_channel_manager_type_my_channel);
         addItemType(NewsChannel.TYPE_RECOMMEND_TEXT, R.layout.rv_item_channel_manager_type_text);
@@ -33,14 +38,12 @@ public class ChannelManagerAdapter extends BaseMultiItemQuickAdapter<NewsChannel
     }
 
     @Override
-    public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return super.onCreateViewHolder(parent, viewType);
-    }
-
-    @Override
     protected void convert(BaseViewHolder helper, NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean item) {
         int itemViewType = helper.getItemViewType();
         helper.setText(R.id.tv_channel_name, item.name.replace("最新", ""));
+
+        helper.getAdapterPosition();
+        helper.getLayoutPosition();
 
         switch (itemViewType) {
             case NewsChannel.TYPE_MY_TEXT:
@@ -71,7 +74,6 @@ public class ChannelManagerAdapter extends BaseMultiItemQuickAdapter<NewsChannel
         setEditText(tv_edit);
         helper.setVisible(R.id.tv_edit, true);
 
-
         helper.getView(R.id.tv_edit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,6 +99,10 @@ public class ChannelManagerAdapter extends BaseMultiItemQuickAdapter<NewsChannel
             @Override
             public void onClick(View v) {
                 if (isEditMode) {
+                    if (adapterPosition != MY_TEXT_COUNT) {
+                        moveMyToRecommend(adapterPosition);
+                    }
+                } else {
 
                 }
             }
@@ -120,7 +126,13 @@ public class ChannelManagerAdapter extends BaseMultiItemQuickAdapter<NewsChannel
      * @param item
      */
     private void typeRecommendChannel(BaseViewHolder helper, NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean item) {
-
+        int adapterPosition = helper.getAdapterPosition();
+        helper.getView(R.id.card_recommend).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                moveRecommendToMy(adapterPosition);
+            }
+        });
     }
 
     /**
@@ -128,5 +140,29 @@ public class ChannelManagerAdapter extends BaseMultiItemQuickAdapter<NewsChannel
      */
     private void setEditText(TextView textView) {
         textView.setText(isEditMode ? "完成" : "编辑");
+    }
+
+    /**
+     * 我的频道>>推荐频道
+     *
+     * @param adapterPosition
+     */
+    private void moveMyToRecommend(int adapterPosition) {
+        NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean channelListBean = mData.get(adapterPosition);
+        channelListBean.isMyChannel = false;
+        mData.remove(adapterPosition);
+        mData.add(channelListBean);
+        notifyDataSetChanged();
+    }
+
+    /**
+     * 推荐频道>>我的频道
+     */
+    private void moveRecommendToMy(int adapterPosition) {
+        NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean channelListBean = mData.get(adapterPosition);
+        channelListBean.isMyChannel = true;
+        mData.remove(adapterPosition);
+        mData.add(MY_TEXT_COUNT + 1, channelListBean);
+        notifyDataSetChanged();
     }
 }

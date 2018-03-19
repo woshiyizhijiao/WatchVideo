@@ -167,7 +167,7 @@ public class DataUtils {
         List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> selectChannel = new ArrayList<>();
         for (int i = 0; i < channelList.size(); i++) {
             NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean channelListBean = channelList.get(i);
-            if (channelListBean.isSelect) {
+            if (channelListBean.isMyChannel) {
                 selectChannel.add(channelListBean);
             }
         }

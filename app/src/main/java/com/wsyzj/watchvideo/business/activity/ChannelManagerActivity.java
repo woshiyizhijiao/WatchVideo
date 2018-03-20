@@ -3,11 +3,12 @@ package com.wsyzj.watchvideo.business.activity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.wsyzj.watchvideo.R;
-import com.wsyzj.watchvideo.business.adapter.ChannelManagerAdapter;
+import com.wsyzj.watchvideo.business.adapter.ChannelManagerTestAdapter;
 import com.wsyzj.watchvideo.business.bean.NewsChannel;
+import com.wsyzj.watchvideo.business.helper.ItemDragHelperCallback;
 import com.wsyzj.watchvideo.business.mvp.ChannelManagerContract;
 import com.wsyzj.watchvideo.business.mvp.ChannelManagerPresenter;
 import com.wsyzj.watchvideo.common.base.BaseActivity;
@@ -31,7 +32,7 @@ public class ChannelManagerActivity extends BaseActivity implements ChannelManag
     RecyclerView recycler_view;
 
     private ChannelManagerPresenter mPresenter;
-    private ChannelManagerAdapter mChannelManagerAdapter;
+    private ChannelManagerTestAdapter mChannelManagerAdapter;
 
     @Override
     protected BasePresenter presenter() {
@@ -58,33 +59,29 @@ public class ChannelManagerActivity extends BaseActivity implements ChannelManag
     /**
      * 设置频道管理数据
      *
-     * @param channelManagerData
+     * @param myChannel
+     * @param recommendChannel
      */
     @Override
-    public void setChannelManagerData(List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> channelManagerData) {
+    public void setChannelManagerData(List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> myChannel, List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> recommendChannel) {
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 4);
+        recycler_view.setLayoutManager(gridLayoutManager);
         if (mChannelManagerAdapter == null) {
-            mChannelManagerAdapter = new ChannelManagerAdapter(recycler_view, channelManagerData);
-            recycler_view.setLayoutManager(new GridLayoutManager(this, 4));
+            ItemDragHelperCallback callback = new ItemDragHelperCallback();
+            ItemTouchHelper helper = new ItemTouchHelper(callback);
+            helper.attachToRecyclerView(recycler_view);
+
+            mChannelManagerAdapter = new ChannelManagerTestAdapter(helper, myChannel, recommendChannel);
             recycler_view.setAdapter(mChannelManagerAdapter);
         } else {
-            mChannelManagerAdapter.setNewData(channelManagerData);
+            mChannelManagerAdapter.refreshData(myChannel, recommendChannel);
         }
-        mChannelManagerAdapter.setSpanSizeLookup(new BaseQuickAdapter.SpanSizeLookup() {
-            @Override
-            public int getSpanSize(GridLayoutManager gridLayoutManager, int position) {
-                int itemType = mChannelManagerAdapter.getData().get(position).getItemType();
 
-                if (itemType == NewsChannel.TYPE_MY_TEXT) {
-                    return 4;
-                } else if (itemType == NewsChannel.TYPE_RECOMMEND_TEXT) {
-                    return 4;
-                } else if (itemType == NewsChannel.TYPE_MY_CHANNEL) {
-                    return 1;
-                } else if (itemType == NewsChannel.TYPE_RECOMMEND_CHANNEL) {
-                    return 1;
-                } else {
-                    return 1;
-                }
+        gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                int itemViewType = mChannelManagerAdapter.getItemViewType(position);
+                return itemViewType == ChannelManagerTestAdapter.TYPE_MY_TEXT || itemViewType == ChannelManagerTestAdapter.TYPE_RECOMMEND_TEXT ? 4 : 1;
             }
         });
     }

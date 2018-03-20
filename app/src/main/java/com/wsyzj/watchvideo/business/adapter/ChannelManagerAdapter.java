@@ -25,12 +25,12 @@ public class ChannelManagerAdapter extends BaseMultiItemQuickAdapter<NewsChannel
     private static final int MY_TEXT_COUNT = 1;
     private static final int RECOMMEND_TEXT_COUNT = 1;
 
-    private RecyclerView mRecyclerView;
+    private RecyclerView recycler_view;
     private boolean isEditMode = true;  // 是否为编辑状态
 
     public ChannelManagerAdapter(RecyclerView recyclerView, List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> data) {
         super(data);
-        mRecyclerView = recyclerView;
+        recycler_view = recyclerView;
         addItemType(NewsChannel.TYPE_MY_TEXT, R.layout.rv_item_channel_manager_type_text);
         addItemType(NewsChannel.TYPE_MY_CHANNEL, R.layout.rv_item_channel_manager_type_my_channel);
         addItemType(NewsChannel.TYPE_RECOMMEND_TEXT, R.layout.rv_item_channel_manager_type_text);
@@ -99,9 +99,8 @@ public class ChannelManagerAdapter extends BaseMultiItemQuickAdapter<NewsChannel
             @Override
             public void onClick(View v) {
                 if (isEditMode) {
-                    if (adapterPosition != MY_TEXT_COUNT) {
-                        moveMyToRecommend(adapterPosition);
-                    }
+                    RecyclerView.LayoutManager layoutManager = recycler_view.getLayoutManager();
+
                 } else {
 
                 }

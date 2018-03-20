@@ -48,7 +48,7 @@ public class Constant {
      */
     public static class JingDong {
         public final static String JINGDONG_URL = "https://way.jd.com/jisuapi/";
-        public final static String JINGDONG_KEY = "9280e20dec44795b1a0bb724a24834c3";
+        public final static String JINGDONG_KEY = "442def34e0aa88774115d9a93dbabb28";
         public final static int JINGDONG_CODE = 10000;
         public final static int JINGDONG_STATUS = 0;
 

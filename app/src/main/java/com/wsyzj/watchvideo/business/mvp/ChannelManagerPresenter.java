@@ -26,8 +26,6 @@ public class ChannelManagerPresenter extends BasePresenter<ChannelManagerContrac
     private ChannelManagerContract.View mView;
     private ChannelManagerContract.Model mModel;
 
-    private List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> mNewsChannel;
-
     public ChannelManagerPresenter(ChannelManagerContract.View view) {
         mView = view;
         mModel = new ChannelManagerModel();
@@ -43,14 +41,7 @@ public class ChannelManagerPresenter extends BasePresenter<ChannelManagerContrac
             @Override
             public void run() {
                 if (newsChannelTitles != null) {
-                    mNewsChannel = pooledChannelData(newsChannelTitles);
-
-                    activity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            mView.setChannelManagerData(mNewsChannel);
-                        }
-                    });
+                    pooledChannelData(activity, newsChannelTitles);
                 }
             }
         });
@@ -61,7 +52,7 @@ public class ChannelManagerPresenter extends BasePresenter<ChannelManagerContrac
      *
      * @param newsChannelTitles
      */
-    private List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> pooledChannelData(List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> newsChannelTitles) {
+    private void pooledChannelData(Activity activity, List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> newsChannelTitles) {
         List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> myChannel = new ArrayList<>();
         List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> recommendChannel = new ArrayList<>();
         for (int i = 0; i < newsChannelTitles.size(); i++) {
@@ -73,16 +64,11 @@ public class ChannelManagerPresenter extends BasePresenter<ChannelManagerContrac
             }
         }
 
-        NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean myText = new NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean();
-        myText.name = CHANNEL_MANAGER_MY_TEXT;
-
-        NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean recommendText = new NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean();
-        recommendText.name = CHANNEL_MANAGER_RECOMMEND_TEXT;
-
-        myChannel.add(0, myText);
-        myChannel.add(recommendText);
-        myChannel.addAll(recommendChannel);
-
-        return myChannel;
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mView.setChannelManagerData(myChannel, recommendChannel);
+            }
+        });
     }
 }

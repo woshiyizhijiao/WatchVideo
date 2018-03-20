@@ -20,7 +20,7 @@ import java.util.List;
 public class ChannelManagerContract {
 
     public interface View extends BaseIView {
-        void setChannelManagerData(List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> channelManagerData);
+        void setChannelManagerData(List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> myChannel, List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> recommendChannel);
     }
 
     public interface Model extends BaseIModel {

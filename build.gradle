@@ -47,27 +47,4 @@ ext {
      */
     butterknife = '8.8.1'
     butterknife_compiler = '8.8.1'
-
-    /**
-     * 第三方库(功能型)
-     */
-    retrofit = "2.3.0"
-    adapter_rxjava2 = "2.3.0"
-    converter_gson = "2.3.0"
-    rxjava = "2.1.0"
-    rxandroid = "2.0.1"
-    logging_interceptor = "3.8.0"
-    glide = "3.7.0"
-    rxpermissions = "0.9.4@aar"
-    eventbus = "3.0.0"
-    jsoup = "1.10.3"
-
-    /**
-     * 第三方库(UI相关)
-     */
-    BaseRecyclerViewAdapterHelper = "2.9.22"
-    statusbarutil = "1.4.0"
-    PhotoView = "2.1.3"
-    utilcode = "1.12.0"
-    SmartRefreshLayout = "1.0.5.1"
 }

@@ -1,6 +1,8 @@
 package com.wsyzj.watchvideo.business.activity;
 
+import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -56,6 +58,8 @@ import butterknife.OnClick;
  */
 public class MainActivity extends BaseActivity implements MainContract.View, TabLayout.OnTabSelectedListener, NavigationView.OnNavigationItemSelectedListener {
 
+    private static final int CODE_CHANNEL_MANAGER = 0;
+
     @BindView(R.id.drawer_layout)
     DrawerLayout drawer_layout;
 
@@ -78,6 +82,7 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
     private TextView tv_nav_header_text;
 
     private MainPresenter mPresenter;
+    private VpAdapter mVpAdapter;
 
     @Override
     protected void setStatusBar() {
@@ -138,11 +143,24 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == Activity.RESULT_OK) {
+            switch (requestCode) {
+                case CODE_CHANNEL_MANAGER:
+                    mPresenter.changedNesChannel(data);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
     @OnClick({R.id.fl_channel_manager})
     public void bkOnClick(View view) {
         switch (view.getId()) {
             case R.id.fl_channel_manager:
-                IntentUtils.channelManager(this);
+                IntentUtils.channelManager(this, CODE_CHANNEL_MANAGER);
                 break;
             default:
                 break;
@@ -176,8 +194,12 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
             }
         }
 
-        VpAdapter vpAdapter = new VpAdapter(getSupportFragmentManager(), this, fragments, channelList);
-        viewPager.setAdapter(vpAdapter);
+        if (mVpAdapter == null) {
+            mVpAdapter = new VpAdapter(getSupportFragmentManager(), this, fragments, channelList);
+            viewPager.setAdapter(mVpAdapter);
+        } else {
+            mVpAdapter.refreshData(fragments, channelList);
+        }
     }
 
     /**

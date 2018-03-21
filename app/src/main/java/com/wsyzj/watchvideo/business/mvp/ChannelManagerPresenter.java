@@ -36,38 +36,34 @@ public class ChannelManagerPresenter extends BasePresenter<ChannelManagerContrac
      */
     @Override
     public void getChannelManagerData(Activity activity) {
-        List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> newsChannelTitles = StorageUtils.getNewsChannelTitles(activity);
         BaseThreadManager.getInstance().createLongPool().execute(new Runnable() {
             @Override
             public void run() {
-                if (newsChannelTitles != null) {
-                    pooledChannelData(activity, newsChannelTitles);
+                List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> myChannel = new ArrayList<>();
+                List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> recommendChannel = new ArrayList<>();
+
+                List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> newsChannel = StorageUtils.getNewsChannelTitles();
+                List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> cacheNewsChannel = StorageUtils.getCacheNewsChannelTitle();
+
+                if (cacheNewsChannel != null) {
+                    for (int i = 0; i < newsChannel.size(); i++) {
+                        NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean channelListBean = newsChannel.get(i);
+                        if (cacheNewsChannel.contains(channelListBean)) {
+                            myChannel.add(channelListBean);
+                        } else {
+                            recommendChannel.add(channelListBean);
+                        }
+                    }
+                } else {
+                    myChannel.addAll(newsChannel);
                 }
-            }
-        });
-    }
 
-    /**
-     * 合并数据在频道中显示
-     *
-     * @param newsChannelTitles
-     */
-    private void pooledChannelData(Activity activity, List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> newsChannelTitles) {
-        List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> myChannel = new ArrayList<>();
-        List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> recommendChannel = new ArrayList<>();
-        for (int i = 0; i < newsChannelTitles.size(); i++) {
-            NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean channelListBean = newsChannelTitles.get(i);
-            if (channelListBean.isMyChannel) {
-                myChannel.add(channelListBean);
-            } else {
-                recommendChannel.add(channelListBean);
-            }
-        }
-
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mView.setChannelManagerData(myChannel, recommendChannel);
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mView.setChannelManagerData(myChannel, recommendChannel);
+                    }
+                });
             }
         });
     }

@@ -1,80 +1,160 @@
 package com.wsyzj.watchvideo.business.adapter;
 
+import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
+import android.os.Handler;
+import android.support.v4.view.MotionEventCompat;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
-import com.chad.library.adapter.base.BaseViewHolder;
 import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.business.bean.NewsChannel;
+import com.wsyzj.watchvideo.business.helper.OnItemMoveListener;
+import com.wsyzj.watchvideo.common.utils.StorageUtils;
 import com.wsyzj.watchvideo.common.utils.UiUtils;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * <pre>
  *     author : 焦洋
  *     e-mail : jiao35478729@163.com
- *     time   : 2018/03/14
+ *     time   : 2018/03/19
  *     desc   :
  * </pre>
  */
-public class ChannelManagerAdapter extends BaseMultiItemQuickAdapter<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean, BaseViewHolder> {
+public class ChannelManagerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements OnItemMoveListener {
 
-    private static final int MY_TEXT_COUNT = 1;
-    private static final int RECOMMEND_TEXT_COUNT = 1;
+    public static final int TYPE_MY_TEXT = 0;
+    private static final int TYPE_MY_CHANNEL = 1;
+    public static final int TYPE_RECOMMEND_TEXT = 2;
+    private static final int TYPE_RECOMMEND_CHANNEL = 3;
+    private static final int MY_TEXT_COUNT = 1;           // 我的标题文字单独占一行，个数为1
+    private static final int RECOMMEND_TEXT_COUNT = 1;    // 推荐标题文字，个数为1
+    private static final long ANIM_TIME = 360L;
+    private static final long SPACE_TIME = 100;           // 判断点击间隔
 
-    private RecyclerView recycler_view;
-    private boolean isEditMode = true;  // 是否为编辑状态
+    private boolean isEditMode;
+    private ItemTouchHelper mItemTouchHelper;
+    private List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> mMyChannel;
+    private List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> mRecommendChannel;
 
-    public ChannelManagerAdapter(RecyclerView recyclerView, List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> data) {
-        super(data);
-        recycler_view = recyclerView;
-        addItemType(NewsChannel.TYPE_MY_TEXT, R.layout.rv_item_channel_manager_type_text);
-        addItemType(NewsChannel.TYPE_MY_CHANNEL, R.layout.rv_item_channel_manager_type_my_channel);
-        addItemType(NewsChannel.TYPE_RECOMMEND_TEXT, R.layout.rv_item_channel_manager_type_text);
-        addItemType(NewsChannel.TYPE_RECOMMEND_CHANNEL, R.layout.rv_item_channel_manager_type_recommend_channel);
+    private boolean isMoved;
+    private long mTouchStartTime;
+
+
+    public boolean putChannelData() {
+        if (isMoved) {
+            List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> list = new ArrayList<>();
+            if (mMyChannel != null && !mMyChannel.isEmpty()) {
+                list.addAll(mMyChannel);
+            }
+            StorageUtils.putCacheNewsChannelTitles(list);
+        }
+        return isMoved;
+    }
+
+    public ChannelManagerAdapter(ItemTouchHelper itemTouchHelper, List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> myChannel, List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> recommendChannel) {
+        mItemTouchHelper = itemTouchHelper;
+        mMyChannel = myChannel;
+        mRecommendChannel = recommendChannel;
+    }
+
+    public void refreshData(List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> myChannel, List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> recommendChannel) {
+        mMyChannel = myChannel;
+        mRecommendChannel = recommendChannel;
+        notifyDataSetChanged();
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean item) {
-        int itemViewType = helper.getItemViewType();
-        helper.setText(R.id.tv_channel_name, item.name.replace("最新", ""));
+    public int getItemCount() {
+        int myCount = mMyChannel.isEmpty() ? 0 : mMyChannel.size();
+        int recommendCount = mRecommendChannel.isEmpty() ? 0 : mRecommendChannel.size();
+        return myCount + MY_TEXT_COUNT + recommendCount + RECOMMEND_TEXT_COUNT;
+    }
 
-        helper.getAdapterPosition();
-        helper.getLayoutPosition();
+    @Override
+    public int getItemViewType(int position) {
+        if (position == 0) {
+            return TYPE_MY_TEXT;
+        } else if (position > 0 && position < mMyChannel.size() + 1) {
+            return TYPE_MY_CHANNEL;
+        } else if (mMyChannel.size() + 1 == position) {
+            return TYPE_RECOMMEND_TEXT;
+        } else {
+            return TYPE_RECOMMEND_CHANNEL;
+        }
+    }
 
-        switch (itemViewType) {
-            case NewsChannel.TYPE_MY_TEXT:
-                typeMyText(helper, item);
-                break;
-            case NewsChannel.TYPE_MY_CHANNEL:
-                typeMyChannel(helper, item);
-                break;
-            case NewsChannel.TYPE_RECOMMEND_TEXT:
-                typeRecommendText(helper, item);
-                break;
-            case NewsChannel.TYPE_RECOMMEND_CHANNEL:
-                typeRecommendChannel(helper, item);
-                break;
-            default:
-                break;
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view;
+        if (viewType == TYPE_MY_TEXT) {
+            view = UiUtils.inflate(R.layout.rv_item_channel_manager_type_text);
+            MyTextViewHolder holder = new MyTextViewHolder(view);
+            return holder;
+        } else if (viewType == TYPE_MY_CHANNEL) {
+            view = UiUtils.inflate(R.layout.rv_item_channel_manager_type_my_channel);
+            MyChannelViewHolder holder = new MyChannelViewHolder(view);
+            setMyChannelView(parent, holder);
+            return holder;
+        } else if (viewType == TYPE_RECOMMEND_TEXT) {
+            view = UiUtils.inflate(R.layout.rv_item_channel_manager_type_text);
+            RecommendTextViewHolder holder = new RecommendTextViewHolder(view);
+            return holder;
+        } else {
+            view = UiUtils.inflate(R.layout.rv_item_channel_manager_type_recommend_channel);
+            RecommendChannelViewHolder holder = new RecommendChannelViewHolder(view);
+            setRecommendChannelView(parent, holder);
+            return holder;
+        }
+    }
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        if (holder instanceof MyTextViewHolder) {
+            MyTextViewHolder myTextVh = (MyTextViewHolder) holder;
+            setMyTextData(myTextVh);
+        } else if (holder instanceof MyChannelViewHolder) {
+            MyChannelViewHolder myChannelVh = (MyChannelViewHolder) holder;
+            setMyChannelData(myChannelVh);
+        } else if (holder instanceof RecommendTextViewHolder) {
+            RecommendTextViewHolder recommendTextVh = (RecommendTextViewHolder) holder;
+            setRecommendTextData(recommendTextVh);
+        } else {
+            RecommendChannelViewHolder recommendChannelVh = (RecommendChannelViewHolder) holder;
+            setRecommendChannelData(recommendChannelVh);
         }
     }
 
     /**
      * 我的频道文字
      *
-     * @param helper
-     * @param item
+     * @param holder
      */
-    private void typeMyText(BaseViewHolder helper, NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean item) {
-        TextView tv_edit = helper.getView(R.id.tv_edit);
-        setEditText(tv_edit);
-        helper.setVisible(R.id.tv_edit, true);
+    private void setMyTextData(MyTextViewHolder holder) {
+        TextView tv_channel_name = holder.tv_channel_name;
+        TextView tv_edit = holder.tv_edit;
 
-        helper.getView(R.id.tv_edit).setOnClickListener(new View.OnClickListener() {
+        setEditText(tv_edit);
+        tv_channel_name.setText("我的频道");
+        tv_edit.setVisibility(View.VISIBLE);
+
+        tv_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 isEditMode = !isEditMode;
@@ -87,23 +167,99 @@ public class ChannelManagerAdapter extends BaseMultiItemQuickAdapter<NewsChannel
     /**
      * 我的频道
      *
-     * @param helper
-     * @param item
+     * @param holder
      */
-    private void typeMyChannel(BaseViewHolder helper, NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean item) {
-        int adapterPosition = helper.getAdapterPosition();
-        helper.setVisible(R.id.iv_delete, adapterPosition != 1 && isEditMode);
-        helper.setTextColor(R.id.tv_channel_name, adapterPosition == 1 ? UiUtils.getColor(R.color.c999999) : UiUtils.getColor(R.color.c222222));
+    private void setMyChannelData(MyChannelViewHolder holder) {
+        int position = holder.getAdapterPosition();
+        NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean channelListBean = mMyChannel.get(position - 1);
+        ImageView iv_delete = holder.iv_delete;
+        TextView tv_channel_name = holder.tv_channel_name;
 
-        helper.getView(R.id.tv_channel_name).setOnClickListener(new View.OnClickListener() {
+        iv_delete.setVisibility(isEditMode && position != 1 ? View.VISIBLE : View.INVISIBLE);
+        tv_channel_name.setText(channelListBean.name.replace("最新", ""));
+        tv_channel_name.setTextColor(position == 1 ? UiUtils.getColor(R.color.c999999) : UiUtils.getColor(R.color.c222222));
+    }
+
+    /**
+     * 我的频道
+     *
+     * @param parent
+     * @param holder
+     */
+    @SuppressLint("ClickableViewAccessibility")
+    private void setMyChannelView(ViewGroup parent, MyChannelViewHolder holder) {
+        TextView tv_channel_name = holder.tv_channel_name;
+
+        // 点击
+        tv_channel_name.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int position = holder.getAdapterPosition();
                 if (isEditMode) {
-                    RecyclerView.LayoutManager layoutManager = recycler_view.getLayoutManager();
+                    RecyclerView recycler = (RecyclerView) parent;
+                    RecyclerView.LayoutManager manager = recycler.getLayoutManager();
 
+                    View targetView = manager.findViewByPosition(mMyChannel.size() + MY_TEXT_COUNT + RECOMMEND_TEXT_COUNT);
+                    View currentView = manager.findViewByPosition(position);
+
+                    if (recycler.indexOfChild(targetView) >= 0) {
+                        int targetX, targetY;
+
+                        int spanCount = ((GridLayoutManager) manager).getSpanCount();
+                        if ((mMyChannel.size() - MY_TEXT_COUNT) % spanCount == 0) {
+                            View preTargetView = manager.findViewByPosition(mMyChannel.size() + MY_TEXT_COUNT);
+                            targetX = preTargetView.getLeft();
+                            targetY = preTargetView.getTop();
+                        } else {
+                            targetX = targetView.getLeft();
+                            targetY = targetView.getTop();
+                        }
+                        moveMyToRecommend(holder);
+                        startDeleteAnim(recycler, currentView, targetX, targetY);
+                    } else {
+                        moveMyToRecommend(holder);
+                    }
                 } else {
-
+                    moveMyToRecommend(holder);
                 }
+            }
+        });
+
+        /**
+         * 长按拖动
+         */
+        tv_channel_name.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (!isEditMode) {
+                    startEditMode(parent);
+                    mItemTouchHelper.startDrag(holder);
+                }
+                return true;
+            }
+        });
+
+        tv_channel_name.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (isEditMode) {
+                    switch (MotionEventCompat.getActionMasked(event)) {
+                        case MotionEvent.ACTION_DOWN:
+                            mTouchStartTime = System.currentTimeMillis();
+                            break;
+                        case MotionEvent.ACTION_MOVE:
+                            if (System.currentTimeMillis() - mTouchStartTime > SPACE_TIME) {
+                                mItemTouchHelper.startDrag(holder);
+                            }
+                            break;
+                        case MotionEvent.ACTION_UP:
+                            mTouchStartTime = 0;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                return false;
             }
         });
     }
@@ -111,25 +267,92 @@ public class ChannelManagerAdapter extends BaseMultiItemQuickAdapter<NewsChannel
     /**
      * 其他频道文字
      *
-     * @param helper
-     * @param item
+     * @param holder
      */
-    private void typeRecommendText(BaseViewHolder helper, NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean item) {
-        helper.setVisible(R.id.tv_edit, false);
+    private void setRecommendTextData(RecommendTextViewHolder holder) {
+        TextView tv_edit = holder.tv_edit;
+        TextView tv_channel_name = holder.tv_channel_name;
+
+        tv_channel_name.setText("推荐频道");
+        tv_edit.setVisibility(View.INVISIBLE);
     }
 
     /**
      * 其他频道
      *
-     * @param helper
-     * @param item
+     * @param holder
      */
-    private void typeRecommendChannel(BaseViewHolder helper, NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean item) {
-        int adapterPosition = helper.getAdapterPosition();
-        helper.getView(R.id.card_recommend).setOnClickListener(new View.OnClickListener() {
+    private void setRecommendChannelData(RecommendChannelViewHolder holder) {
+        CardView card_recommend = holder.card_recommend;
+        TextView tv_channel_name = holder.tv_channel_name;
+
+        int position = holder.getAdapterPosition() - mMyChannel.size() - (MY_TEXT_COUNT + RECOMMEND_TEXT_COUNT);
+        if (position >= 0) {
+            NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean channelListBean = mRecommendChannel.get(position);
+            tv_channel_name.setText(channelListBean.name.replace("最新", ""));
+        }
+    }
+
+    /**
+     * 其他频道view
+     *
+     * @param parent
+     * @param holder
+     */
+    private void setRecommendChannelView(ViewGroup parent, RecommendChannelViewHolder holder) {
+        CardView card_recommend = holder.card_recommend;
+
+        card_recommend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                moveRecommendToMy(adapterPosition);
+                RecyclerView recyclerView = (RecyclerView) parent;
+                RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();
+                int position = holder.getAdapterPosition();
+                View currentView = manager.findViewByPosition(position);
+                View preTargetView = manager.findViewByPosition(mMyChannel.size() - 1 + RECOMMEND_TEXT_COUNT);
+
+                if (recyclerView.indexOfChild(preTargetView) >= 0) {
+                    int targetX = preTargetView.getLeft();
+                    int targetY = preTargetView.getTop();
+
+                    int targetPosition = mMyChannel.size() - 1 + MY_TEXT_COUNT + RECOMMEND_TEXT_COUNT;
+
+                    GridLayoutManager gridLayoutManager = (GridLayoutManager) manager;
+                    int spanCount = gridLayoutManager.getSpanCount();
+
+                    if ((targetPosition - MY_TEXT_COUNT) % spanCount == 0) {
+                        View targetView = gridLayoutManager.findViewByPosition(targetPosition);
+                        targetX = targetView.getLeft();
+                        targetY = targetView.getTop();
+                    } else {
+                        targetX += preTargetView.getLeft();
+
+                        if (gridLayoutManager.findFirstVisibleItemPosition() == getItemCount() - 1) {
+                            if ((getItemCount() - 1 - mMyChannel.size() - MY_TEXT_COUNT - RECOMMEND_TEXT_COUNT) % spanCount == 0) {
+                                int firstVisibleItemPosition = gridLayoutManager.findFirstVisibleItemPosition();
+                                if (firstVisibleItemPosition == 0) {
+                                    if (gridLayoutManager.findFirstCompletelyVisibleItemPosition() != 0) {
+                                        int offset = -recyclerView.getChildAt(0).getTop() - recyclerView.getPaddingTop();
+                                        targetY += offset;
+                                    }
+                                } else {
+                                    targetY += preTargetView.getHeight();
+                                }
+                            }
+                        }
+                    }
+
+                    if (position == gridLayoutManager.findLastVisibleItemPosition()
+                            && (position - mMyChannel.size() - MY_TEXT_COUNT - RECOMMEND_TEXT_COUNT) % spanCount != 0
+                            && (targetPosition - MY_TEXT_COUNT) % spanCount != 0) {
+                        moveOtherToMyWithDelay(holder);
+                    } else {
+                        moveRecommendToMy(holder);
+                    }
+                    startDeleteAnim(recyclerView, currentView, targetX, targetY);
+                } else {
+                    moveRecommendToMy(holder);
+                }
             }
         });
     }
@@ -142,26 +365,230 @@ public class ChannelManagerAdapter extends BaseMultiItemQuickAdapter<NewsChannel
     }
 
     /**
-     * 我的频道>>推荐频道
+     * 我的频道 -> 推荐频道
      *
-     * @param adapterPosition
+     * @param holder
      */
-    private void moveMyToRecommend(int adapterPosition) {
-        NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean channelListBean = mData.get(adapterPosition);
-        channelListBean.isMyChannel = false;
-        mData.remove(adapterPosition);
-        mData.add(channelListBean);
-        notifyDataSetChanged();
+    private void moveMyToRecommend(MyChannelViewHolder holder) {
+        isMoved = true;
+        int position = holder.getAdapterPosition();
+        int startPosition = position - MY_TEXT_COUNT;
+
+        if (position == 1 || startPosition > mMyChannel.size() - 1) {
+            return;
+        }
+
+        NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean channelListBean = mMyChannel.get(startPosition);
+        mMyChannel.remove(startPosition);
+        mRecommendChannel.add(0, channelListBean);
+        notifyItemMoved(position, mMyChannel.size() + MY_TEXT_COUNT + RECOMMEND_TEXT_COUNT);
     }
 
     /**
-     * 推荐频道>>我的频道
+     * 推荐频道 -> 我的频道
+     *
+     * @param holder
      */
-    private void moveRecommendToMy(int adapterPosition) {
-        NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean channelListBean = mData.get(adapterPosition);
-        channelListBean.isMyChannel = true;
-        mData.remove(adapterPosition);
-        mData.add(MY_TEXT_COUNT + 1, channelListBean);
-        notifyDataSetChanged();
+    private void moveRecommendToMy(RecommendChannelViewHolder holder) {
+        isMoved = true;
+        int position = processItemRemoveAdd(holder);
+        if (position == -1) {
+            return;
+        }
+        notifyItemMoved(position, mMyChannel.size() - 1 + MY_TEXT_COUNT);
+    }
+
+    private int processItemRemoveAdd(RecommendChannelViewHolder holder) {
+        int position = holder.getAdapterPosition();
+        int startPosition = position - mMyChannel.size() - MY_TEXT_COUNT - RECOMMEND_TEXT_COUNT;
+        if (startPosition > mRecommendChannel.size() - 1) {
+            return -1;
+        }
+        NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean channelListBean = mRecommendChannel.get(startPosition);
+        mRecommendChannel.remove(channelListBean);
+        mMyChannel.add(channelListBean);
+        return position;
+    }
+
+    private Handler mHandler = new Handler();
+
+    private void moveOtherToMyWithDelay(RecommendChannelViewHolder holder) {
+        final int position = processItemRemoveAdd(holder);
+        if (position == -1) {
+            return;
+        }
+
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                isMoved = true;
+                notifyItemMoved(position, mMyChannel.size() - 1 + MY_TEXT_COUNT);
+            }
+        }, ANIM_TIME);
+    }
+
+    /**
+     * 开始增删动画
+     */
+    private void startDeleteAnim(RecyclerView recycler, View currentView, float targetX, float targetY) {
+        ViewGroup viewGroup = (ViewGroup) recycler.getParent();
+        ImageView mirrorView = addMirrorView(viewGroup, recycler, currentView);
+        TranslateAnimation translateAnim = getTranslateAnim(targetX - currentView.getLeft(), targetY - currentView.getTop());
+        currentView.setVisibility(View.INVISIBLE);
+        mirrorView.startAnimation(translateAnim);
+
+        translateAnim.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                viewGroup.removeView(mirrorView);
+                if (currentView.getVisibility() == View.INVISIBLE) {
+                    currentView.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+    }
+
+    /**
+     * 动画过程中添加一个镜像，我们看到的效果感觉还是targetview移动一样，其实是两个
+     *
+     * @return
+     */
+    private ImageView addMirrorView(ViewGroup parent, RecyclerView recycler, View view) {
+        view.destroyDrawingCache();
+        view.setDrawingCacheEnabled(true);
+        final ImageView mirrorView = new ImageView(recycler.getContext());
+        Bitmap bitmap = Bitmap.createBitmap(view.getDrawingCache());
+        mirrorView.setImageBitmap(bitmap);
+        view.setDrawingCacheEnabled(false);
+        int[] locations = new int[2];
+        view.getLocationOnScreen(locations);
+        int[] parenLocations = new int[2];
+        recycler.getLocationOnScreen(parenLocations);
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(bitmap.getWidth(), bitmap.getHeight());
+        params.setMargins(locations[0], locations[1] - parenLocations[1], 0, 0);
+        parent.addView(mirrorView, params);
+        return mirrorView;
+    }
+
+    /**
+     * @return
+     */
+    private TranslateAnimation getTranslateAnim(float targetX, float targetY) {
+        TranslateAnimation translateAnimation = new TranslateAnimation(
+                Animation.RELATIVE_TO_SELF, 0f, Animation.ABSOLUTE, targetX,
+                Animation.RELATIVE_TO_SELF, 0f, Animation.ABSOLUTE, targetY);
+        translateAnimation.setDuration(ANIM_TIME);
+        translateAnimation.setFillAfter(true);
+        return translateAnimation;
+    }
+
+    /**
+     * 长按的时候开启编辑模式
+     */
+    private void startEditMode(ViewGroup viewGroup) {
+        RecyclerView recyclerView = (RecyclerView) viewGroup;
+
+        isEditMode = true;
+        int childCount = recyclerView.getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            View childAt = recyclerView.getChildAt(i);
+            ImageView iv_delete = (ImageView) childAt.findViewById(R.id.iv_delete);
+            if (i != 1 && iv_delete != null) {
+                iv_delete.setVisibility(View.VISIBLE);
+            }
+        }
+
+        View childAt = recyclerView.getChildAt(0);
+        TextView textView = (TextView) childAt.findViewById(R.id.tv_edit);
+        textView.setText("完成");
+    }
+
+    @Override
+    public void onItemMove(int fromPosition, int toPosition) {
+        if (fromPosition == MY_TEXT_COUNT || toPosition == MY_TEXT_COUNT) {
+            return;
+        }
+        NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean channelListBean = mMyChannel.get(fromPosition - MY_TEXT_COUNT);
+        mMyChannel.remove(fromPosition - MY_TEXT_COUNT);
+        mMyChannel.add(toPosition - MY_TEXT_COUNT, channelListBean);
+        notifyItemMoved(fromPosition, toPosition);
+    }
+
+    /**
+     * 我的标题 适配器----------------------------------------------------------------------------------
+     */
+    static class MyTextViewHolder extends RecyclerView.ViewHolder {
+
+        @BindView(R.id.tv_channel_name)
+        TextView tv_channel_name;
+
+        @BindView(R.id.tv_edit)
+        TextView tv_edit;
+
+        MyTextViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
+    }
+
+    /**
+     * 我的频道
+     */
+    static class MyChannelViewHolder extends RecyclerView.ViewHolder {
+
+        @BindView(R.id.tv_channel_name)
+        TextView tv_channel_name;
+
+        @BindView(R.id.iv_delete)
+        ImageView iv_delete;
+
+        MyChannelViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
+    }
+
+    /**
+     * 推荐频道
+     */
+    static class RecommendTextViewHolder extends RecyclerView.ViewHolder {
+
+        @BindView(R.id.tv_channel_name)
+        TextView tv_channel_name;
+
+        @BindView(R.id.tv_edit)
+        TextView tv_edit;
+
+        RecommendTextViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
+    }
+
+    /**
+     * 推荐频道
+     */
+    static class RecommendChannelViewHolder extends RecyclerView.ViewHolder {
+
+        @BindView(R.id.card_recommend)
+        CardView card_recommend;
+
+        @BindView(R.id.tv_channel_name)
+        TextView tv_channel_name;
+
+        RecommendChannelViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
     }
 }

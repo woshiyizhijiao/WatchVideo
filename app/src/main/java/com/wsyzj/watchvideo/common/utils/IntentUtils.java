@@ -27,9 +27,29 @@ public class IntentUtils {
         activity.overridePendingTransition(R.anim.anim_act_translate_enter_in, R.anim.anim_act_translate_enter_out);
     }
 
-    private static void startIntentActivity(Activity activity, Intent intent) {
+    private static void startActivity(Activity activity, Intent intent) {
         activity.startActivity(intent);
         activity.overridePendingTransition(R.anim.anim_act_translate_enter_in, R.anim.anim_act_translate_enter_out);
+    }
+
+    private static void startActivityForResult(Activity activity, Class clazz, int requestCode) {
+        activity.startActivityForResult(new Intent(activity, clazz), requestCode);
+        activity.overridePendingTransition(R.anim.anim_act_translate_enter_in, R.anim.anim_act_translate_enter_out);
+    }
+
+    private static void startActivityForResult(Activity activity, Intent intent, int requestCode) {
+        activity.startActivityForResult(intent, requestCode);
+        activity.overridePendingTransition(R.anim.anim_act_translate_enter_in, R.anim.anim_act_translate_enter_out);
+    }
+
+    private static void setResult(Activity activity) {
+        activity.setResult(Activity.RESULT_OK);
+        activity.finish();
+    }
+
+    private static void setResult(Activity activity, Intent intent) {
+        activity.setResult(Activity.RESULT_OK, intent);
+        activity.finish();
     }
 
     /**
@@ -59,7 +79,7 @@ public class IntentUtils {
         Intent intent = new Intent(activity, WebViewActivity.class);
         intent.putExtra("title", title);
         intent.putExtra("url", url);
-        startIntentActivity(activity, intent);
+        startActivity(activity, intent);
     }
 
     /**
@@ -70,7 +90,7 @@ public class IntentUtils {
         intent.putExtra("title", title);
         intent.putExtra("author", author);
         intent.putExtra("content", content);
-        startIntentActivity(activity, intent);
+        startActivity(activity, intent);
     }
 
     /**
@@ -82,7 +102,7 @@ public class IntentUtils {
         Intent intent = new Intent(activity, PreviewLargeActivity.class);
         intent.putExtra("position", position);
         intent.putStringArrayListExtra("imgUrls", imgUrls);
-        startIntentActivity(activity, intent);
+        startActivity(activity, intent);
     }
 
     /**
@@ -92,13 +112,22 @@ public class IntentUtils {
      */
     public static void test(Activity activity) {
         Intent intent = new Intent(activity, TestActivity.class);
-        startIntentActivity(activity, intent);
+        startActivity(activity, intent);
     }
 
     /**
      * 频道管理
      */
-    public static void channelManager(Activity activity) {
-        startActivity(activity, ChannelManagerActivity.class);
+    public static void channelManager(Activity activity, int requestCode) {
+        startActivityForResult(activity, ChannelManagerActivity.class, requestCode);
+    }
+
+    /**
+     * 频道管理
+     */
+    public static void setResultChannelManager(Activity activity, boolean isMoved) {
+        Intent intent = new Intent();
+        intent.putExtra("isMoved", isMoved);
+        setResult(activity, intent);
     }
 }

@@ -4,15 +4,17 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.View;
 
 import com.wsyzj.watchvideo.R;
-import com.wsyzj.watchvideo.business.adapter.ChannelManagerTestAdapter;
+import com.wsyzj.watchvideo.business.adapter.ChannelManagerAdapter;
 import com.wsyzj.watchvideo.business.bean.NewsChannel;
 import com.wsyzj.watchvideo.business.helper.ItemDragHelperCallback;
 import com.wsyzj.watchvideo.business.mvp.ChannelManagerContract;
 import com.wsyzj.watchvideo.business.mvp.ChannelManagerPresenter;
 import com.wsyzj.watchvideo.common.base.BaseActivity;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
+import com.wsyzj.watchvideo.common.utils.IntentUtils;
 
 import java.util.List;
 
@@ -32,7 +34,7 @@ public class ChannelManagerActivity extends BaseActivity implements ChannelManag
     RecyclerView recycler_view;
 
     private ChannelManagerPresenter mPresenter;
-    private ChannelManagerTestAdapter mChannelManagerAdapter;
+    private ChannelManagerAdapter mChannelManagerAdapter;
 
     @Override
     protected BasePresenter presenter() {
@@ -48,7 +50,12 @@ public class ChannelManagerActivity extends BaseActivity implements ChannelManag
 
     @Override
     protected void initView() {
-
+        baseTitleView.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                IntentUtils.setResultChannelManager(ChannelManagerActivity.this, mChannelManagerAdapter != null && mChannelManagerAdapter.putChannelData());
+            }
+        });
     }
 
     @Override
@@ -71,7 +78,7 @@ public class ChannelManagerActivity extends BaseActivity implements ChannelManag
             ItemTouchHelper helper = new ItemTouchHelper(callback);
             helper.attachToRecyclerView(recycler_view);
 
-            mChannelManagerAdapter = new ChannelManagerTestAdapter(helper, myChannel, recommendChannel);
+            mChannelManagerAdapter = new ChannelManagerAdapter(helper, myChannel, recommendChannel);
             recycler_view.setAdapter(mChannelManagerAdapter);
         } else {
             mChannelManagerAdapter.refreshData(myChannel, recommendChannel);
@@ -81,7 +88,7 @@ public class ChannelManagerActivity extends BaseActivity implements ChannelManag
             @Override
             public int getSpanSize(int position) {
                 int itemViewType = mChannelManagerAdapter.getItemViewType(position);
-                return itemViewType == ChannelManagerTestAdapter.TYPE_MY_TEXT || itemViewType == ChannelManagerTestAdapter.TYPE_RECOMMEND_TEXT ? 4 : 1;
+                return itemViewType == ChannelManagerAdapter.TYPE_MY_TEXT || itemViewType == ChannelManagerAdapter.TYPE_RECOMMEND_TEXT ? 4 : 1;
             }
         });
     }

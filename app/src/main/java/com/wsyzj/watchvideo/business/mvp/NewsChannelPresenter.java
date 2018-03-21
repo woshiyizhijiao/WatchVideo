@@ -2,8 +2,6 @@ package com.wsyzj.watchvideo.business.mvp;
 
 import android.os.Bundle;
 
-import com.blankj.utilcode.util.LogUtils;
-import com.google.gson.Gson;
 import com.wsyzj.watchvideo.business.bean.NewsDetails;
 import com.wsyzj.watchvideo.business.fragment.NewsChannelFragment;
 import com.wsyzj.watchvideo.common.base.BaseFragment;
@@ -61,7 +59,6 @@ public class NewsChannelPresenter extends BasePresenter<NewsChannelContract.View
             @Override
             public void onSuccess(Object data) {
                 NewsDetails newsDetails = (NewsDetails) data;
-                LogUtils.e(mChannelId  +  " --- " + mChannelName + new Gson().toJson(newsDetails).toString());
                 if (newsDetails.code == Constant.JingDong.JINGDONG_CODE) {
                     NewsDetails.ResultBean.ShowapiResBodyBean.PagebeanBean pagebean = newsDetails.result.showapi_res_body.pagebean;
                     int allNum = pagebean.allNum;

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.PagerAdapter;
 import android.view.ViewGroup;
 
 import com.wsyzj.watchvideo.business.bean.NewsChannel;
@@ -30,6 +31,12 @@ public class VpAdapter extends FragmentPagerAdapter {
         mChannel = channelList;
     }
 
+    public void refreshData(List<BaseFragment> fragments, List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> channelList) {
+        mFragments = fragments;
+        mChannel = channelList;
+        notifyDataSetChanged();
+    }
+
     @Override
     public Fragment getItem(int position) {
         return mFragments.get(position);
@@ -43,6 +50,11 @@ public class VpAdapter extends FragmentPagerAdapter {
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
 //        super.destroyItem(container, position, object);
+    }
+
+    @Override
+    public int getItemPosition(Object object) {
+        return PagerAdapter.POSITION_NONE;
     }
 
     @Override

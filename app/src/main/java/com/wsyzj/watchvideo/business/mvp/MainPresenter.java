@@ -1,10 +1,9 @@
 package com.wsyzj.watchvideo.business.mvp;
 
 import android.content.Context;
+import android.content.Intent;
 
-import com.google.gson.Gson;
 import com.wsyzj.watchvideo.business.bean.NewsChannel;
-import com.wsyzj.watchvideo.business.utils.DataUtils;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
 import com.wsyzj.watchvideo.common.constant.Constant;
 import com.wsyzj.watchvideo.common.http.BaseTSubscriber;
@@ -36,8 +35,15 @@ public class MainPresenter extends BasePresenter<MainContract.View, MainContract
      */
     @Override
     public void getNewsChannel(Context context) {
-        List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> newsChannelTitles = StorageUtils.getNewsChannelTitles(context);
-        if (newsChannelTitles.size() == 1) {
+        List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> cacheNewsChanne = StorageUtils.getCacheNewsChannelTitle();
+        List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> newsChannel = StorageUtils.getNewsChannelTitles();
+        if (cacheNewsChanne != null && !cacheNewsChanne.isEmpty()) {
+            mNewChannels = cacheNewsChanne;
+            mView.setChannelList(mNewChannels);
+        } else if (newsChannel != null && newsChannel.size() > 1) {
+            mNewChannels = newsChannel;
+            mView.setChannelList(mNewChannels);
+        } else {
             BaseTSubscriber<NewsChannel> baseTSubscriber = mModel
                     .getNewsChannel()
                     .subscribeWith(new BaseTSubscriber<NewsChannel>() {
@@ -45,19 +51,15 @@ public class MainPresenter extends BasePresenter<MainContract.View, MainContract
                         public void onSuccess(Object data) {
                             NewsChannel newsChannel = (NewsChannel) data;
                             if (Constant.JingDong.JINGDONG_CODE == newsChannel.code) {
-                                Gson gson = new Gson();
                                 mNewChannels = getNewChannels(newsChannel.result.showapi_res_body.channelList);
                                 mView.setChannelList(mNewChannels);
-                                StorageUtils.putNewsChannelTitles(context, mNewChannels);
+                                StorageUtils.putNewsChannelTitles(mNewChannels);
                             } else {
                                 mView.showToast(newsChannel.msg);
                             }
                         }
                     });
             mView.addDisposable(baseTSubscriber);
-        } else {
-            mNewChannels = DataUtils.getSelectNewsChannel(newsChannelTitles);
-            mView.setChannelList(mNewChannels);
         }
     }
 
@@ -78,8 +80,25 @@ public class MainPresenter extends BasePresenter<MainContract.View, MainContract
         NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean channelListBean = new NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean();
         channelListBean.name = "推荐";
         channelListBean.channelId = "0";
-        channelListBean.isMyChannel = true;
         newChannel.add(0, channelListBean);
+
+        StorageUtils.putCacheNewsChannelTitles(newChannel);
         return newChannel;
+    }
+
+    /**
+     * 改变频道
+     *
+     * @param data
+     */
+    @Override
+    public void changedNesChannel(Intent data) {
+        if (data != null) {
+            boolean isMoved = data.getBooleanExtra("isMoved", false);
+            if (isMoved) {
+                mNewChannels = StorageUtils.getCacheNewsChannelTitle();
+                mView.setChannelList(mNewChannels);
+            }
+        }
     }
 }

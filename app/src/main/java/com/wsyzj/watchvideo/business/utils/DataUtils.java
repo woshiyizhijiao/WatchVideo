@@ -157,20 +157,4 @@ public class DataUtils {
         int i = random.nextInt(list.size());
         return list.get(i);
     }
-
-    /**
-     * 获取用户已经选择的新闻标题集合
-     *
-     * @return
-     */
-    public static List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> getSelectNewsChannel(List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> channelList) {
-        List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> selectChannel = new ArrayList<>();
-        for (int i = 0; i < channelList.size(); i++) {
-            NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean channelListBean = channelList.get(i);
-            if (channelListBean.isMyChannel) {
-                selectChannel.add(channelListBean);
-            }
-        }
-        return selectChannel;
-    }
 }

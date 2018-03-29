@@ -14,6 +14,12 @@
             android:icon="@drawable/ic_menu_game"
             android:title="小游戏"/>
 
+
+        <item
+            android:id="@+id/nav_skin_peeler"
+            android:icon="@drawable/ic_menu_skin_peeler"
+            android:title="换肤"/>
+
         <item
             android:id="@+id/nav_clear_cache"
             android:icon="@android:drawable/ic_menu_delete"

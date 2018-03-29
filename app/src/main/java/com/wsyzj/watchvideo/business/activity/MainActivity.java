@@ -13,6 +13,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
@@ -26,6 +28,7 @@ import com.pgyersdk.javabean.AppBean;
 import com.pgyersdk.update.PgyUpdateManager;
 import com.pgyersdk.update.UpdateManagerListener;
 import com.wsyzj.watchvideo.R;
+import com.wsyzj.watchvideo.business.adapter.SkinPeelerAdapter;
 import com.wsyzj.watchvideo.business.adapter.VpAdapter;
 import com.wsyzj.watchvideo.business.bean.NewsChannel;
 import com.wsyzj.watchvideo.business.fragment.HomeFragment;
@@ -42,10 +45,12 @@ import com.wsyzj.watchvideo.common.constant.Constant;
 import com.wsyzj.watchvideo.common.constant.EventBusConstant;
 import com.wsyzj.watchvideo.common.http.ImageLoader;
 import com.wsyzj.watchvideo.common.utils.IntentUtils;
+import com.wsyzj.watchvideo.common.utils.UiUtils;
 
 import net.youmi.android.nm.sp.SpotManager;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
@@ -59,6 +64,9 @@ import butterknife.OnClick;
 public class MainActivity extends BaseActivity implements MainContract.View, TabLayout.OnTabSelectedListener, NavigationView.OnNavigationItemSelectedListener {
 
     private static final int CODE_CHANNEL_MANAGER = 0;
+
+    private static final Integer[] mSkinsColors = {R.color.colorAccent, R.color.cff5252, R.color.c2185b, R.color.c7b1fa2, R.color.c512da8, R.color.c0288d1, R.color.c03a9f4,
+            R.color.c689f38, R.color.cafb42b, R.color.cffa000, R.color.cf57c00, R.color.ce6a19, R.color.c5d4037, R.color.c616161, R.color.c455a64, R.color.c212121};
 
     @BindView(R.id.drawer_layout)
     DrawerLayout drawer_layout;
@@ -279,6 +287,8 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
             navLifeDialog();
         } else if (id == R.id.nav_game) {
             IntentUtils.webView(this, "小游戏", Constant.URL_GAME_H5);
+        } else if (id == R.id.nav_skin_peeler) {
+            skinPeeler();
         } else if (id == R.id.nav_clear_cache) {
             navClearCache();
         }
@@ -323,6 +333,20 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
             }
         });
         builder.show();
+    }
+
+    /**
+     * 更换皮肤
+     */
+    private void skinPeeler() {
+        View headView = UiUtils.inflate(R.layout.dialog_skin_peeler);
+        RecyclerView rv_skin_peeler = (RecyclerView) headView.findViewById(R.id.rv_skin_peeler);
+        rv_skin_peeler.setLayoutManager(new GridLayoutManager(this, 4));
+        rv_skin_peeler.setAdapter(new SkinPeelerAdapter(Arrays.asList(mSkinsColors)));
+
+        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setContentView(headView);
+        alertDialog.show();
     }
 
     /**

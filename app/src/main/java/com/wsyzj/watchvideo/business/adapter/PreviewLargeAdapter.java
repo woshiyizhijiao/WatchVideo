@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import com.github.chrisbanes.photoview.PhotoView;
 import com.wsyzj.watchvideo.R;
+import com.wsyzj.watchvideo.business.activity.PreviewLargeActivity;
 import com.wsyzj.watchvideo.common.http.ImageLoader;
 import com.wsyzj.watchvideo.common.utils.UiUtils;
 
@@ -46,6 +47,16 @@ public class PreviewLargeAdapter extends PagerAdapter {
         PhotoView pv_gank = (PhotoView) view.findViewById(R.id.pv_gank);
         ImageLoader.with(mContext, url, pv_gank);
         container.addView(view);
+
+        pv_gank.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mContext instanceof PreviewLargeActivity) {
+                    PreviewLargeActivity activity = (PreviewLargeActivity) mContext;
+                    activity.finish();
+                }
+            }
+        });
         return view;
     }
 

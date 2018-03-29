@@ -63,7 +63,7 @@ public class NewsChannelAdapter extends BaseMultiItemQuickAdapter<NewsDetails.Re
                     lp.rightMargin = (i == size - 1) ? ConvertUtils.dp2px(10) : 0;
                     imageView.setLayoutParams(lp);
                     imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-                    ImageLoader.with(mContext, imageurls.get(i).url, imageView);
+                    ImageLoader.with(mContext, imageurls.get(i).url, R.drawable.icon_default_error, R.drawable.icon_default_error, imageView);
                     ll_imgs.addView(imageView);
 
                     final int finalI = i;

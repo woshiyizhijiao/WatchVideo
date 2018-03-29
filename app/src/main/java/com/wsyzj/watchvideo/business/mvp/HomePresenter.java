@@ -2,6 +2,7 @@ package com.wsyzj.watchvideo.business.mvp;
 
 import android.app.Activity;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.wsyzj.watchvideo.common.base.BaseThreadManager;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
 import com.wsyzj.watchvideo.business.bean.DouBan;

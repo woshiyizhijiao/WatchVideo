@@ -27,10 +27,19 @@
     <color name="c20000000">#20000000</color>
 
     <color name="cff5252">#FF5252</color>
-    <color name="c9c27b0">#9C27B0</color>
-    <color name="c673ab7">#673AB7</color>
-    <color name="cff5722">#FF5722</color>
-    <color name="c8bc34a">#8BC34A</color>
-    <color name="cffeb3b">#FFEB3B</color>
+    <color name="c2185b">#C2185B</color>
+    <color name="c7b1fa2">#7B1FA2</color>
+    <color name="c512da8">#512DA8</color>
+    <color name="c0288d1">#0288D1</color>
+    <color name="c03a9f4">#03A9F4</color>
+    <color name="c689f38">#689F38</color>
+    <color name="cafb42b">#AFB42B</color>
+    <color name="cffa000">#FFA000</color>
+    <color name="cf57c00">#F57C00</color>
+    <color name="ce6a19">#E64A19</color>
+    <color name="c5d4037">#5D4037</color>
+    <color name="c616161">#616161</color>
+    <color name="c455a64">#455A64</color>
+    <color name="c212121">#212121</color>
 
 </resources>

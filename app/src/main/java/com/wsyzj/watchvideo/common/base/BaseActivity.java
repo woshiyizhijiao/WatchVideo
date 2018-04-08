@@ -16,8 +16,9 @@ import com.wsyzj.watchvideo.common.base.mvp.BaseIView;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
 import com.wsyzj.watchvideo.common.http.BaseRetrofit;
 import com.wsyzj.watchvideo.common.utils.EventBusUtils;
+import com.wsyzj.watchvideo.common.utils.StorageUtils;
 import com.wsyzj.watchvideo.common.utils.UiUtils;
-import com.wsyzj.watchvideo.common.widget.BaseTitleView;
+import com.wsyzj.watchvideo.common.widget.BaseNavigationView;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -34,8 +35,8 @@ import io.reactivex.disposables.Disposable;
 public abstract class BaseActivity<P extends BasePresenter> extends AppCompatActivity implements BaseIView {
 
     private P mPresenter;
-    public BaseTitleView baseTitleView;
-    public BaseProgressDialog mBaseDialog;
+    private BaseProgressDialog mBaseDialog;
+    public BaseNavigationView mBaseNavigationView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,7 +65,8 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
      * 设置沉浸式
      */
     protected void setStatusBar() {
-        StatusBarUtil.setColor(this, UiUtils.getColor(R.color.colorPrimary));
+        int colorPrimary = StorageUtils.getColorPrimary();
+        StatusBarUtil.setColor(this, UiUtils.getColor(colorPrimary));
     }
 
     /**
@@ -79,9 +81,9 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         viewGroup.addView(parentView);
 
         // 统一的标题布局
-        baseTitleView = new BaseTitleView(this);
+        mBaseNavigationView = new BaseNavigationView(this);
         LinearLayout.LayoutParams title_lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        parentView.addView(baseTitleView, title_lp);
+        parentView.addView(mBaseNavigationView, title_lp);
 
         // 填充内容布局
         View contentView = View.inflate(this, contentView(), null);

@@ -71,6 +71,7 @@ dependencies {
     compile "com.tbruyelle.rxpermissions2:rxpermissions:0.9.4@aar"                   // 运行时权限
     compile "org.greenrobot:eventbus:3.0.0"                                          // 事件订阅
     compile "org.jsoup:jsoup:1.10.3"                                                 // 爬虫抓数据
+    compile 'com.github.iwgang:countdownview:2.1.6'                                  // 倒计时
 
     /**
      * 第三方库(UI相关)

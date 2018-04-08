@@ -48,7 +48,7 @@ public class MeiRiYiWenActivity extends BaseActivity {
 
     @Override
     protected int contentView() {
-        baseTitleView.setTitle("每日一文");
+        mBaseNavigationView.setTitle("每日一文");
         return R.layout.activity_meiriyiwen;
     }
 

@@ -20,15 +20,17 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.CacheUtils;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.jaeger.library.StatusBarUtil;
 import com.pgyersdk.javabean.AppBean;
 import com.pgyersdk.update.PgyUpdateManager;
 import com.pgyersdk.update.UpdateManagerListener;
 import com.wsyzj.watchvideo.R;
-import com.wsyzj.watchvideo.business.adapter.SkinPeelerAdapter;
+import com.wsyzj.watchvideo.business.adapter.ColorPrimaryAdapter;
 import com.wsyzj.watchvideo.business.adapter.VpAdapter;
 import com.wsyzj.watchvideo.business.bean.NewsChannel;
 import com.wsyzj.watchvideo.business.fragment.HomeFragment;
@@ -45,6 +47,7 @@ import com.wsyzj.watchvideo.common.constant.Constant;
 import com.wsyzj.watchvideo.common.constant.EventBusConstant;
 import com.wsyzj.watchvideo.common.http.ImageLoader;
 import com.wsyzj.watchvideo.common.utils.IntentUtils;
+import com.wsyzj.watchvideo.common.utils.StorageUtils;
 import com.wsyzj.watchvideo.common.utils.UiUtils;
 
 import net.youmi.android.nm.sp.SpotManager;
@@ -65,7 +68,7 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
 
     private static final int CODE_CHANNEL_MANAGER = 0;
 
-    private static final Integer[] mSkinsColors = {R.color.colorAccent, R.color.cff5252, R.color.c2185b, R.color.c7b1fa2, R.color.c512da8, R.color.c0288d1, R.color.c03a9f4,
+    private static final Integer[] mColorPrimary = {R.color.colorAccent, R.color.cff5252, R.color.c2185b, R.color.c7b1fa2, R.color.c512da8, R.color.c0288d1, R.color.c03a9f4,
             R.color.c689f38, R.color.cafb42b, R.color.cffa000, R.color.cf57c00, R.color.ce6a19, R.color.c5d4037, R.color.c616161, R.color.c455a64, R.color.c212121};
 
     @BindView(R.id.drawer_layout)
@@ -79,6 +82,9 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
 
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout swipe_refresh;
+
+    @BindView(R.id.ll_tabLayout)
+    LinearLayout ll_tabLayout;
 
     @BindView(R.id.tabLayout)
     TabLayout tabLayout;
@@ -95,7 +101,9 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
     @Override
     protected void setStatusBar() {
         super.setStatusBar();
-        int colorPrimary = getResources().getColor(R.color.colorPrimary);
+        int colorPrimary = UiUtils.getColor(StorageUtils.getColorPrimary());
+        toolbar.setBackgroundColor(colorPrimary);
+        ll_tabLayout.setBackgroundColor(colorPrimary);
         StatusBarUtil.setColorForDrawerLayout(this, drawer_layout, colorPrimary, StatusBarUtil.DEFAULT_STATUS_BAR_ALPHA);
     }
 
@@ -107,7 +115,7 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
 
     @Override
     protected int contentView() {
-        baseTitleView.hide();
+        mBaseNavigationView.hide();
         return R.layout.activity_main;
     }
 
@@ -126,7 +134,6 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
         View nav_header_main = nav_view.getHeaderView(0);
         iv_nav_header_bg = (ImageView) nav_header_main.findViewById(R.id.iv_nav_header_bg);
         tv_nav_header_text = (TextView) nav_header_main.findViewById(R.id.tv_nav_header_text);
-
     }
 
     @Override
@@ -288,7 +295,7 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
         } else if (id == R.id.nav_game) {
             IntentUtils.webView(this, "小游戏", Constant.URL_GAME_H5);
         } else if (id == R.id.nav_skin_peeler) {
-            skinPeeler();
+            changedColorPrimary();
         } else if (id == R.id.nav_clear_cache) {
             navClearCache();
         }
@@ -338,15 +345,31 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
     /**
      * 更换皮肤
      */
-    private void skinPeeler() {
-        View headView = UiUtils.inflate(R.layout.dialog_skin_peeler);
-        RecyclerView rv_skin_peeler = (RecyclerView) headView.findViewById(R.id.rv_skin_peeler);
-        rv_skin_peeler.setLayoutManager(new GridLayoutManager(this, 4));
-        rv_skin_peeler.setAdapter(new SkinPeelerAdapter(Arrays.asList(mSkinsColors)));
+    private void changedColorPrimary() {
+        View headView = UiUtils.inflate(R.layout.dialog_color_primary);
+        RecyclerView rv_color_primary = (RecyclerView) headView.findViewById(R.id.rv_color_primary);
+
+        rv_color_primary.setLayoutManager(new GridLayoutManager(this, 4));
+        ColorPrimaryAdapter colorPrimaryAdapter = new ColorPrimaryAdapter(this, Arrays.asList(mColorPrimary));
+        rv_color_primary.setAdapter(colorPrimaryAdapter);
 
         AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-        alertDialog.setContentView(headView);
+        alertDialog.setView(headView);
         alertDialog.show();
+
+        colorPrimaryAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                StorageUtils.putColorPrimary(mColorPrimary[position]);
+                int color = UiUtils.getColor(mColorPrimary[position]);
+
+                setStatusBar();
+                ll_tabLayout.setBackgroundColor(color);
+                toolbar.setBackgroundColor(color);
+
+                alertDialog.dismiss();
+            }
+        });
     }
 
     /**
@@ -363,5 +386,4 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
             }
         });
     }
-
 }

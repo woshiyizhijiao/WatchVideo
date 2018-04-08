@@ -4,6 +4,7 @@ import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.business.BaseApp;
 import com.wsyzj.watchvideo.business.bean.NewsChannel;
 
@@ -69,5 +70,21 @@ public class StorageUtils {
         String cacheNewsChannelTitles = (String) SPUtils.get(BaseApp.getApp(), CACHE_NEWS_CHANNEL_TITLES, "");
         return gson.fromJson(cacheNewsChannelTitles, new TypeToken<List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean>>() {
         }.getType());
+    }
+
+    private static final String COLOR_PRIMARY = "color_primary";
+
+    /**
+     * 获取主题颜色
+     */
+    public static int getColorPrimary() {
+        return (int) SPUtils.get(BaseApp.getApp(), COLOR_PRIMARY, R.color.colorPrimary);
+    }
+
+    /**
+     * 设置主题颜色
+     */
+    public static void putColorPrimary(int colorPrimary) {
+        SPUtils.put(BaseApp.getApp(), COLOR_PRIMARY, colorPrimary);
     }
 }

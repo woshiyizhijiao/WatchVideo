@@ -33,8 +33,7 @@
         // 主界面
         <activity
             android:name=".business.activity.MainActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:configChanges="orientation|screenSize|keyboardHidden"/>
 
         // WebView
         <activity

@@ -13,7 +13,7 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.business.bean.NewsDetails;
 import com.wsyzj.watchvideo.common.http.ImageLoader;
-import com.wsyzj.watchvideo.common.utils.IntentUtils;
+import com.wsyzj.watchvideo.business.utils.IntentUtils;
 
 import java.util.ArrayList;
 import java.util.List;

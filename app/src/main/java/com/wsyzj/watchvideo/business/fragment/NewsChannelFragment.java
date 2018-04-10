@@ -14,7 +14,7 @@ import com.wsyzj.watchvideo.business.mvp.NewsChannelContract;
 import com.wsyzj.watchvideo.business.mvp.NewsChannelPresenter;
 import com.wsyzj.watchvideo.common.base.BaseFragment;
 import com.wsyzj.watchvideo.common.base.mvp.BaseIPresenter;
-import com.wsyzj.watchvideo.common.utils.IntentUtils;
+import com.wsyzj.watchvideo.business.utils.IntentUtils;
 import com.wsyzj.watchvideo.common.widget.BasePullToRefreshView;
 
 import java.util.List;

@@ -25,7 +25,7 @@ import com.wsyzj.watchvideo.common.base.BaseFragment;
 import com.wsyzj.watchvideo.common.base.mvp.BaseIPresenter;
 import com.wsyzj.watchvideo.common.constant.EventBusConstant;
 import com.wsyzj.watchvideo.common.utils.EventBusUtils;
-import com.wsyzj.watchvideo.common.utils.IntentUtils;
+import com.wsyzj.watchvideo.business.utils.IntentUtils;
 import com.wsyzj.watchvideo.common.utils.UiUtils;
 import com.wsyzj.watchvideo.common.widget.BasePullToRefreshView;
 
@@ -87,7 +87,7 @@ public class HomeFragment extends BaseFragment implements HomeContract.View, OnR
     @Override
     public void setGankData(final List<Gank.ResultsBean> results) {
         if (mHomeAdapter == null) {
-            mHomeAdapter = new HomeAdapter(mActivity, R.layout.item_home, results);
+            mHomeAdapter = new HomeAdapter(mActivity, results);
             pull_to_refresh.setLayoutManager(new GridLayoutManager(mActivity, 2));
             pull_to_refresh.setAdapter(mHomeAdapter);
             addHeadView();

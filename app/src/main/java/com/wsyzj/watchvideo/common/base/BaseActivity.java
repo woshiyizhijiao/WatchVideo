@@ -2,7 +2,6 @@ package com.wsyzj.watchvideo.common.base;
 
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -82,16 +81,15 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
 
         // 统一的标题布局
         mBaseNavigationView = new BaseNavigationView(this);
-        LinearLayout.LayoutParams title_lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        parentView.addView(mBaseNavigationView, title_lp);
+        LinearLayout.LayoutParams titleLp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        parentView.addView(mBaseNavigationView, titleLp);
 
         // 填充内容布局
         View contentView = View.inflate(this, contentView(), null);
-        LinearLayout.LayoutParams contetnView_lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        parentView.addView(contentView, contetnView_lp);
-        ButterKnife.bind(this);
+        LinearLayout.LayoutParams contetnViewLp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        parentView.addView(contentView, contetnViewLp);
+        ButterKnife.bind(this, contentView);
     }
-
 
     /**
      * 是否使用EventBus
@@ -174,16 +172,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
      */
     @Override
     public void showToast(final String message) {
-        if (Looper.getMainLooper() == Looper.myLooper()) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    ToastUtils.showShort(message);
-                }
-            });
-        } else {
-            ToastUtils.showShort(message);
-        }
+        ToastUtils.showShort(message);
     }
 
     /**

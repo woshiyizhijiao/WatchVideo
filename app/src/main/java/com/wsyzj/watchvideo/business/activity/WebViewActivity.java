@@ -1,7 +1,6 @@
 package com.wsyzj.watchvideo.business.activity;
 
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Build;
@@ -73,7 +72,6 @@ public class WebViewActivity extends BaseActivity implements View.OnClickListene
          */
         SpotManager.getInstance(this).setImageType(SpotManager.IMAGE_TYPE_VERTICAL);
         SpotManager.getInstance(this).setAnimationType(SpotManager.ANIMATION_TYPE_ADVANCED);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
         mBaseNavigationView.setNavigationOnClickListener(this);
         webViewSettings();
     }

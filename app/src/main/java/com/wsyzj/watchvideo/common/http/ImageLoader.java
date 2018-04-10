@@ -1,9 +1,13 @@
 package com.wsyzj.watchvideo.common.http;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.SimpleTarget;
 
 /**
  * 创建时间 : 2017/10/19
@@ -29,11 +33,24 @@ public class ImageLoader {
      *
      * @param context
      * @param path        图片路径
-     * @param placeholder 加载中的图片
-     * @param errorResIs  加载失败图片
+     * @param placeholderResId 加载中的图片
+     * @param errorResId  加载失败图片
      * @param imageView   ImageView
      */
-    public static void with(Context context, String path, int placeholder, int errorResIs, ImageView imageView) {
-        Glide.with(context).load(path).placeholder(placeholder).error(errorResIs).into(imageView);
+    @SuppressLint("CheckResult")
+    public static void with(Context context, String path, int placeholderResId, int errorResId, ImageView imageView) {
+        RequestOptions options = new RequestOptions();
+        options.placeholder(placeholderResId);
+        options.error(errorResId);
+        Glide.with(context).load(path).apply(options).into(imageView);
+    }
+
+    /**
+     * @param context
+     * @param path
+     * @param simpleTarget
+     */
+    public static void with(Context context, String path, SimpleTarget<Bitmap> simpleTarget) {
+        Glide.with(context).asBitmap().load(path).into(simpleTarget);
     }
 }

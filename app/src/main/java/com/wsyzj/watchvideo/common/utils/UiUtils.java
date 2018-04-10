@@ -2,6 +2,7 @@ package com.wsyzj.watchvideo.common.utils;
 
 import android.graphics.drawable.Drawable;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.wsyzj.watchvideo.business.BaseApp;
 
@@ -19,6 +20,10 @@ public class UiUtils {
      */
     public static View inflate(int resource) {
         return View.inflate(BaseApp.getApp(), resource, null);
+    }
+
+    public static View inflate(int resource, ViewGroup root) {
+        return View.inflate(BaseApp.getApp(), resource, root);
     }
 
     /**

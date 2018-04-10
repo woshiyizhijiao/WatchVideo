@@ -12,7 +12,7 @@ import com.wsyzj.watchvideo.business.BaseApp;
 import com.wsyzj.watchvideo.common.base.BaseActivity;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
 import com.wsyzj.watchvideo.common.constant.Constant;
-import com.wsyzj.watchvideo.common.utils.IntentUtils;
+import com.wsyzj.watchvideo.business.utils.IntentUtils;
 
 import net.youmi.android.AdManager;
 import net.youmi.android.nm.cm.ErrorCode;

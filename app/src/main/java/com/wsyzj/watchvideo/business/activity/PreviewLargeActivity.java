@@ -12,14 +12,14 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.ConvertUtils;
 import com.blankj.utilcode.util.SpanUtils;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.jaeger.library.StatusBarUtil;
 import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.business.adapter.PreviewLargeAdapter;
 import com.wsyzj.watchvideo.common.base.BaseActivity;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
+import com.wsyzj.watchvideo.common.http.ImageLoader;
 import com.wsyzj.watchvideo.common.utils.UiUtils;
 
 import java.io.File;
@@ -141,9 +141,9 @@ public class PreviewLargeActivity extends BaseActivity implements ViewPager.OnPa
     public void savePhotoToSDCard() {
         showProgress();
         String url = mImgUrls.get(view_pager.getCurrentItem());
-        Glide.with(this).load(url).asBitmap().into(new SimpleTarget<Bitmap>() {
+        ImageLoader.with(this, url, new SimpleTarget<Bitmap>() {
             @Override
-            public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+            public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
                 boolean isSuccess = saveImageToGallery(PreviewLargeActivity.this, resource);
                 if (!isSuccess) {
                     showToast("保存失败，请重试！");

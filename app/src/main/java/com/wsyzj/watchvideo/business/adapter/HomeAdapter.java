@@ -1,7 +1,6 @@
 package com.wsyzj.watchvideo.business.adapter;
 
 import android.content.Context;
-import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.widget.ImageView;
 
@@ -21,8 +20,8 @@ import java.util.List;
 public class HomeAdapter extends BaseQuickAdapter<Gank.ResultsBean, BaseViewHolder> {
     private Context mContext;
 
-    public HomeAdapter(Context context, @LayoutRes int layoutResId, @Nullable List<Gank.ResultsBean> data) {
-        super(layoutResId, data);
+    public HomeAdapter(Context context, @Nullable List<Gank.ResultsBean> data) {
+        super(R.layout.item_home, data);
         mContext = context;
     }
 

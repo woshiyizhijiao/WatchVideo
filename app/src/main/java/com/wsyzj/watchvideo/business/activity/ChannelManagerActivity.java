@@ -14,7 +14,7 @@ import com.wsyzj.watchvideo.business.mvp.ChannelManagerContract;
 import com.wsyzj.watchvideo.business.mvp.ChannelManagerPresenter;
 import com.wsyzj.watchvideo.common.base.BaseActivity;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
-import com.wsyzj.watchvideo.common.utils.IntentUtils;
+import com.wsyzj.watchvideo.business.utils.IntentUtils;
 
 import java.util.List;
 

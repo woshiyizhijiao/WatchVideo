@@ -1,4 +1,4 @@
-package com.wsyzj.watchvideo.common.utils;
+package com.wsyzj.watchvideo.business.utils;
 
 import android.app.Activity;
 import android.content.Intent;

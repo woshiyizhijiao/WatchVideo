@@ -38,6 +38,7 @@ import com.wsyzj.watchvideo.business.fragment.NewsChannelFragment;
 import com.wsyzj.watchvideo.business.mvp.MainContract;
 import com.wsyzj.watchvideo.business.mvp.MainPresenter;
 import com.wsyzj.watchvideo.business.utils.DataUtils;
+import com.wsyzj.watchvideo.business.utils.IntentUtils;
 import com.wsyzj.watchvideo.common.base.BaseActivity;
 import com.wsyzj.watchvideo.common.base.BaseEventBus;
 import com.wsyzj.watchvideo.common.base.BaseFragment;
@@ -46,7 +47,6 @@ import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
 import com.wsyzj.watchvideo.common.constant.Constant;
 import com.wsyzj.watchvideo.common.constant.EventBusConstant;
 import com.wsyzj.watchvideo.common.http.ImageLoader;
-import com.wsyzj.watchvideo.common.utils.IntentUtils;
 import com.wsyzj.watchvideo.common.utils.StorageUtils;
 import com.wsyzj.watchvideo.common.utils.UiUtils;
 
@@ -68,8 +68,8 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
 
     private static final int CODE_CHANNEL_MANAGER = 0;
 
-    private static final Integer[] mColorPrimary = {R.color.colorAccent, R.color.cff5252, R.color.c2185b, R.color.c7b1fa2, R.color.c512da8, R.color.c0288d1, R.color.c03a9f4,
-            R.color.c689f38, R.color.cafb42b, R.color.cffa000, R.color.cf57c00, R.color.ce6a19, R.color.c5d4037, R.color.c616161, R.color.c455a64, R.color.c212121};
+    private static final Integer[] mColorPrimary = {R.color.ce91e63, R.color.c9c27b0, R.color.c673ab7, R.color.c2196f3, R.color.c03a9f4, R.color.c00bcd4, R.color.c009688,
+            R.color.colorPrimary, R.color.c8bc34a, R.color.ccddc39, R.color.cffc107, R.color.cff9800, R.color.cff5722, R.color.C795548, R.color.c607d8b, R.color.c9e9e9e};
 
     @BindView(R.id.drawer_layout)
     DrawerLayout drawer_layout;

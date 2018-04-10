@@ -19,8 +19,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        //
-        ======================================================================================界面注册
+
+        // ======================================================================================界面注册
         // 闪屏
         <activity android:name=".business.activity.SplashActivity">
             <intent-filter>

@@ -24,8 +24,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.CacheUtils;
+import com.blankj.utilcode.util.LogUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.jaeger.library.StatusBarUtil;
 import com.pgyersdk.javabean.AppBean;
 import com.pgyersdk.update.PgyUpdateManager;
 import com.pgyersdk.update.UpdateManagerListener;
@@ -50,6 +50,7 @@ import com.wsyzj.watchvideo.common.http.ImageLoader;
 import com.wsyzj.watchvideo.common.utils.StorageUtils;
 import com.wsyzj.watchvideo.common.utils.UiUtils;
 import com.wsyzj.watchvideo.common.widget.BaseState;
+import com.wsyzj.watchvideo.common.widget.BaseStateLayout;
 
 import net.youmi.android.nm.sp.SpotManager;
 
@@ -65,7 +66,7 @@ import butterknife.OnClick;
  * @date 2017/12/6 10:03
  * @Description: 主界面
  */
-public class MainActivity extends BaseActivity implements MainContract.View, TabLayout.OnTabSelectedListener, NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseActivity implements MainContract.View, TabLayout.OnTabSelectedListener, NavigationView.OnNavigationItemSelectedListener, BaseStateLayout.OnStateEmptyListener, BaseStateLayout.OnStateErrorListener {
 
     private static final int CODE_CHANNEL_MANAGER = 0;
 
@@ -100,15 +101,6 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
     private VpAdapter mVpAdapter;
 
     @Override
-    protected void setStatusBar() {
-        super.setStatusBar();
-        int colorPrimary = UiUtils.getColor(StorageUtils.getColorPrimary());
-        toolbar.setBackgroundColor(colorPrimary);
-        ll_tabLayout.setBackgroundColor(colorPrimary);
-        StatusBarUtil.setColorForDrawerLayout(this, drawer_layout, colorPrimary, StatusBarUtil.DEFAULT_STATUS_BAR_ALPHA);
-    }
-
-    @Override
     protected BasePresenter presenter() {
         mPresenter = new MainPresenter(this);
         return mPresenter;
@@ -131,10 +123,17 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
         tabLayout.addOnTabSelectedListener(this);
         tabLayout.setupWithViewPager(viewPager);
         nav_view.setNavigationItemSelectedListener(this);
+        mStateLayout.setOnStateEmptyListener(this);
+        mStateLayout.setOnStateErrorListener(this);
 
         View nav_header_main = nav_view.getHeaderView(0);
         iv_nav_header_bg = (ImageView) nav_header_main.findViewById(R.id.iv_nav_header_bg);
         tv_nav_header_text = (TextView) nav_header_main.findViewById(R.id.tv_nav_header_text);
+
+        int colorPrimary = UiUtils.getColor(StorageUtils.getColorPrimary());
+        toolbar.setBackgroundColor(colorPrimary);
+        ll_tabLayout.setBackgroundColor(colorPrimary);
+
     }
 
     @Override
@@ -216,13 +215,7 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
         } else {
             mVpAdapter.refreshData(fragments, channelList);
         }
-
-        toolbar.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                setPageState(BaseState.STATE_SUCCESS);
-            }
-        }, 2000);
+        setPageState(BaseState.STATE_SUCCESS);
     }
 
     /**
@@ -393,5 +386,17 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
                 showToast("共清除" + cacheSize + "M缓存");
             }
         });
+    }
+
+    @Override
+    public void onStateEmpty() {
+        LogUtils.e("空界面");
+        mPresenter.getNewsChannel(this);
+    }
+
+    @Override
+    public void onStateError() {
+        LogUtils.e("异常界面");
+        mPresenter.getNewsChannel(this);
     }
 }

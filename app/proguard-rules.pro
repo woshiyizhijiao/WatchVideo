@@ -134,3 +134,8 @@
 #-libraryjars libs/pgyer_sdk_2.8.1.jar
 -dontwarn com.pgyersdk.**
 -keep class com.pgyersdk.** { *; }
+
+# AndroidUtilCode
+-keep class com.blankj.utilcode.** { *; }
+-keepclassmembers class com.blankj.utilcode.** { *; }
+-dontwarn com.blankj.utilcode.**

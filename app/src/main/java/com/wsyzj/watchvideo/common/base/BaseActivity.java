@@ -39,18 +39,18 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     private P mPresenter;
     private BaseProgressDialog mBaseDialog;
     public BaseNavigationView mNavigationView;
-    private BaseStateLayout mStateLayout;
+    public BaseStateLayout mStateLayout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // 固定竖屏
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        setStatusBar();
         createPresenter();
         layout();
         initView();
         initData(savedInstanceState);
-        setStatusBar();
         registerEventBus();
     }
 

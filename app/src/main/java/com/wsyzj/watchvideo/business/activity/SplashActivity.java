@@ -2,17 +2,20 @@ package com.wsyzj.watchvideo.business.activity;
 
 import android.Manifest;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.widget.RelativeLayout;
 
+import com.jaeger.library.StatusBarUtil;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.business.BaseApp;
+import com.wsyzj.watchvideo.business.utils.IntentUtils;
 import com.wsyzj.watchvideo.common.base.BaseActivity;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
 import com.wsyzj.watchvideo.common.constant.Constant;
-import com.wsyzj.watchvideo.business.utils.IntentUtils;
+import com.wsyzj.watchvideo.common.widget.BaseState;
 
 import net.youmi.android.AdManager;
 import net.youmi.android.nm.cm.ErrorCode;
@@ -47,6 +50,12 @@ public class SplashActivity extends BaseActivity {
     private boolean isToAuthorize;  // 是否拒绝授权
 
     @Override
+    protected void setStatusBar() {
+//        super.setStatusBar();
+        StatusBarUtil.setColor(this, Color.BLACK);
+    }
+
+    @Override
     protected void onRestart() {
         super.onRestart();
         if (isToAuthorize) {
@@ -73,7 +82,7 @@ public class SplashActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-
+        setPageState(BaseState.STATE_SUCCESS);
     }
 
     @Override

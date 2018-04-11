@@ -12,6 +12,7 @@ import com.wsyzj.watchvideo.common.base.BaseActivity;
 import com.wsyzj.watchvideo.common.base.BaseProgressDialog;
 import com.wsyzj.watchvideo.common.base.BaseThreadManager;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
+import com.wsyzj.watchvideo.common.widget.BaseState;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -54,7 +55,7 @@ public class MeiRiYiWenActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-
+        setPageState(BaseState.STATE_SUCCESS);
     }
 
     @Override

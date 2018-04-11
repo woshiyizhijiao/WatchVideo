@@ -5,17 +5,11 @@
              android:background="@color/white"
              android:orientation="vertical">
 
-    <View
-        android:id="@+id/view_state_bar"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"/>
-
     <ProgressBar
         android:id="@+id/pb_loading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:visibility="visible"/>
+        android:layout_gravity="center"/>
 
     <TextView
         android:id="@+id/tv_error"

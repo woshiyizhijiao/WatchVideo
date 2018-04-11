@@ -11,11 +11,11 @@ import android.webkit.SslErrorHandler;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.ProgressBar;
 
 import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.common.base.BaseActivity;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
+import com.wsyzj.watchvideo.common.widget.BaseState;
 
 import net.youmi.android.nm.cm.ErrorCode;
 import net.youmi.android.nm.sp.SpotListener;
@@ -32,9 +32,6 @@ public class WebViewActivity extends BaseActivity implements View.OnClickListene
 
     @BindView(R.id.webView)
     WebView webView;
-
-    @BindView(R.id.progressBar)
-    ProgressBar progressBar;
 
     @Override
     protected void onPause() {
@@ -113,7 +110,7 @@ public class WebViewActivity extends BaseActivity implements View.OnClickListene
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-                progressBar.setVisibility(View.INVISIBLE);
+                setPageState(BaseState.STATE_SUCCESS);
             }
 
             @Override

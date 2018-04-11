@@ -47,7 +47,7 @@ dependencies {
      * 兼容包
      */
     compile "com.android.support:appcompat-v7:$support_version"               // v7兼容包
-    compile "com.android.support:support-v4:$support_version"                 // v4
+//    compile "com.android.support:support-v4:$support_version"                 // v4
     compile "com.android.support:cardview-v7:$support_version"                // cardview
     compile "com.android.support:recyclerview-v7:$support_version"            // RecyclerView
     compile "com.android.support:design:$support_version"                     // design

@@ -15,6 +15,7 @@ import com.wsyzj.watchvideo.business.mvp.ChannelManagerPresenter;
 import com.wsyzj.watchvideo.common.base.BaseActivity;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
 import com.wsyzj.watchvideo.business.utils.IntentUtils;
+import com.wsyzj.watchvideo.common.widget.BaseState;
 
 import java.util.List;
 
@@ -83,6 +84,8 @@ public class ChannelManagerActivity extends BaseActivity implements ChannelManag
         } else {
             mChannelManagerAdapter.refreshData(myChannel, recommendChannel);
         }
+
+        setPageState(BaseState.STATE_SUCCESS);
 
         gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override

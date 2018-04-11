@@ -2,7 +2,6 @@ package com.wsyzj.watchvideo.common.base;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -13,6 +12,7 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.wsyzj.watchvideo.common.base.mvp.BaseIPresenter;
 import com.wsyzj.watchvideo.common.base.mvp.BaseIView;
 import com.wsyzj.watchvideo.common.http.BaseRetrofit;
+import com.wsyzj.watchvideo.common.widget.BaseState;
 
 import butterknife.ButterKnife;
 import io.reactivex.disposables.Disposable;
@@ -112,6 +112,11 @@ public abstract class BaseFragment<P extends BaseIPresenter> extends Fragment im
         }
     }
 
+    @Override
+    public void setPageState(BaseState baseState) {
+
+    }
+
     /**
      * mvp 显示toast
      *
@@ -119,16 +124,7 @@ public abstract class BaseFragment<P extends BaseIPresenter> extends Fragment im
      */
     @Override
     public void showToast(final String message) {
-        if (mActivity.getMainLooper() != Looper.myLooper()) {
-            mActivity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    ToastUtils.showShort(message);
-                }
-            });
-        } else {
-            ToastUtils.showShort(message);
-        }
+        ToastUtils.showShort(message);
     }
 
     /**

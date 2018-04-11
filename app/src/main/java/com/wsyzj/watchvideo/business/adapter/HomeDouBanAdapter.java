@@ -1,7 +1,6 @@
 package com.wsyzj.watchvideo.business.adapter;
 
 import android.content.Context;
-import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.widget.ImageView;
 
@@ -21,8 +20,8 @@ import java.util.List;
 public class HomeDouBanAdapter extends BaseQuickAdapter<DouBan.SubjectsBean, BaseViewHolder> {
     private Context mContext;
 
-    public HomeDouBanAdapter(Context context, @LayoutRes int layoutResId, @Nullable List<DouBan.SubjectsBean> data) {
-        super(layoutResId, data);
+    public HomeDouBanAdapter(Context context, @Nullable List<DouBan.SubjectsBean> data) {
+        super(R.layout.item_home_douban, data);
         mContext = context;
     }
 

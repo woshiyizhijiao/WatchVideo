@@ -20,14 +20,15 @@ import com.wsyzj.watchvideo.business.bean.Gank;
 import com.wsyzj.watchvideo.business.bean.MeiRiYiWen;
 import com.wsyzj.watchvideo.business.mvp.HomeContract;
 import com.wsyzj.watchvideo.business.mvp.HomePresenter;
+import com.wsyzj.watchvideo.business.utils.IntentUtils;
 import com.wsyzj.watchvideo.common.base.BaseEventBus;
 import com.wsyzj.watchvideo.common.base.BaseFragment;
 import com.wsyzj.watchvideo.common.base.mvp.BaseIPresenter;
 import com.wsyzj.watchvideo.common.constant.EventBusConstant;
 import com.wsyzj.watchvideo.common.utils.EventBusUtils;
-import com.wsyzj.watchvideo.business.utils.IntentUtils;
 import com.wsyzj.watchvideo.common.utils.UiUtils;
 import com.wsyzj.watchvideo.common.widget.BasePullToRefreshView;
+import com.wsyzj.watchvideo.common.widget.BaseState;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -196,7 +197,7 @@ public class HomeFragment extends BaseFragment implements HomeContract.View, OnR
         if (mHeadView != null) {
             RecyclerView rv_douban = (RecyclerView) mHeadView.findViewById(R.id.rv_douban);
 
-            final HomeDouBanAdapter douBanAdapter = new HomeDouBanAdapter(mActivity, R.layout.item_home_douban, subjects);
+            final HomeDouBanAdapter douBanAdapter = new HomeDouBanAdapter(mActivity, subjects);
             rv_douban.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.HORIZONTAL, false));
             rv_douban.setAdapter(douBanAdapter);
 

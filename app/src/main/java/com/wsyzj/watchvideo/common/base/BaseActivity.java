@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import com.blankj.utilcode.util.ToastUtils;
@@ -18,6 +19,8 @@ import com.wsyzj.watchvideo.common.utils.EventBusUtils;
 import com.wsyzj.watchvideo.common.utils.StorageUtils;
 import com.wsyzj.watchvideo.common.utils.UiUtils;
 import com.wsyzj.watchvideo.common.widget.BaseNavigationView;
+import com.wsyzj.watchvideo.common.widget.BaseState;
+import com.wsyzj.watchvideo.common.widget.BaseStateLayout;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -35,7 +38,8 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
 
     private P mPresenter;
     private BaseProgressDialog mBaseDialog;
-    public BaseNavigationView mBaseNavigationView;
+    public BaseNavigationView mNavigationView;
+    private BaseStateLayout mStateLayout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -80,9 +84,14 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         viewGroup.addView(parentView);
 
         // 统一的标题布局
-        mBaseNavigationView = new BaseNavigationView(this);
+        mNavigationView = new BaseNavigationView(this);
         LinearLayout.LayoutParams titleLp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        parentView.addView(mBaseNavigationView, titleLp);
+        parentView.addView(mNavigationView, titleLp);
+
+        // 添加状态布局
+        mStateLayout = new BaseStateLayout(this);
+        FrameLayout.LayoutParams stateLp = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        parentView.addView(mStateLayout, stateLp);
 
         // 填充内容布局
         View contentView = View.inflate(this, contentView(), null);
@@ -162,6 +171,13 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     public void dismissProgress() {
         if (mBaseDialog != null && mBaseDialog.isShowing()) {
             mBaseDialog.dismiss();
+        }
+    }
+
+    @Override
+    public void setPageState(BaseState baseState) {
+        if (mStateLayout != null) {
+            mStateLayout.setState(baseState);
         }
     }
 

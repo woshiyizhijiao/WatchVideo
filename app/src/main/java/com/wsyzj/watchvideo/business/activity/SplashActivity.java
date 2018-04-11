@@ -67,7 +67,7 @@ public class SplashActivity extends BaseActivity {
 
     @Override
     protected int contentView() {
-        mBaseNavigationView.hide();
+        mNavigationView.hide();
         return R.layout.activity_splash;
     }
 

@@ -49,6 +49,7 @@ import com.wsyzj.watchvideo.common.constant.EventBusConstant;
 import com.wsyzj.watchvideo.common.http.ImageLoader;
 import com.wsyzj.watchvideo.common.utils.StorageUtils;
 import com.wsyzj.watchvideo.common.utils.UiUtils;
+import com.wsyzj.watchvideo.common.widget.BaseState;
 
 import net.youmi.android.nm.sp.SpotManager;
 
@@ -115,7 +116,7 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
 
     @Override
     protected int contentView() {
-        mBaseNavigationView.hide();
+        mNavigationView.hide();
         return R.layout.activity_main;
     }
 
@@ -215,6 +216,13 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
         } else {
             mVpAdapter.refreshData(fragments, channelList);
         }
+
+        toolbar.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                setPageState(BaseState.STATE_SUCCESS);
+            }
+        }, 2000);
     }
 
     /**

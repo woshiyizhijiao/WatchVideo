@@ -1,5 +1,7 @@
 package com.wsyzj.watchvideo.common.base.mvp;
 
+import com.wsyzj.watchvideo.common.widget.BaseState;
+
 import io.reactivex.disposables.Disposable;
 
 /**
@@ -8,6 +10,8 @@ import io.reactivex.disposables.Disposable;
  * @comment: MVP模式的View(通过Presenter将数据传入到该层，负责View的展示相关)
  */
 public interface BaseIView {
+
+    void setPageState(BaseState baseState);
 
     void showProgress();
 

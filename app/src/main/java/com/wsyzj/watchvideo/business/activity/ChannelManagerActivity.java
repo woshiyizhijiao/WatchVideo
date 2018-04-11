@@ -44,13 +44,13 @@ public class ChannelManagerActivity extends BaseActivity implements ChannelManag
 
     @Override
     protected int contentView() {
-        mBaseNavigationView.setTitle("频道管理");
+        mNavigationView.setTitle("频道管理");
         return R.layout.activity_channel_manager;
     }
 
     @Override
     protected void initView() {
-        mBaseNavigationView.setNavigationOnClickListener(new View.OnClickListener() {
+        mNavigationView.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 IntentUtils.setResultChannelManager(ChannelManagerActivity.this, mChannelManagerAdapter != null && mChannelManagerAdapter.putChannelData());

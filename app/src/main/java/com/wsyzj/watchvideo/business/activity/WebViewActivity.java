@@ -72,7 +72,7 @@ public class WebViewActivity extends BaseActivity implements View.OnClickListene
          */
         SpotManager.getInstance(this).setImageType(SpotManager.IMAGE_TYPE_VERTICAL);
         SpotManager.getInstance(this).setAnimationType(SpotManager.ANIMATION_TYPE_ADVANCED);
-        mBaseNavigationView.setNavigationOnClickListener(this);
+        mNavigationView.setNavigationOnClickListener(this);
         webViewSettings();
     }
 
@@ -90,7 +90,7 @@ public class WebViewActivity extends BaseActivity implements View.OnClickListene
         String title = intent.getStringExtra("title");
         String url = intent.getStringExtra("url");
 
-        mBaseNavigationView.setTitle(title);
+        mNavigationView.setTitle(title);
         webView.loadUrl(url);
     }
 

@@ -62,7 +62,7 @@ public class PreviewLargeActivity extends BaseActivity implements ViewPager.OnPa
 
     @Override
     protected int contentView() {
-        mBaseNavigationView.hide();
+        mNavigationView.hide();
         return R.layout.activity_preview_large;
     }
 

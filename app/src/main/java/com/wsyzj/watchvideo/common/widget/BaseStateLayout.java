@@ -121,7 +121,7 @@ public class BaseStateLayout extends FrameLayout {
      * 没网，显示没有网络的布局
      */
     private void setNetState() {
-        if (NetworkUtils.isConnected()) {
+        if (!NetworkUtils.isConnected()) {
             setState(BaseState.STATE_ERROR);
         }
     }

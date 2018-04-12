@@ -28,7 +28,7 @@ import com.wsyzj.watchvideo.common.constant.EventBusConstant;
 import com.wsyzj.watchvideo.common.utils.EventBusUtils;
 import com.wsyzj.watchvideo.common.utils.UiUtils;
 import com.wsyzj.watchvideo.common.widget.BasePullToRefreshView;
-import com.wsyzj.watchvideo.common.widget.BaseState;
+import com.wsyzj.watchvideo.common.widget.BaseStateLayout;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,7 +41,7 @@ import butterknife.BindView;
  * @date 2017/12/12 14:02
  * @Description: 推荐
  */
-public class HomeFragment extends BaseFragment implements HomeContract.View, OnRefreshListener, OnRefreshLoadMoreListener {
+public class HomeFragment extends BaseFragment implements HomeContract.View, OnRefreshListener, OnRefreshLoadMoreListener, BaseStateLayout.OnStateEmptyListener, BaseStateLayout.OnStateErrorListener {
 
     @BindView(R.id.pull_to_refresh)
     BasePullToRefreshView pull_to_refresh;
@@ -65,6 +65,8 @@ public class HomeFragment extends BaseFragment implements HomeContract.View, OnR
     public void initView() {
         pull_to_refresh.setOnRefreshListener(this);
         pull_to_refresh.setOnRefreshLoadMoreListener(this);
+        mStateLayout.setOnStateEmptyListener(this);
+        mStateLayout.setOnStateErrorListener(this);
     }
 
     @Override
@@ -233,5 +235,25 @@ public class HomeFragment extends BaseFragment implements HomeContract.View, OnR
     @Override
     public void onLoadMore(RefreshLayout refreshLayout) {
         mPresenter.getGankData(false);
+    }
+
+    /**
+     * 空数据回调
+     */
+    @Override
+    public void onStateEmpty() {
+        mPresenter.getMeiRiYiWen(mActivity);
+        mPresenter.getTheatersList();
+        mPresenter.getGankData(true);
+    }
+
+    /**
+     * 异常回调
+     */
+    @Override
+    public void onStateError() {
+        mPresenter.getMeiRiYiWen(mActivity);
+        mPresenter.getTheatersList();
+        mPresenter.getGankData(true);
     }
 }

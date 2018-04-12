@@ -2,13 +2,13 @@ package com.wsyzj.watchvideo.business.mvp;
 
 import android.app.Activity;
 
-import com.blankj.utilcode.util.LogUtils;
-import com.wsyzj.watchvideo.common.base.BaseThreadManager;
-import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
 import com.wsyzj.watchvideo.business.bean.DouBan;
 import com.wsyzj.watchvideo.business.bean.Gank;
 import com.wsyzj.watchvideo.business.bean.MeiRiYiWen;
+import com.wsyzj.watchvideo.common.base.BaseThreadManager;
+import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
 import com.wsyzj.watchvideo.common.http.BaseTSubscriber;
+import com.wsyzj.watchvideo.common.widget.BaseState;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -72,6 +72,7 @@ public class HomePresenter extends BasePresenter<HomeContract.View, HomeContract
                             mView.setGankData(mGankData);
                         }
                         setFirstPageLoadFinish();
+                        mView.setPageState(BaseState.STATE_SUCCESS);
                     }
                 });
         mView.addDisposable(baseTSubscriber);
@@ -109,6 +110,7 @@ public class HomePresenter extends BasePresenter<HomeContract.View, HomeContract
                         @Override
                         public void run() {
                             mView.setMeiRiYiWenData(meiRiYiWen);
+                            mView.setPageState(BaseState.STATE_SUCCESS);
                             setFirstPageLoadFinish();
                         }
                     });
@@ -132,6 +134,7 @@ public class HomePresenter extends BasePresenter<HomeContract.View, HomeContract
                         List<DouBan.SubjectsBean> subjects = douBan.subjects;
                         if (subjects != null) {
                             mView.setTheatersList(subjects);
+                            mView.setPageState(BaseState.STATE_SUCCESS);
                             setFirstPageLoadFinish();
                         }
                     }

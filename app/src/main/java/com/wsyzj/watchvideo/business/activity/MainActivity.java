@@ -17,6 +17,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -24,7 +25,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.CacheUtils;
-import com.blankj.utilcode.util.LogUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.pgyersdk.javabean.AppBean;
 import com.pgyersdk.update.PgyUpdateManager;
@@ -156,6 +156,27 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
         } else {
             super.onBackPressed();
         }
+    }
+
+    /**
+     * 重新进入app，到上次退出的界面
+     *
+     * @param keyCode
+     * @param event
+     * @return
+     */
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
+                drawer_layout.closeDrawer(GravityCompat.START);
+                return false;
+            } else {
+                moveTaskToBack(false);
+                return true;
+            }
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     @Override
@@ -390,13 +411,11 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
 
     @Override
     public void onStateEmpty() {
-        LogUtils.e("空界面");
         mPresenter.getNewsChannel(this);
     }
 
     @Override
     public void onStateError() {
-        LogUtils.e("异常界面");
         mPresenter.getNewsChannel(this);
     }
 }

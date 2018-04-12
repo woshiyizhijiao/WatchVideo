@@ -16,6 +16,7 @@ import com.wsyzj.watchvideo.common.base.BaseFragment;
 import com.wsyzj.watchvideo.common.base.mvp.BaseIPresenter;
 import com.wsyzj.watchvideo.business.utils.IntentUtils;
 import com.wsyzj.watchvideo.common.widget.BasePullToRefreshView;
+import com.wsyzj.watchvideo.common.widget.BaseStateLayout;
 
 import java.util.List;
 
@@ -29,7 +30,7 @@ import butterknife.BindView;
  *     desc   : 新闻频道
  * </pre>
  */
-public class NewsChannelFragment extends BaseFragment implements NewsChannelContract.View, OnRefreshListener, OnRefreshLoadMoreListener {
+public class NewsChannelFragment extends BaseFragment implements NewsChannelContract.View, OnRefreshListener, OnRefreshLoadMoreListener, BaseStateLayout.OnStateErrorListener, BaseStateLayout.OnStateEmptyListener {
 
     public final static String BUNDLE_CHANNEL_ID = "bundle_channel_id";
     public final static String BUNDLE_CHANNEL_NAME = "bundle_channel_name";
@@ -55,6 +56,8 @@ public class NewsChannelFragment extends BaseFragment implements NewsChannelCont
     public void initView() {
         pull_to_refresh.setOnRefreshListener(this);
         pull_to_refresh.setOnRefreshLoadMoreListener(this);
+        mStateLayout.setOnStateErrorListener(this);
+        mStateLayout.setOnStateEmptyListener(this);
     }
 
     @Override
@@ -111,5 +114,21 @@ public class NewsChannelFragment extends BaseFragment implements NewsChannelCont
     @Override
     public void onLoadMore(RefreshLayout refreshLayout) {
         mPresenter.getNewsList(false);
+    }
+
+    /**
+     * 异常回调
+     */
+    @Override
+    public void onStateError() {
+        mPresenter.getNewsList(true);
+    }
+
+    /**
+     * 空数据回调
+     */
+    @Override
+    public void onStateEmpty() {
+        mPresenter.getNewsList(true);
     }
 }

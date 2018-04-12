@@ -8,6 +8,7 @@ import com.wsyzj.watchvideo.common.base.BaseFragment;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
 import com.wsyzj.watchvideo.common.constant.Constant;
 import com.wsyzj.watchvideo.common.http.BaseTSubscriber;
+import com.wsyzj.watchvideo.common.widget.BaseState;
 
 import java.util.List;
 
@@ -71,6 +72,7 @@ public class NewsChannelPresenter extends BasePresenter<NewsChannelContract.View
                     }
 
                     mView.setContentList(mContentList);
+                    mView.setPageState(BaseState.STATE_SUCCESS);
                     mView.setLoadMoreState(allNum);
                 } else {
                     mView.showToast(newsDetails.msg);

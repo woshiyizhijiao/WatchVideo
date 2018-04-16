@@ -5,10 +5,8 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.os.RemoteException;
 import android.view.View;
 
-import com.wsyzj.android.offer.aidl.AIDLService;
 import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.common.base.BaseActivity;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
@@ -21,17 +19,10 @@ import com.wsyzj.watchvideo.common.widget.BaseState;
  */
 public class TestActivity extends BaseActivity {
 
-    private AIDLService mAidlService;
-
     private ServiceConnection mConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            mAidlService = AIDLService.Stub.asInterface(service);
-            try {
-                mAidlService.aidlService();
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
+
         }
 
         @Override

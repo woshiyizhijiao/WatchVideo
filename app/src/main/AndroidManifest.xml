@@ -31,7 +31,7 @@
 
         // 主界面
         <activity
-            android:name=".business.activity.MainActivity"
+            android:name=".business.activity.MainTestActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"/>
 
         // WebView

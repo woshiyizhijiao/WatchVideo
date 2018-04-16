@@ -102,7 +102,6 @@
   **[] $VALUES;
   public *;
 }
--keepresourcexmlelements manifest/application/meta-data@value=GlideModule
 
 # BaseRecyclerViewAdapterHelper
 -keep class com.chad.library.adapter.** {

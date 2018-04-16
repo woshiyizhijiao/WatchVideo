@@ -36,6 +36,8 @@ public class BaseStateLayout extends FrameLayout {
     private OnStateErrorListener mOnStateErrorListener;
     private OnStateEmptyListener mOnStateEmptyListener;
 
+    private boolean isSuccess;      // 防止出现，界面加载成功，再次加载时没有网络，又显示异常
+
     public void setOnStateErrorListener(OnStateErrorListener onStateErrorListener) {
         mOnStateErrorListener = onStateErrorListener;
     }
@@ -81,7 +83,7 @@ public class BaseStateLayout extends FrameLayout {
                     mOnStateErrorListener.onStateError();
                 }
 
-                if (!connected) {
+                if (!connected && !isSuccess) {
                     tv_error.postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -109,7 +111,7 @@ public class BaseStateLayout extends FrameLayout {
                     tv_empty.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            setState(BaseState.STATE_ERROR);
+                            setState(BaseState.STATE_EMPTY);
                         }
                     }, NO_NETWORK_ANIM_TIME);
                 }
@@ -118,7 +120,7 @@ public class BaseStateLayout extends FrameLayout {
     }
 
     /**
-     * 没网，显示没有网络的布局
+     * 判断是否有网
      */
     private void setNetState() {
         if (!NetworkUtils.isConnected()) {
@@ -139,6 +141,9 @@ public class BaseStateLayout extends FrameLayout {
                 tv_empty.setVisibility(View.INVISIBLE);
                 break;
             case STATE_ERROR:
+                if (isSuccess) {
+                    return;
+                }
                 pb_loading.setVisibility(View.INVISIBLE);
                 tv_error.setVisibility(View.VISIBLE);
                 tv_empty.setVisibility(View.INVISIBLE);
@@ -149,6 +154,7 @@ public class BaseStateLayout extends FrameLayout {
                 tv_empty.setVisibility(View.VISIBLE);
                 break;
             case STATE_SUCCESS:
+                isSuccess = true;
                 pb_loading.setVisibility(View.INVISIBLE);
                 tv_error.setVisibility(View.INVISIBLE);
                 tv_empty.setVisibility(View.INVISIBLE);

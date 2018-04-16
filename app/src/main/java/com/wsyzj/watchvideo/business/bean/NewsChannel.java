@@ -1,5 +1,7 @@
 package com.wsyzj.watchvideo.business.bean;
 
+import org.litepal.crud.DataSupport;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -47,7 +49,7 @@ public class NewsChannel {
             public int totalNum;
             public List<ChannelListBean> channelList;
 
-            public static class ChannelListBean implements Serializable {
+            public static class ChannelListBean extends DataSupport implements Serializable {
                 /**
                  * channelId : 5572a108b3cdc86cf39001cd
                  * name : 国内焦点

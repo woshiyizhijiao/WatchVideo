@@ -25,6 +25,9 @@ public class ImageLoader {
      * @param imageView ImageView
      */
     public static void with(Context context, String path, ImageView imageView) {
+        if (context == null) {
+            return;
+        }
         Glide.with(context).load(path).into(imageView);
     }
 
@@ -32,13 +35,16 @@ public class ImageLoader {
      * 加载图片
      *
      * @param context
-     * @param path        图片路径
+     * @param path             图片路径
      * @param placeholderResId 加载中的图片
-     * @param errorResId  加载失败图片
-     * @param imageView   ImageView
+     * @param errorResId       加载失败图片
+     * @param imageView        ImageView
      */
     @SuppressLint("CheckResult")
     public static void with(Context context, String path, int placeholderResId, int errorResId, ImageView imageView) {
+        if (context == null) {
+            return;
+        }
         RequestOptions options = new RequestOptions();
         options.placeholder(placeholderResId);
         options.error(errorResId);
@@ -51,6 +57,9 @@ public class ImageLoader {
      * @param simpleTarget
      */
     public static void with(Context context, String path, SimpleTarget<Bitmap> simpleTarget) {
+        if (context == null) {
+            return;
+        }
         Glide.with(context).asBitmap().load(path).into(simpleTarget);
     }
 }

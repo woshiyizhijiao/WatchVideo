@@ -1,7 +1,7 @@
 package com.wsyzj.watchvideo.business.mvp;
 
 import com.wsyzj.watchvideo.business.bean.Music;
-import com.wsyzj.watchvideo.business.bean.Song;
+import com.wsyzj.watchvideo.business.bean.SongTest;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
 import com.wsyzj.watchvideo.common.http.BaseTSubscriber;
 
@@ -69,12 +69,12 @@ public class MusicPresenter extends BasePresenter<MusicContract.View, MusicContr
     public void getMusicPlayPath(String songid) {
         mView.showProgress();
         mModel.getMusicPlayPath(songid)
-                .subscribeWith(new BaseTSubscriber<Song>() {
+                .subscribeWith(new BaseTSubscriber<SongTest>() {
                     @Override
                     public void onSuccess(Object data) {
-                        Song song = (Song) data;
-                        if (song != null) {
-                            mView.setSongInfo(song);
+                        SongTest songTest = (SongTest) data;
+                        if (songTest != null) {
+                            mView.setSongInfo(songTest);
                         }
                         mView.dismissProgress();
                     }

@@ -54,7 +54,6 @@ public class NewsChannelFragment extends BaseFragment implements NewsChannelCont
 
     @Override
     public void initView() {
-        pull_to_refresh.setOnRefreshListener(this);
         pull_to_refresh.setOnRefreshLoadMoreListener(this);
         mStateLayout.setOnStateErrorListener(this);
         mStateLayout.setOnStateEmptyListener(this);

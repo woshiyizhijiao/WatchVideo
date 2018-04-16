@@ -15,7 +15,7 @@ import android.widget.ProgressBar;
 import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.business.adapter.MusicAdapter;
 import com.wsyzj.watchvideo.business.bean.Music;
-import com.wsyzj.watchvideo.business.bean.Song;
+import com.wsyzj.watchvideo.business.bean.SongTest;
 import com.wsyzj.watchvideo.business.mvp.MusicContract;
 import com.wsyzj.watchvideo.business.mvp.MusicPresenter;
 import com.wsyzj.watchvideo.business.service.PlayMusicService;
@@ -164,16 +164,16 @@ public class MusicFragment extends BaseFragment implements MusicContract.View {
     /**
      * 播放歌曲
      *
-     * @param song
+     * @param songTest
      */
     @Override
-    public void setSongInfo(Song song) {
+    public void setSongInfo(SongTest songTest) {
         String pic_big = mMusicAdapter.getData().get(mPresenter.mCurrentPos).pic_big;
         ImageLoader.with(mActivity, pic_big, R.drawable.bg_player_default_cover, R.drawable.bg_player_default_cover, iv_conver);
         iv_play_pause.setImageResource(R.drawable.ic_pause_circle_filled_black_48dp);
-        progressBar.setMax(song.bitrate.file_duration);
+        progressBar.setMax(songTest.bitrate.file_duration);
         progressBar.setProgress(0);
-        mPlayMusicBinder.play(song.bitrate.file_link);
+        mPlayMusicBinder.play(songTest.bitrate.file_link);
         mHandler.sendEmptyMessageDelayed(MSG_CHANGED_MEDIA_PROGRESS, UPDATE_SONG_PROGRESS_TIME);
         isPlayMusic = true;
     }

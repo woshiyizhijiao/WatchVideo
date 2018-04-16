@@ -6,7 +6,7 @@ package com.wsyzj.watchvideo.business.bean;
  * 功能描述 : 获取音乐播放地址
  */
 
-public class Song {
+public class SongTest {
 
 
     /**

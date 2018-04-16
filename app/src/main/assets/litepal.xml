@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<litepal>
+
+    <!--配置该项目数据库名称-->
+    <dbname value="watchvideo"/>
+
+    <!--配置数据库版本号。每次您要更新库时，使其值加一-->
+    <version value="1"/>
+
+    <!--配置映射类-->
+    <list>
+
+    </list>
+
+    <!--配置数据库文件的存储位置。 值为“internal” 或 “external”。-->
+    <storage value="internal"/>
+
+</litepal>

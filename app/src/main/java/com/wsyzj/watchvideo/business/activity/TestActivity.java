@@ -1,23 +1,18 @@
 package com.wsyzj.watchvideo.business.activity;
 
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.os.IBinder;
+import android.os.RemoteException;
 import android.view.View;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.BaseViewHolder;
+import com.wsyzj.android.offer.aidl.AIDLService;
 import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.common.base.BaseActivity;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
-import com.wsyzj.watchvideo.common.utils.UiUtils;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import butterknife.BindView;
-import cn.iwgang.countdownview.CountdownView;
+import com.wsyzj.watchvideo.common.widget.BaseState;
 
 /**
  * @author 焦洋
@@ -26,11 +21,25 @@ import cn.iwgang.countdownview.CountdownView;
  */
 public class TestActivity extends BaseActivity {
 
-//    @BindView(R.id.smart_refresh)
-//    SmartRefreshLayout smart_refresh;
+    private AIDLService mAidlService;
 
-    @BindView(R.id.recycler_view)
-    RecyclerView recycler_view;
+    private ServiceConnection mConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            mAidlService = AIDLService.Stub.asInterface(service);
+            try {
+                mAidlService.aidlService();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+
+        }
+    };
+
 
     @Override
     protected BasePresenter presenter() {
@@ -44,80 +53,22 @@ public class TestActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-//        smart_refresh.setOnRefreshListener(new OnRefreshListener() {
-//            @Override
-//            public void onRefresh(RefreshLayout refreshLayout) {
-//                showToast("下拉刷新");
-//            }
-//        });
-//
-//        smart_refresh.setOnLoadMoreListener(new OnLoadMoreListener() {
-//            @Override
-//            public void onLoadMore(RefreshLayout refreshLayout) {
-//                showToast("加载更多");
-//            }
-//        });
+        setPageState(BaseState.STATE_SUCCESS);
     }
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-        List<String> data = new ArrayList<>();
-        data.add("我是一坨焦");
-        data.add("我是一坨焦");
-        data.add("我是一坨焦");
-        data.add("我是一坨焦");
-        data.add("我是一坨焦");
-        data.add("我是一坨焦");
-        data.add("我是一坨焦");
-        data.add("我是一坨焦");
-        data.add("我是一坨焦");
-        data.add("我是一坨焦");
-        data.add("我是一坨焦");
-        data.add("我是一坨焦");
-        data.add("我是一坨焦");
-        data.add("我是一坨焦");
-        data.add("我是一坨焦");
-        data.add("我是一坨焦");
-        data.add("我是一坨焦");
-        data.add("我是一坨焦");
-        data.add("我是一坨焦");
-        data.add("我是一坨焦");
-        data.add("我是一坨焦");
-        data.add("我是一坨焦");
-        data.add("我是一坨焦");
-        data.add("我是一坨焦");
-        data.add("我是一坨焦");
-        data.add("我是一坨焦");
-        data.add("我是一坨焦");
-        data.add("我是一坨焦");
-        data.add("我是一坨焦");
-        data.add("我是一坨焦");
-        data.add("我是一坨焦");
-        data.add("我是一坨焦");
-        data.add("我是一坨焦");
-        data.add("我是一坨焦");
 
-        View header1 = UiUtils.inflate(R.layout.rv_header_test);
-        View header2 = UiUtils.inflate(R.layout.rv_header_test1);
-        CountdownView cv_countdown = (CountdownView) header2.findViewById(R.id.cv_countdown);
-        cv_countdown.start(86994000);
-
-        recycler_view.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        MyAdapter myAdapter = new MyAdapter(R.layout.rv_item_test, data);
-        recycler_view.setAdapter(myAdapter);
-        myAdapter.addHeaderView(header1);
-        myAdapter.addHeaderView(header2);
     }
 
-    class MyAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
-
-        public MyAdapter(int layoutResId, @Nullable List<String> data) {
-            super(layoutResId, data);
-        }
-
-        @Override
-        protected void convert(BaseViewHolder helper, String item) {
-            helper.setText(R.id.tv_name, item.toString());
-        }
+    /**
+     * 开启服务
+     *
+     * @param view
+     */
+    public void bindService(View view) {
+        Intent intent = new Intent("com.wsyzj.android.offer.aidl.AIDLService");
+        intent.setPackage("com.wsyzj.android.offer");
+        bindService(intent, mConnection, BIND_AUTO_CREATE);
     }
 }

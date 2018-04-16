@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.wsyzj.watchvideo.R;
@@ -26,6 +27,8 @@ public class BasePullToRefreshView extends LinearLayout {
 
     private SmartRefreshLayout smart_refresh;
     private RecyclerView recycler_view;
+    private BaseStateLayout base_state_layout;
+
     private BaseQuickAdapter mBaseQuickAdapter;
 
     public BasePullToRefreshView(Context context) {
@@ -48,6 +51,7 @@ public class BasePullToRefreshView extends LinearLayout {
         View view = LayoutInflater.from(context).inflate(R.layout.widget_base_pull_to_refresh, null);
         smart_refresh = (SmartRefreshLayout) view.findViewById(R.id.smart_refresh);
         recycler_view = (RecyclerView) view.findViewById(R.id.recycler_view);
+        base_state_layout = (BaseStateLayout) view.findViewById(R.id.base_state_layout);
 
         addView(view);
     }
@@ -68,7 +72,9 @@ public class BasePullToRefreshView extends LinearLayout {
      * @param header
      */
     public void addHeadView(View header) {
-        mBaseQuickAdapter.addHeaderView(header);
+        if (mBaseQuickAdapter != null) {
+            mBaseQuickAdapter.addHeaderView(header);
+        }
     }
 
     /**
@@ -77,7 +83,9 @@ public class BasePullToRefreshView extends LinearLayout {
      * @param header
      */
     public void addHeadView(View header, int index) {
-        mBaseQuickAdapter.addHeaderView(header, index);
+        if (mBaseQuickAdapter != null) {
+            mBaseQuickAdapter.addHeaderView(header, index);
+        }
     }
 
     /**
@@ -100,8 +108,12 @@ public class BasePullToRefreshView extends LinearLayout {
         }
     }
 
+    public void setOnLoadMoreListener(OnLoadMoreListener onLoadMoreListener) {
+        smart_refresh.setOnLoadMoreListener(onLoadMoreListener);
+    }
+
     /**
-     * 加载更多
+     * 下拉刷新和加载更多
      *
      * @param onRefreshLoadMoreListener
      */
@@ -142,5 +154,9 @@ public class BasePullToRefreshView extends LinearLayout {
      */
     public RecyclerView getRecycler() {
         return recycler_view;
+    }
+
+    public void showPageState(BaseState baseState) {
+        base_state_layout.setState(baseState);
     }
 }

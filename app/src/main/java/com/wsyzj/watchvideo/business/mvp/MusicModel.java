@@ -3,7 +3,7 @@ package com.wsyzj.watchvideo.business.mvp;
 import android.os.Build;
 
 import com.wsyzj.watchvideo.business.bean.Music;
-import com.wsyzj.watchvideo.business.bean.Song;
+import com.wsyzj.watchvideo.business.bean.SongTest;
 import com.wsyzj.watchvideo.common.http.BaseRetrofit;
 import com.wsyzj.watchvideo.common.http.BaseRxSchedulers;
 
@@ -25,11 +25,11 @@ public class MusicModel implements MusicContract.Model {
     }
 
     @Override
-    public Flowable<Song> getMusicPlayPath(String songid) {
+    public Flowable<SongTest> getMusicPlayPath(String songid) {
         return BaseRetrofit
                 .musicApi()
                 .getMusicPlayPath(getUserAgent(), "baidu.ting.song.play", songid)
-                .compose(BaseRxSchedulers.<Song>io_main());
+                .compose(BaseRxSchedulers.<SongTest>io_main());
     }
 
     private String getUserAgent() {

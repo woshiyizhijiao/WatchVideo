@@ -1,7 +1,7 @@
 package com.wsyzj.watchvideo.business.mvp;
 
 import com.wsyzj.watchvideo.business.bean.Music;
-import com.wsyzj.watchvideo.business.bean.Song;
+import com.wsyzj.watchvideo.business.bean.SongTest;
 import com.wsyzj.watchvideo.common.base.mvp.BaseIModel;
 import com.wsyzj.watchvideo.common.base.mvp.BaseIPresenter;
 import com.wsyzj.watchvideo.common.base.mvp.BaseIView;
@@ -23,13 +23,13 @@ public class MusicContract {
 
         void setLoadMoreState(int totalCount);
 
-        void setSongInfo(Song song);
+        void setSongInfo(SongTest songTest);
     }
 
     public interface Model extends BaseIModel {
         Flowable<Music> getMusicList(int page);
 
-        Flowable<Song> getMusicPlayPath(String songid);
+        Flowable<SongTest> getMusicPlayPath(String songid);
     }
 
     interface Presenter extends BaseIPresenter<View> {

@@ -141,6 +141,7 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
         mPresenter.getNewsChannel(this);
         pgyUpdateApp();
         setNavHeaderBg();
+        IntentUtils.test(this);
     }
 
     @Override

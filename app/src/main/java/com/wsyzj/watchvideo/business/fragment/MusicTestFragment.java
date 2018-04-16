@@ -17,7 +17,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.business.adapter.MusicTestAdapter;
 import com.wsyzj.watchvideo.business.bean.Music;
-import com.wsyzj.watchvideo.business.bean.Song;
+import com.wsyzj.watchvideo.business.bean.SongTest;
 import com.wsyzj.watchvideo.business.mvp.MusicTestContract;
 import com.wsyzj.watchvideo.business.mvp.MusicTestPresenter;
 import com.wsyzj.watchvideo.business.service.PlayMusicTestService;
@@ -191,13 +191,13 @@ public class MusicTestFragment extends BaseFragment implements MusicTestContract
     /**
      * 设置歌曲信息播放
      *
-     * @param song
+     * @param songTest
      */
     @Override
-    public void setSongInfo(Song song) {
-        sb_progress.setMax(song.bitrate.file_duration);
+    public void setSongInfo(SongTest songTest) {
+        sb_progress.setMax(songTest.bitrate.file_duration);
         sb_progress.setProgress(0);
-        mPlayTestMusicBinder.play(song.bitrate.file_link);
+        mPlayTestMusicBinder.play(songTest.bitrate.file_link);
         mHandler.sendEmptyMessageDelayed(MSG_CHANGED_MEDIA_PROGRESS, UPDATE_SONG_PROGRESS_TIME);
     }
 

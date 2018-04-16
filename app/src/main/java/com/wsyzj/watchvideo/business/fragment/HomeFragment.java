@@ -63,7 +63,6 @@ public class HomeFragment extends BaseFragment implements HomeContract.View, OnR
 
     @Override
     public void initView() {
-        pull_to_refresh.setOnRefreshListener(this);
         pull_to_refresh.setOnRefreshLoadMoreListener(this);
         mStateLayout.setOnStateEmptyListener(this);
         mStateLayout.setOnStateErrorListener(this);

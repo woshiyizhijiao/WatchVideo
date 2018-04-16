@@ -8,7 +8,7 @@ import com.wsyzj.watchvideo.business.bean.News;
 import com.wsyzj.watchvideo.business.bean.NewsChannel;
 import com.wsyzj.watchvideo.business.bean.NewsDetails;
 import com.wsyzj.watchvideo.business.bean.NewsTitle;
-import com.wsyzj.watchvideo.business.bean.Song;
+import com.wsyzj.watchvideo.business.bean.SongTest;
 
 import io.reactivex.Flowable;
 import retrofit2.http.GET;
@@ -47,8 +47,8 @@ public interface BaseRetrofitApi {
      * @return
      */
     @GET("v1/restserver/ting/")
-    Flowable<Song> getMusicPlayPath(@Header("User-Agent") String userAgent,
-                                    @Query("method") String method, @Query("songid") String songid);
+    Flowable<SongTest> getMusicPlayPath(@Header("User-Agent") String userAgent,
+                                        @Query("method") String method, @Query("songid") String songid);
 
     /**
      * 梨视频

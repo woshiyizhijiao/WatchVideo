@@ -79,6 +79,11 @@ public class NewsFragmentPresenter extends BasePresenter<NewsFragmentContract.Vi
                             }
                         }
                     }
+
+                    @Override
+                    public void onFailure() {
+
+                    }
                 });
         mView.addDisposable(baseTSubscriber);
     }

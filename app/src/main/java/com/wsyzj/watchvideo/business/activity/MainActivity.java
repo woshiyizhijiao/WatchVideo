@@ -10,7 +10,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
@@ -32,7 +31,7 @@ import com.pgyersdk.update.UpdateManagerListener;
 import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.business.adapter.ColorPrimaryAdapter;
 import com.wsyzj.watchvideo.business.adapter.VpAdapter;
-import com.wsyzj.watchvideo.business.bean.NewsChannel;
+import com.wsyzj.watchvideo.business.bean.ChannelDb;
 import com.wsyzj.watchvideo.business.fragment.HomeFragment;
 import com.wsyzj.watchvideo.business.fragment.NewsChannelFragment;
 import com.wsyzj.watchvideo.business.mvp.MainContract;
@@ -40,12 +39,10 @@ import com.wsyzj.watchvideo.business.mvp.MainPresenter;
 import com.wsyzj.watchvideo.business.utils.DataUtils;
 import com.wsyzj.watchvideo.business.utils.IntentUtils;
 import com.wsyzj.watchvideo.common.base.BaseActivity;
-import com.wsyzj.watchvideo.common.base.BaseEventBus;
 import com.wsyzj.watchvideo.common.base.BaseFragment;
 import com.wsyzj.watchvideo.common.base.BaseThreadManager;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
 import com.wsyzj.watchvideo.common.constant.Constant;
-import com.wsyzj.watchvideo.common.constant.EventBusConstant;
 import com.wsyzj.watchvideo.common.http.ImageLoader;
 import com.wsyzj.watchvideo.common.utils.StorageUtils;
 import com.wsyzj.watchvideo.common.utils.UiUtils;
@@ -82,9 +79,6 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
-    @BindView(R.id.swipe_refresh)
-    SwipeRefreshLayout swipe_refresh;
-
     @BindView(R.id.ll_tabLayout)
     LinearLayout ll_tabLayout;
 
@@ -119,7 +113,6 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
         drawer_layout.addDrawerListener(toggle);
         toggle.syncState();
 
-        swipe_refresh.setRefreshing(true);
         tabLayout.addOnTabSelectedListener(this);
         tabLayout.setupWithViewPager(viewPager);
         nav_view.setNavigationItemSelectedListener(this);
@@ -133,7 +126,6 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
         int colorPrimary = UiUtils.getColor(StorageUtils.getColorPrimary());
         toolbar.setBackgroundColor(colorPrimary);
         ll_tabLayout.setBackgroundColor(colorPrimary);
-
     }
 
     @Override
@@ -141,7 +133,6 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
         mPresenter.getNewsChannel(this);
         pgyUpdateApp();
         setNavHeaderBg();
-        IntentUtils.test(this);
     }
 
     @Override
@@ -205,29 +196,31 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
     }
 
     /**
-     * 设置新闻标题
+     * 根据频道生成对应页面 (第一个为推荐)
      *
      * @param channelList
      */
     @Override
-    public void setChannelList(List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> channelList) {
+    public void setChannelList(List<ChannelDb> channelList) {
+        if (channelList == null) {
+            return;
+        }
+
         List<BaseFragment> fragments = new ArrayList<>();
 
-        if (channelList != null) {
-            for (int i = 0; i < channelList.size(); i++) {
-                NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean channelListBean = channelList.get(i);
-                tabLayout.addTab(tabLayout.newTab().setText(channelListBean.name));
-                if (TextUtils.equals("推荐", channelListBean.name)) {
-                    fragments.add(new HomeFragment());
-                } else {
-                    Bundle bundle = new Bundle();
-                    bundle.putString(NewsChannelFragment.BUNDLE_CHANNEL_ID, channelListBean.channelId);
-                    bundle.putString(NewsChannelFragment.BUNDLE_CHANNEL_NAME, channelListBean.name);
+        for (int i = 0; i < channelList.size(); i++) {
+            ChannelDb channelDb = channelList.get(i);
+            tabLayout.addTab(tabLayout.newTab().setText(channelDb.name));
+            if (TextUtils.equals("推荐", channelDb.name)) {
+                fragments.add(new HomeFragment());
+            } else {
+                Bundle bundle = new Bundle();
+                bundle.putString(NewsChannelFragment.BUNDLE_CHANNEL_ID, channelDb.channelId);
+                bundle.putString(NewsChannelFragment.BUNDLE_CHANNEL_NAME, channelDb.name);
 
-                    NewsChannelFragment newsFragment = new NewsChannelFragment();
-                    newsFragment.setArguments(bundle);
-                    fragments.add(newsFragment);
-                }
+                NewsChannelFragment newsFragment = new NewsChannelFragment();
+                newsFragment.setArguments(bundle);
+                fragments.add(newsFragment);
             }
         }
 
@@ -261,23 +254,6 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
     @Override
     public void onTabReselected(TabLayout.Tab tab) {
 
-    }
-
-    @Override
-    protected boolean isRegisterEventBus() {
-        return true;
-    }
-
-    @Override
-    protected void receiveEvent(BaseEventBus event) {
-        super.receiveEvent(event);
-        switch (event.code) {
-            case EventBusConstant.NEW_FIRST_PAGE_LOAD_FINISH:
-                swipe_refresh.setEnabled(false);
-                break;
-            default:
-                break;
-        }
     }
 
     /**

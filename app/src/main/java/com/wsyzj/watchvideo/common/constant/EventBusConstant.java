@@ -6,5 +6,5 @@ package com.wsyzj.watchvideo.common.constant;
  * @Description: EventBus 事件相关
  */
 public class EventBusConstant {
-    public final static int NEW_FIRST_PAGE_LOAD_FINISH = 100;    // 新闻第一个page加载完成
+
 }

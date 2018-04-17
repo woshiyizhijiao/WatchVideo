@@ -21,11 +21,8 @@ import com.wsyzj.watchvideo.business.bean.MeiRiYiWen;
 import com.wsyzj.watchvideo.business.mvp.HomeContract;
 import com.wsyzj.watchvideo.business.mvp.HomePresenter;
 import com.wsyzj.watchvideo.business.utils.IntentUtils;
-import com.wsyzj.watchvideo.common.base.BaseEventBus;
 import com.wsyzj.watchvideo.common.base.BaseFragment;
 import com.wsyzj.watchvideo.common.base.mvp.BaseIPresenter;
-import com.wsyzj.watchvideo.common.constant.EventBusConstant;
-import com.wsyzj.watchvideo.common.utils.EventBusUtils;
 import com.wsyzj.watchvideo.common.utils.UiUtils;
 import com.wsyzj.watchvideo.common.widget.BasePullToRefreshView;
 import com.wsyzj.watchvideo.common.widget.BaseStateLayout;
@@ -74,11 +71,6 @@ public class HomeFragment extends BaseFragment implements HomeContract.View, OnR
         mPresenter.getMeiRiYiWen(mActivity);
         mPresenter.getTheatersList();
         mPresenter.getGankData(true);
-    }
-
-    @Override
-    public void firstPageLoadFinish() {
-        EventBusUtils.sendEvent(new BaseEventBus(EventBusConstant.NEW_FIRST_PAGE_LOAD_FINISH));
     }
 
     /**

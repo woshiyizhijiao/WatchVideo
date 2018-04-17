@@ -22,8 +22,6 @@ public class HomeContract {
 
     public interface View extends BaseIView {
 
-        void firstPageLoadFinish();
-
         void setGankData(List<Gank.ResultsBean> results);
 
         void setLoadMoreState(int totalCount);

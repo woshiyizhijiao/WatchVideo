@@ -2,10 +2,10 @@ package com.wsyzj.watchvideo.business.mvp;
 
 import android.app.Activity;
 
-import com.wsyzj.watchvideo.business.bean.NewsChannel;
-import com.wsyzj.watchvideo.common.base.BaseThreadManager;
+import com.wsyzj.watchvideo.business.bean.ChannelDb;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
-import com.wsyzj.watchvideo.common.utils.StorageUtils;
+
+import org.litepal.crud.DataSupport;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,35 +36,24 @@ public class ChannelManagerPresenter extends BasePresenter<ChannelManagerContrac
      */
     @Override
     public void getChannelManagerData(Activity activity) {
-        BaseThreadManager.getInstance().createLongPool().execute(new Runnable() {
-            @Override
-            public void run() {
-                List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> myChannel = new ArrayList<>();
-                List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> recommendChannel = new ArrayList<>();
 
-                List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> newsChannel = StorageUtils.getNewsChannelTitles();
-                List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> cacheNewsChannel = StorageUtils.getCacheNewsChannelTitle();
+        List<ChannelDb> all = DataSupport.findAll(ChannelDb.class);
+        if (all == null) {
+            return;
+        }
 
-                if (cacheNewsChannel != null) {
-                    for (int i = 0; i < newsChannel.size(); i++) {
-                        NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean channelListBean = newsChannel.get(i);
-                        if (cacheNewsChannel.contains(channelListBean)) {
-                            myChannel.add(channelListBean);
-                        } else {
-                            recommendChannel.add(channelListBean);
-                        }
-                    }
-                } else {
-                    myChannel.addAll(newsChannel);
-                }
+        List<ChannelDb> myChannel = new ArrayList<>();
+        List<ChannelDb> recommendChannel = new ArrayList<>();
 
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mView.setChannelManagerData(myChannel, recommendChannel);
-                    }
-                });
+        for (int i = 0; i < all.size(); i++) {
+            ChannelDb channelDb = all.get(i);
+            if (channelDb.isChannel) {
+                myChannel.add(channelDb);
+            } else {
+                recommendChannel.add(channelDb);
             }
-        });
+        }
+
+        mView.setChannelManagerData(myChannel, recommendChannel);
     }
 }

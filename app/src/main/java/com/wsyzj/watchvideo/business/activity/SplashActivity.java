@@ -174,7 +174,7 @@ public class SplashActivity extends BaseActivity {
         // 设置是否展示失败自动跳转，默认自动跳转
 //        splashViewSettings.setAutoJumpToTargetWhenShowFailed(false);
         // 设置跳转的窗口类
-        splashViewSettings.setTargetClass(MainTestActivity.class);
+        splashViewSettings.setTargetClass(MainActivity.class);
         // 设置开屏的容器
         splashViewSettings.setSplashViewContainer(rl_splash);
 

@@ -56,6 +56,11 @@ public class MusicPresenter extends BasePresenter<MusicContract.View, MusicContr
                         }
                         mView.setRefreshing(false);
                     }
+
+                    @Override
+                    public void onFailure() {
+
+                    }
                 });
         mView.addDisposable(baseTSubscriber);
     }
@@ -77,6 +82,11 @@ public class MusicPresenter extends BasePresenter<MusicContract.View, MusicContr
                             mView.setSongInfo(songTest);
                         }
                         mView.dismissProgress();
+                    }
+
+                    @Override
+                    public void onFailure() {
+
                     }
                 });
     }

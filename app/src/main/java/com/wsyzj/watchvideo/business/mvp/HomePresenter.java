@@ -30,7 +30,6 @@ public class HomePresenter extends BasePresenter<HomeContract.View, HomeContract
     private String mType = "福利";
     private int mPageNumber = 10;
     private int mPage = 1;
-    private boolean isFirstLoad = true;
     public List<Gank.ResultsBean> mGankData;
 
     public HomePresenter(HomeContract.View view) {
@@ -71,21 +70,15 @@ public class HomePresenter extends BasePresenter<HomeContract.View, HomeContract
 
                             mView.setGankData(mGankData);
                         }
-                        setFirstPageLoadFinish();
                         mView.setPageState(BaseState.STATE_SUCCESS);
+                    }
+
+                    @Override
+                    public void onFailure() {
+
                     }
                 });
         mView.addDisposable(baseTSubscriber);
-    }
-
-    /**
-     * 第一个界面的数据加载完场
-     */
-    private void setFirstPageLoadFinish() {
-        if (isFirstLoad) {
-            mView.firstPageLoadFinish();
-            isFirstLoad = false;
-        }
     }
 
     /**
@@ -111,7 +104,6 @@ public class HomePresenter extends BasePresenter<HomeContract.View, HomeContract
                         public void run() {
                             mView.setMeiRiYiWenData(meiRiYiWen);
                             mView.setPageState(BaseState.STATE_SUCCESS);
-                            setFirstPageLoadFinish();
                         }
                     });
                 } catch (IOException e) {
@@ -135,8 +127,12 @@ public class HomePresenter extends BasePresenter<HomeContract.View, HomeContract
                         if (subjects != null) {
                             mView.setTheatersList(subjects);
                             mView.setPageState(BaseState.STATE_SUCCESS);
-                            setFirstPageLoadFinish();
                         }
+                    }
+
+                    @Override
+                    public void onFailure() {
+
                     }
                 });
         mView.addDisposable(baseTSubscriber);

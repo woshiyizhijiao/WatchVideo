@@ -8,13 +8,13 @@ import android.view.View;
 
 import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.business.adapter.ChannelManagerAdapter;
-import com.wsyzj.watchvideo.business.bean.NewsChannel;
+import com.wsyzj.watchvideo.business.bean.ChannelDb;
 import com.wsyzj.watchvideo.business.helper.ItemDragHelperCallback;
 import com.wsyzj.watchvideo.business.mvp.ChannelManagerContract;
 import com.wsyzj.watchvideo.business.mvp.ChannelManagerPresenter;
+import com.wsyzj.watchvideo.business.utils.IntentUtils;
 import com.wsyzj.watchvideo.common.base.BaseActivity;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
-import com.wsyzj.watchvideo.business.utils.IntentUtils;
 import com.wsyzj.watchvideo.common.widget.BaseState;
 
 import java.util.List;
@@ -71,7 +71,7 @@ public class ChannelManagerActivity extends BaseActivity implements ChannelManag
      * @param recommendChannel
      */
     @Override
-    public void setChannelManagerData(List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> myChannel, List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> recommendChannel) {
+    public void setChannelManagerData(List<ChannelDb> myChannel, List<ChannelDb> recommendChannel) {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 4);
         recycler_view.setLayoutManager(gridLayoutManager);
         if (mChannelManagerAdapter == null) {

@@ -3,6 +3,7 @@ package com.wsyzj.watchvideo.business.mvp;
 import android.content.Context;
 import android.content.Intent;
 
+import com.wsyzj.watchvideo.business.bean.ChannelDb;
 import com.wsyzj.watchvideo.business.bean.NewsChannel;
 import com.wsyzj.watchvideo.common.base.mvp.BaseIModel;
 import com.wsyzj.watchvideo.common.base.mvp.BaseIPresenter;
@@ -19,7 +20,7 @@ import io.reactivex.Flowable;
  */
 public class MainContract {
     public interface View extends BaseIView {
-        void setChannelList(List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> channelList);
+        void setChannelList(List<ChannelDb> channelList);
     }
 
     public interface Model extends BaseIModel {

@@ -18,9 +18,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.wsyzj.watchvideo.R;
-import com.wsyzj.watchvideo.business.bean.NewsChannel;
+import com.wsyzj.watchvideo.business.bean.ChannelDb;
 import com.wsyzj.watchvideo.business.helper.OnItemMoveListener;
-import com.wsyzj.watchvideo.common.utils.StorageUtils;
 import com.wsyzj.watchvideo.common.utils.UiUtils;
 
 import java.util.ArrayList;
@@ -50,8 +49,8 @@ public class ChannelManagerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     private boolean isEditMode;
     private ItemTouchHelper mItemTouchHelper;
-    private List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> mMyChannel;
-    private List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> mRecommendChannel;
+    private List<ChannelDb> mMyChannel;
+    private List<ChannelDb> mRecommendChannel;
 
     private boolean isMoved;
     private long mTouchStartTime;
@@ -59,22 +58,22 @@ public class ChannelManagerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     public boolean putChannelData() {
         if (isMoved) {
-            List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> list = new ArrayList<>();
+            List<ChannelDb> list = new ArrayList<>();
             if (mMyChannel != null && !mMyChannel.isEmpty()) {
                 list.addAll(mMyChannel);
             }
-            StorageUtils.putCacheNewsChannelTitles(list);
+//            StorageUtils.putCacheNewsChannelTitles(list);
         }
         return isMoved;
     }
 
-    public ChannelManagerAdapter(ItemTouchHelper itemTouchHelper, List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> myChannel, List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> recommendChannel) {
+    public ChannelManagerAdapter(ItemTouchHelper itemTouchHelper, List<ChannelDb> myChannel, List<ChannelDb> recommendChannel) {
         mItemTouchHelper = itemTouchHelper;
         mMyChannel = myChannel;
         mRecommendChannel = recommendChannel;
     }
 
-    public void refreshData(List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> myChannel, List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> recommendChannel) {
+    public void refreshData(List<ChannelDb> myChannel, List<ChannelDb> recommendChannel) {
         mMyChannel = myChannel;
         mRecommendChannel = recommendChannel;
         notifyDataSetChanged();
@@ -171,7 +170,7 @@ public class ChannelManagerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
      */
     private void setMyChannelData(MyChannelViewHolder holder) {
         int position = holder.getAdapterPosition();
-        NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean channelListBean = mMyChannel.get(position - 1);
+        ChannelDb channelListBean = mMyChannel.get(position - 1);
         ImageView iv_delete = holder.iv_delete;
         TextView tv_channel_name = holder.tv_channel_name;
 
@@ -288,7 +287,7 @@ public class ChannelManagerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
         int position = holder.getAdapterPosition() - mMyChannel.size() - (MY_TEXT_COUNT + RECOMMEND_TEXT_COUNT);
         if (position >= 0) {
-            NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean channelListBean = mRecommendChannel.get(position);
+            ChannelDb channelListBean = mRecommendChannel.get(position);
             tv_channel_name.setText(channelListBean.name.replace("最新", ""));
         }
     }
@@ -378,7 +377,7 @@ public class ChannelManagerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             return;
         }
 
-        NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean channelListBean = mMyChannel.get(startPosition);
+        ChannelDb channelListBean = mMyChannel.get(startPosition);
         mMyChannel.remove(startPosition);
         mRecommendChannel.add(0, channelListBean);
         notifyItemMoved(position, mMyChannel.size() + MY_TEXT_COUNT + RECOMMEND_TEXT_COUNT);
@@ -404,7 +403,7 @@ public class ChannelManagerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         if (startPosition > mRecommendChannel.size() - 1) {
             return -1;
         }
-        NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean channelListBean = mRecommendChannel.get(startPosition);
+        ChannelDb channelListBean = mRecommendChannel.get(startPosition);
         mRecommendChannel.remove(channelListBean);
         mMyChannel.add(channelListBean);
         return position;
@@ -518,7 +517,7 @@ public class ChannelManagerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         if (fromPosition == MY_TEXT_COUNT || toPosition == MY_TEXT_COUNT) {
             return;
         }
-        NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean channelListBean = mMyChannel.get(fromPosition - MY_TEXT_COUNT);
+        ChannelDb channelListBean = mMyChannel.get(fromPosition - MY_TEXT_COUNT);
         mMyChannel.remove(fromPosition - MY_TEXT_COUNT);
         mMyChannel.add(toPosition - MY_TEXT_COUNT, channelListBean);
         notifyItemMoved(fromPosition, toPosition);

@@ -9,7 +9,7 @@
 
     <!--配置映射类-->
     <list>
-        <mapping class="com.wsyzj.watchvideo.business.bean.NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean"/>
+        <mapping class="com.wsyzj.watchvideo.business.bean.ChannelDb"/>
     </list>
 
     <!--配置数据库文件的存储位置。 值为“internal” 或 “external”。-->

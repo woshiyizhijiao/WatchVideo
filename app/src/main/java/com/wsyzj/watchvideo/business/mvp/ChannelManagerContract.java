@@ -2,7 +2,7 @@ package com.wsyzj.watchvideo.business.mvp;
 
 import android.app.Activity;
 
-import com.wsyzj.watchvideo.business.bean.NewsChannel;
+import com.wsyzj.watchvideo.business.bean.ChannelDb;
 import com.wsyzj.watchvideo.common.base.mvp.BaseIModel;
 import com.wsyzj.watchvideo.common.base.mvp.BaseIPresenter;
 import com.wsyzj.watchvideo.common.base.mvp.BaseIView;
@@ -20,7 +20,7 @@ import java.util.List;
 public class ChannelManagerContract {
 
     public interface View extends BaseIView {
-        void setChannelManagerData(List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> myChannel, List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> recommendChannel);
+        void setChannelManagerData(List<ChannelDb> myChannel, List<ChannelDb> recommendChannel);
     }
 
     public interface Model extends BaseIModel {

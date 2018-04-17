@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.view.ViewGroup;
 
-import com.wsyzj.watchvideo.business.bean.NewsChannel;
+import com.wsyzj.watchvideo.business.bean.ChannelDb;
 import com.wsyzj.watchvideo.common.base.BaseFragment;
 
 import java.util.List;
@@ -22,16 +22,16 @@ public class VpAdapter extends FragmentPagerAdapter {
 
     private Context mContext;
     private List<BaseFragment> mFragments;
-    private List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> mChannel;
+    private List<ChannelDb> mChannel;
 
-    public VpAdapter(FragmentManager fm, Context context, List<BaseFragment> fragments, List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> channelList) {
+    public VpAdapter(FragmentManager fm, Context context, List<BaseFragment> fragments, List<ChannelDb> channelList) {
         super(fm);
         mContext = context;
         mFragments = fragments;
         mChannel = channelList;
     }
 
-    public void refreshData(List<BaseFragment> fragments, List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> channelList) {
+    public void refreshData(List<BaseFragment> fragments, List<ChannelDb> channelList) {
         mFragments = fragments;
         mChannel = channelList;
         notifyDataSetChanged();

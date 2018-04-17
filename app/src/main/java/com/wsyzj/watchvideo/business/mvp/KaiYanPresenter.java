@@ -35,6 +35,11 @@ public class KaiYanPresenter extends BasePresenter<KaiYanContract.View, KaiYanCo
                         mDatas = kaiYan.dataList;
                         mView.setVideoList(mDatas);
                     }
+
+                    @Override
+                    public void onFailure() {
+
+                    }
                 });
         mView.addDisposable(baseTSubscriber);
     }

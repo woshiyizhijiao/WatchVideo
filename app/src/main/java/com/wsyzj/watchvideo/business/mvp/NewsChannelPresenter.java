@@ -78,6 +78,11 @@ public class NewsChannelPresenter extends BasePresenter<NewsChannelContract.View
                     mView.showToast(newsDetails.msg);
                 }
             }
+
+            @Override
+            public void onFailure() {
+
+            }
         });
         mView.addDisposable(baseTSubscriber);
     }

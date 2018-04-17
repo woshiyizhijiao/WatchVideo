@@ -3,11 +3,14 @@ package com.wsyzj.watchvideo.business.mvp;
 import android.content.Context;
 import android.content.Intent;
 
+import com.wsyzj.watchvideo.business.bean.ChannelDb;
 import com.wsyzj.watchvideo.business.bean.NewsChannel;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
 import com.wsyzj.watchvideo.common.constant.Constant;
 import com.wsyzj.watchvideo.common.http.BaseTSubscriber;
-import com.wsyzj.watchvideo.common.utils.StorageUtils;
+
+import org.litepal.crud.DataSupport;
+import org.litepal.crud.callback.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,13 +20,12 @@ import java.util.List;
  * @date 2017/12/6 9:50
  * @Description: $desc$
  */
-public class MainPresenter extends BasePresenter<MainContract.View, MainContract.Model>
-        implements MainContract.Presenter {
+public class MainPresenter extends BasePresenter<MainContract.View, MainContract.Model> implements MainContract.Presenter {
 
     private MainContract.View mView;
     private MainContract.Model mModel;
 
-    private List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> mNewChannels = new ArrayList<>();
+    private List<ChannelDb> mChannel;
 
     public MainPresenter(MainContract.View view) {
         mView = view;
@@ -31,18 +33,16 @@ public class MainPresenter extends BasePresenter<MainContract.View, MainContract
     }
 
     /**
-     * 获取新闻的标题
+     * 获取新闻的标题，先从数据库中读取缓存
+     *
+     * @param context
      */
     @Override
     public void getNewsChannel(Context context) {
-        List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> cacheNewsChanne = StorageUtils.getCacheNewsChannelTitle();
-        List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> newsChannel = StorageUtils.getNewsChannelTitles();
-        if (cacheNewsChanne != null && !cacheNewsChanne.isEmpty()) {
-            mNewChannels = cacheNewsChanne;
-            mView.setChannelList(mNewChannels);
-        } else if (newsChannel != null && newsChannel.size() > 1) {
-            mNewChannels = newsChannel;
-            mView.setChannelList(mNewChannels);
+        List<ChannelDb> all = DataSupport.findAll(ChannelDb.class);
+        if (all != null && all.size() != 0) {
+            mChannel = all;
+            mView.setChannelList(mChannel);
         } else {
             BaseTSubscriber<NewsChannel> baseTSubscriber = mModel
                     .getNewsChannel()
@@ -51,12 +51,16 @@ public class MainPresenter extends BasePresenter<MainContract.View, MainContract
                         public void onSuccess(Object data) {
                             NewsChannel newsChannel = (NewsChannel) data;
                             if (Constant.JingDong.JINGDONG_CODE == newsChannel.code) {
-                                mNewChannels = getNewChannels(newsChannel.result.showapi_res_body.channelList);
-                                mView.setChannelList(mNewChannels);
-                                StorageUtils.putNewsChannelTitles(mNewChannels);
+                                mChannel = getNewestChannel(newsChannel.result.showapi_res_body.channelList);
+                                mView.setChannelList(mChannel);
                             } else {
                                 mView.showToast(newsChannel.msg);
                             }
+                        }
+
+                        @Override
+                        public void onFailure() {
+
                         }
                     });
             mView.addDisposable(baseTSubscriber);
@@ -64,26 +68,44 @@ public class MainPresenter extends BasePresenter<MainContract.View, MainContract
     }
 
     /**
-     * 频道太多，过滤焦点频道
-     *
-     * @return
+     * 获取最新频道
      */
-    private List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> getNewChannels(List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> channelList) {
-        List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> newChannel = new ArrayList<>();
+    private List<ChannelDb> getNewestChannel(List<NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean> channelList) {
+        List<ChannelDb> channelDbList = new ArrayList<>();
+
+        ChannelDb channel0 = new ChannelDb();
+        channel0.name = "推荐";
+        channel0.channelId = "0";
+        channel0.isChannel = true;
+        channelDbList.add(0, channel0);
+
+        if (channelList == null) {
+            return channelDbList;
+        }
+
+        ChannelDb channelDb;
         for (int i = 0; i < channelList.size(); i++) {
             NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean channelListBean = channelList.get(i);
-            if (!channelListBean.name.contains("焦点")) {
-                newChannel.add(channelListBean);
+            if (channelListBean.name.contains("最新")) {
+                channelDb = new ChannelDb();
+                channelDb.name = channelListBean.name;
+                channelDb.channelId = channelListBean.channelId;
+                channelDb.isChannel = true;
+                channelDbList.add(channelDb);
             }
         }
 
-        NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean channelListBean = new NewsChannel.ResultBean.ShowapiResBodyBean.ChannelListBean();
-        channelListBean.name = "推荐";
-        channelListBean.channelId = "0";
-        newChannel.add(0, channelListBean);
+        /**
+         * 保存在数据库中
+         */
+        DataSupport.saveAllAsync(channelDbList).listen(new SaveCallback() {
+            @Override
+            public void onFinish(boolean success) {
 
-        StorageUtils.putCacheNewsChannelTitles(newChannel);
-        return newChannel;
+            }
+        });
+
+        return channelDbList;
     }
 
     /**
@@ -96,8 +118,8 @@ public class MainPresenter extends BasePresenter<MainContract.View, MainContract
         if (data != null) {
             boolean isMoved = data.getBooleanExtra("isMoved", false);
             if (isMoved) {
-                mNewChannels = StorageUtils.getCacheNewsChannelTitle();
-                mView.setChannelList(mNewChannels);
+//                mNewChannels = StorageUtils.getCacheNewsChannelTitle();
+//                mView.setChannelList(mNewChannels);
             }
         }
     }

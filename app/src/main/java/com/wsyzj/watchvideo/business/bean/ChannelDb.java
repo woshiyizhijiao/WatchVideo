@@ -11,6 +11,7 @@ import org.litepal.crud.DataSupport;
  * </pre>
  */
 public class ChannelDb extends DataSupport {
+    public int id;
     public String channelId;
     public String name;
     public boolean isChannel;   // 是否选择了频道

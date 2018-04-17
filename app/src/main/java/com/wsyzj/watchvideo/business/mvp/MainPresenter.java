@@ -3,6 +3,7 @@ package com.wsyzj.watchvideo.business.mvp;
 import android.content.Context;
 import android.content.Intent;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.wsyzj.watchvideo.business.bean.ChannelDb;
 import com.wsyzj.watchvideo.business.bean.NewsChannel;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
@@ -101,7 +102,7 @@ public class MainPresenter extends BasePresenter<MainContract.View, MainContract
         DataSupport.saveAllAsync(channelDbList).listen(new SaveCallback() {
             @Override
             public void onFinish(boolean success) {
-
+                LogUtils.e("数据保存成功" + success);
             }
         });
 
@@ -118,8 +119,8 @@ public class MainPresenter extends BasePresenter<MainContract.View, MainContract
         if (data != null) {
             boolean isMoved = data.getBooleanExtra("isMoved", false);
             if (isMoved) {
-//                mNewChannels = StorageUtils.getCacheNewsChannelTitle();
-//                mView.setChannelList(mNewChannels);
+                List<ChannelDb> all = DataSupport.findAll(ChannelDb.class);
+                mView.setChannelList(all);
             }
         }
     }

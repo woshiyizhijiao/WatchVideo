@@ -1,6 +1,7 @@
 package com.wsyzj.watchvideo.business.adapter;
 
 import android.annotation.SuppressLint;
+import android.content.ContentValues;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.support.v4.view.MotionEventCompat;
@@ -17,12 +18,14 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.business.bean.ChannelDb;
 import com.wsyzj.watchvideo.business.helper.OnItemMoveListener;
 import com.wsyzj.watchvideo.common.utils.UiUtils;
 
-import java.util.ArrayList;
+import org.litepal.crud.DataSupport;
+
 import java.util.List;
 
 import butterknife.BindView;
@@ -57,13 +60,6 @@ public class ChannelManagerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
 
     public boolean putChannelData() {
-        if (isMoved) {
-            List<ChannelDb> list = new ArrayList<>();
-            if (mMyChannel != null && !mMyChannel.isEmpty()) {
-                list.addAll(mMyChannel);
-            }
-//            StorageUtils.putCacheNewsChannelTitles(list);
-        }
         return isMoved;
     }
 
@@ -378,9 +374,15 @@ public class ChannelManagerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
 
         ChannelDb channelListBean = mMyChannel.get(startPosition);
+
+        ContentValues values = new ContentValues();
+        values.put("isChannel", false);
+        DataSupport.update(ChannelDb.class, values, channelListBean.id);
+        LogUtils.e(getItemCount());
+
         mMyChannel.remove(startPosition);
-        mRecommendChannel.add(0, channelListBean);
-        notifyItemMoved(position, mMyChannel.size() + MY_TEXT_COUNT + RECOMMEND_TEXT_COUNT);
+        mRecommendChannel.add(channelListBean);
+        notifyItemMoved(position, getItemCount() - 1);
     }
 
     /**
@@ -406,6 +408,10 @@ public class ChannelManagerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         ChannelDb channelListBean = mRecommendChannel.get(startPosition);
         mRecommendChannel.remove(channelListBean);
         mMyChannel.add(channelListBean);
+
+        ContentValues values = new ContentValues();
+        values.put("isChannel", true);
+        DataSupport.update(ChannelDb.class, values, channelListBean.id);
         return position;
     }
 

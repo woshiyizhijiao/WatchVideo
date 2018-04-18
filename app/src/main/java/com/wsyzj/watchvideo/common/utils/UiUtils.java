@@ -1,8 +1,10 @@
 package com.wsyzj.watchvideo.common.utils;
 
 import android.graphics.drawable.Drawable;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import com.wsyzj.watchvideo.business.BaseApp;
 
@@ -43,16 +45,23 @@ public class UiUtils {
     }
 
     /**
-     * 获取系统栏的高度
+     * 根据 EditText 所在坐标和用户点击的坐标相对比，来判断是否隐藏键盘
      *
+     * @param v
+     * @param event
      * @return
      */
-    public static int getStatusBarHeight() {
-        int result = 0;
-        int resourceId = BaseApp.getApp().getResources().getIdentifier("status_bar_height", "dimen", "android");
-        if (resourceId > 0) {
-            result = BaseApp.getApp().getResources().getDimensionPixelSize(resourceId);
+    public static boolean isShouldHideKeyboard(View v, MotionEvent event) {
+        if (v != null && (v instanceof EditText)) {
+            int[] l = {0, 0};
+            v.getLocationInWindow(l);
+            int left = l[0],
+                    top = l[1],
+                    bottom = top + v.getHeight(),
+                    right = left + v.getWidth();
+            return !(event.getX() > left && event.getX() < right
+                    && event.getY() > top && event.getY() < bottom);
         }
-        return result;
+        return false;
     }
 }

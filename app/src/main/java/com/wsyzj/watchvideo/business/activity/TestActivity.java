@@ -27,8 +27,6 @@ public class TestActivity extends BaseActivity {
     @Override
     protected void initView() {
         setPageState(BaseState.STATE_SUCCESS);
-
-
     }
 
     @Override

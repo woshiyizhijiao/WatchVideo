@@ -72,9 +72,9 @@ public class NewsFragmentPresenter extends BasePresenter<NewsFragmentContract.Vi
                                 mView.setNewsList(mNewsList);
 
                                 if (list != null && list.size() == mNum) {
-                                    mView.setLoadMoreState(1000);
+                                    mView.setLoadMoreByTotal(1000);
                                 } else {
-                                    mView.setLoadMoreState(0);
+                                    mView.setLoadMoreByTotal(0);
                                 }
                             }
                         }

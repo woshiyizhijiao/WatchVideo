@@ -20,7 +20,7 @@ public class NewsFragmentContract {
 
         void setNewsList(List<News.ResultBeanX.ResultBean.ListBean> list);
 
-        void setLoadMoreState(int totalCount);
+        void setLoadMoreByTotal(int totalCount);
     }
 
     public interface Model extends BaseIModel {

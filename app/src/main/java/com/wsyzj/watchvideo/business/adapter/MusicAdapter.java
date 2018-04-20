@@ -1,31 +1,38 @@
 package com.wsyzj.watchvideo.business.adapter;
 
-import android.support.annotation.LayoutRes;
+import android.content.Context;
 import android.support.annotation.Nullable;
+import android.widget.ImageView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.business.bean.Music;
+import com.wsyzj.watchvideo.common.http.ImageLoader;
 
 import java.util.List;
 
 /**
- * @author 焦洋
- * @date 2017/12/21 11:15
- * @Description: item_music
+ * <pre>
+ *     author : 焦洋
+ *     e-mail : jiao35478729@163.com
+ *     time   : 2018/04/19
+ *     desc   :
+ * </pre>
  */
 public class MusicAdapter extends BaseQuickAdapter<Music.SongListBean, BaseViewHolder> {
 
-    public MusicAdapter(@LayoutRes int layoutResId, @Nullable List<Music.SongListBean> data) {
-        super(layoutResId, data);
+    private Context mContext;
+
+    public MusicAdapter(Context context, @Nullable List<Music.SongListBean> data) {
+        super(R.layout.item_music, data);
+        mContext = context;
     }
 
     @Override
     protected void convert(BaseViewHolder helper, Music.SongListBean item) {
-        helper.setText(R.id.tv_index, String.valueOf(helper.getAdapterPosition() + 1));
-        helper.setText(R.id.tv_song_name, item.title);
-        helper.setText(R.id.tv_song_singer, item.artist_name + "   " + item.album_title);
+        ImageLoader.with(mContext, item.pic_big, R.drawable.default_cover, R.drawable.default_cover, (ImageView) helper.getView(R.id.iv_conver));
+        helper.setText(R.id.tv_name, item.title);
+        helper.setText(R.id.tv_desc, item.artist_name + "  " + item.album_title);
     }
 }
-

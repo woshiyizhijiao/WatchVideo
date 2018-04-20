@@ -33,6 +33,7 @@ import com.wsyzj.watchvideo.business.adapter.ColorPrimaryAdapter;
 import com.wsyzj.watchvideo.business.adapter.VpAdapter;
 import com.wsyzj.watchvideo.business.bean.ChannelDb;
 import com.wsyzj.watchvideo.business.fragment.HomeFragment;
+import com.wsyzj.watchvideo.business.fragment.MusicFragment;
 import com.wsyzj.watchvideo.business.fragment.NewsChannelFragment;
 import com.wsyzj.watchvideo.business.mvp.MainContract;
 import com.wsyzj.watchvideo.business.mvp.MainPresenter;
@@ -213,6 +214,8 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
             tabLayout.addTab(tabLayout.newTab().setText(channelDb.name));
             if (TextUtils.equals("推荐", channelDb.name)) {
                 fragments.add(new HomeFragment());
+            } else if (TextUtils.equals("音乐", channelDb.name)) {
+                fragments.add(new MusicFragment());
             } else {
                 Bundle bundle = new Bundle();
                 bundle.putString(NewsChannelFragment.BUNDLE_CHANNEL_ID, channelDb.channelId);

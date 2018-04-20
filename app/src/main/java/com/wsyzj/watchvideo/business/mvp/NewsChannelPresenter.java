@@ -73,7 +73,7 @@ public class NewsChannelPresenter extends BasePresenter<NewsChannelContract.View
 
                     mView.setContentList(mContentList);
                     mView.setPageState(BaseState.STATE_SUCCESS);
-                    mView.setLoadMoreState(allNum);
+                    mView.setLoadMoreByTotal(allNum);
                 } else {
                     mView.showToast(newsDetails.msg);
                 }

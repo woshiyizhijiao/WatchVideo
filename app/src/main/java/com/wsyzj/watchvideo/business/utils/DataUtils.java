@@ -1,7 +1,5 @@
 package com.wsyzj.watchvideo.business.utils;
 
-import com.wsyzj.watchvideo.business.bean.NewsChannel;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -153,6 +151,7 @@ public class DataUtils {
         list.add("天快要塌的事\n过后也觉得没什么大不了");
         list.add("实在想不明白\n事情要从多个角度看");
         list.add("什么时候可以像你这样优秀");
+        list.add("你不能害怕因为让自己变成一个废物\n而变成一个懦夫");
         Random random = new Random();
         int i = random.nextInt(list.size());
         return list.get(i);

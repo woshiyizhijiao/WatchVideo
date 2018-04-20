@@ -78,7 +78,13 @@ public class MainPresenter extends BasePresenter<MainContract.View, MainContract
         channel0.name = "推荐";
         channel0.channelId = "0";
         channel0.isChannel = true;
-        channelDbList.add(0, channel0);
+        channelDbList.add(channel0);
+
+        ChannelDb music = new ChannelDb();
+        music.name = "音乐";
+        music.channelId = "0";
+        music.isChannel = true;
+        channelDbList.add(music);
 
         if (channelList == null) {
             return channelDbList;

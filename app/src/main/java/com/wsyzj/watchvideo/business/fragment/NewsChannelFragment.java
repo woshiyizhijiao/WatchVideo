@@ -90,9 +90,9 @@ public class NewsChannelFragment extends BaseFragment implements NewsChannelCont
     }
 
     @Override
-    public void setLoadMoreState(int totalCount) {
+    public void setLoadMoreByTotal(int totalCount) {
         pull_to_refresh.finishRefresh();
-        pull_to_refresh.setLoadMoreState(totalCount);
+        pull_to_refresh.setLoadMoreByTotal(totalCount);
     }
 
     /**

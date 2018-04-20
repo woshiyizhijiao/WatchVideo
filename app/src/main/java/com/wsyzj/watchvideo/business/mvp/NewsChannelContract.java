@@ -23,7 +23,7 @@ public class NewsChannelContract {
     public interface View extends BaseIView {
         void setContentList(List<NewsDetails.ResultBean.ShowapiResBodyBean.PagebeanBean.ContentlistBean> contentlist);
 
-        void setLoadMoreState(int totalCount);
+        void setLoadMoreByTotal(int totalCount);
     }
 
     public interface Model extends BaseIModel {

@@ -211,7 +211,7 @@ public class HomeFragment extends BaseFragment implements HomeContract.View, OnR
      */
     @Override
     public void setLoadMoreState(int totalCount) {
-        pull_to_refresh.setLoadMoreState(totalCount);
+        pull_to_refresh.setLoadMoreByTotal(totalCount);
         pull_to_refresh.finishRefresh();
     }
 

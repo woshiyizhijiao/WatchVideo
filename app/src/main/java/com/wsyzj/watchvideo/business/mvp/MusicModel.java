@@ -3,16 +3,19 @@ package com.wsyzj.watchvideo.business.mvp;
 import android.os.Build;
 
 import com.wsyzj.watchvideo.business.bean.Music;
-import com.wsyzj.watchvideo.business.bean.SongTest;
+import com.wsyzj.watchvideo.business.bean.Song;
 import com.wsyzj.watchvideo.common.http.BaseRetrofit;
 import com.wsyzj.watchvideo.common.http.BaseRxSchedulers;
 
 import io.reactivex.Flowable;
 
 /**
- * @author 焦洋
- * @date 2017/12/21 11:02
- * @Description: $desc$
+ * <pre>
+ *     author : 焦洋
+ *     e-mail : jiao35478729@163.com
+ *     time   : 2018/04/19
+ *     desc   :
+ * </pre>
  */
 public class MusicModel implements MusicContract.Model {
 
@@ -25,11 +28,11 @@ public class MusicModel implements MusicContract.Model {
     }
 
     @Override
-    public Flowable<SongTest> getMusicPlayPath(String songid) {
+    public Flowable<Song> getMusicPlayPath(String songid) {
         return BaseRetrofit
                 .musicApi()
                 .getMusicPlayPath(getUserAgent(), "baidu.ting.song.play", songid)
-                .compose(BaseRxSchedulers.<SongTest>io_main());
+                .compose(BaseRxSchedulers.<Song>io_main());
     }
 
     private String getUserAgent() {

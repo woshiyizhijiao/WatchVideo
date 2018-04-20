@@ -108,8 +108,15 @@ public class BasePullToRefreshView extends LinearLayout {
         }
     }
 
+    /**
+     * 加载更多
+     *
+     * @param onLoadMoreListener
+     */
     public void setOnLoadMoreListener(OnLoadMoreListener onLoadMoreListener) {
-        smart_refresh.setOnLoadMoreListener(onLoadMoreListener);
+        if (onLoadMoreListener != null) {
+            smart_refresh.setOnLoadMoreListener(onLoadMoreListener);
+        }
     }
 
     /**
@@ -131,9 +138,11 @@ public class BasePullToRefreshView extends LinearLayout {
     }
 
     /**
-     * 设置下拉之后的监听
+     * 根据列表的总数判断当前的加载更多状态
+     *
+     * @param totalCount
      */
-    public void setLoadMoreState(int totalCount) {
+    public void setLoadMoreByTotal(int totalCount) {
         RecyclerView.Adapter adapter = recycler_view.getAdapter();
         if (adapter != null && adapter instanceof BaseQuickAdapter) {
             BaseQuickAdapter quickAdapter = (BaseQuickAdapter) adapter;
@@ -146,6 +155,19 @@ public class BasePullToRefreshView extends LinearLayout {
         }
     }
 
+    /**
+     * 根据每次请求的个数判断加载更多状态
+     *
+     * @param listSize
+     * @param pageCount
+     */
+    public void setLoadMoreByPageCount(int listSize, int pageCount) {
+        if (listSize < pageCount) {
+            smart_refresh.finishLoadMoreWithNoMoreData();
+        } else {
+            smart_refresh.finishLoadMore();
+        }
+    }
 
     /**
      * 获取recycler的实例

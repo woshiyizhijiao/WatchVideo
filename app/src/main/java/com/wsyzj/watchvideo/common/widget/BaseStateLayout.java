@@ -149,6 +149,9 @@ public class BaseStateLayout extends FrameLayout {
                 tv_empty.setVisibility(View.INVISIBLE);
                 break;
             case STATE_EMPTY:
+                if (isSuccess) {
+                    return;
+                }
                 pb_loading.setVisibility(View.INVISIBLE);
                 tv_error.setVisibility(View.INVISIBLE);
                 tv_empty.setVisibility(View.VISIBLE);

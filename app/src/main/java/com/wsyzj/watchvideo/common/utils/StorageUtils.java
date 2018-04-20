@@ -28,4 +28,5 @@ public class StorageUtils {
     public static void putColorPrimary(int colorPrimary) {
         SPUtils.put(BaseApp.getApp(), COLOR_PRIMARY, colorPrimary);
     }
+
 }

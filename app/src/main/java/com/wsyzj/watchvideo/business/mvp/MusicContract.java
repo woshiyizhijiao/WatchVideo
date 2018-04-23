@@ -28,6 +28,8 @@ public class MusicContract {
         void setLoadMoreByPageCount(int listSize, int pageCount);
 
         void setPlaySong(Song song);
+
+        void setPlayMusic(Music.SongListBean music);
     }
 
     public interface Model extends BaseIModel {

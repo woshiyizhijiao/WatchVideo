@@ -7,6 +7,9 @@ import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -20,6 +23,7 @@ import com.wsyzj.watchvideo.business.mvp.MusicPresenter;
 import com.wsyzj.watchvideo.business.service.PlayerService;
 import com.wsyzj.watchvideo.common.base.BaseFragment;
 import com.wsyzj.watchvideo.common.base.mvp.BaseIPresenter;
+import com.wsyzj.watchvideo.common.http.ImageLoader;
 import com.wsyzj.watchvideo.common.widget.BasePullToRefreshView;
 
 import java.util.List;
@@ -39,6 +43,21 @@ public class MusicFragment extends BaseFragment implements MusicContract.View, O
 
     @BindView(R.id.pull_to_refresh)
     BasePullToRefreshView pull_to_refresh;
+
+    @BindView(R.id.iv_conver)
+    ImageView iv_conver;
+
+    @BindView(R.id.tv_name)
+    TextView tv_name;
+
+    @BindView(R.id.tv_desc)
+    TextView tv_desc;
+
+    @BindView(R.id.iv_play)
+    ImageView iv_play;
+
+    @BindView(R.id.pb_song)
+    ProgressBar pb_song;
 
     private MusicPresenter mPresenter;
     private MusicAdapter mMusicAdapter;
@@ -174,19 +193,39 @@ public class MusicFragment extends BaseFragment implements MusicContract.View, O
     @Override
     public void setPlaySong(Song song) {
         mPlayerService.play(song);
+        iv_play.setImageResource(R.drawable.ic_play_bar_btn_pause);
+
+    }
+
+    /**
+     * 设置音乐信息
+     *
+     * @param music
+     */
+    @Override
+    public void setPlayMusic(Music.SongListBean music) {
+        ImageLoader.with(mActivity, music.pic_big, R.drawable.default_cover, R.drawable.default_cover, iv_conver);
+        tv_name.setText(music.title);
+        tv_desc.setText(music.artist_name);
     }
 
     /**
      * 播放或者暂停
      */
     private void play() {
-//        mPlayerService.play();
+        if (mPlayerService.isPlay()) {
+            mPlayerService.pause();
+            iv_play.setImageResource(R.drawable.ic_play_bar_btn_play);
+        } else {
+            mPlayerService.start();
+            iv_play.setImageResource(R.drawable.ic_play_bar_btn_pause);
+        }
     }
 
     /**
      * 下一首
      */
     private void next() {
-        mPlayerService.previous();
+        mPlayerService.next();
     }
 }

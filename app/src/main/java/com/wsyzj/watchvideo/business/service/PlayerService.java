@@ -7,9 +7,9 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
-import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.wsyzj.watchvideo.business.bean.Song;
+import com.wsyzj.watchvideo.common.utils.StorageUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ import java.util.List;
  *     desc   : 音乐播放器服务，晒特，
  * </pre>
  */
-public class PlayerService extends Service {
+public class PlayerService extends Service implements MediaPlayer.OnPreparedListener {
 
     private final static int STATE_IDLE = 0;
     private final static int STATE_PREPARE = 1;
@@ -31,6 +31,8 @@ public class PlayerService extends Service {
     private final static int STATE_PAUSE = 3;
 
     private int mState = STATE_IDLE;
+    private int mPlayPos = -1;          // 当前播放的位置
+
     private List<Song> mSongList;
     private MediaPlayer mMediaPlayer;
 
@@ -39,6 +41,11 @@ public class PlayerService extends Service {
         super.onCreate();
         mMediaPlayer = new MediaPlayer();
         mSongList = new ArrayList<>();
+
+        mPlayPos = StorageUtils.getPlayPos();
+        mSongList = StorageUtils.getSongList();
+
+        mMediaPlayer.setOnPreparedListener(this);
     }
 
     @Override
@@ -65,11 +72,19 @@ public class PlayerService extends Service {
      * 播放
      */
     public void play(Song song) {
+        boolean contains = mSongList.contains(song);
+
+        if (mSongList.contains(song)) {
+            mSongList.add(song);
+            mPlayPos = mSongList.size() - 1;
+        } else {
+            mPlayPos = mSongList.indexOf(song);
+        }
+
         try {
             mMediaPlayer.reset();
             mMediaPlayer.setDataSource(song.bitrate.file_link);
             mMediaPlayer.prepareAsync();
-            mMediaPlayer.start();
         } catch (IOException e) {
             e.printStackTrace();
             ToastUtils.showShort("播放错误");
@@ -77,39 +92,127 @@ public class PlayerService extends Service {
     }
 
     /**
+     * 音频准备就绪的回调
+     *
+     * @param mp
+     */
+    @Override
+    public void onPrepared(MediaPlayer mp) {
+        mMediaPlayer.start();
+        mState = STATE_PLAY;
+    }
+
+    /**
+     * 开始
+     */
+    public void start() {
+        if (!isPrepare() && !isPause()) {
+            return;
+        }
+        mMediaPlayer.start();
+        mState = STATE_PLAY;
+    }
+
+    /**
      * 暂停
      */
     public void pause() {
-        LogUtils.e("暂停");
+        if (!isPlay()) {
+            return;
+        }
+        mMediaPlayer.pause();
+        mState = STATE_PAUSE;
+    }
+
+    /**
+     * 停止
+     */
+    public void stop() {
+        if (isIdle()) {
+            return;
+        }
+        pause();
+        mMediaPlayer.reset();
+        mState = STATE_IDLE;
     }
 
     /**
      * 下一首
      */
     public void next() {
-        LogUtils.e("下一首");
+        if (mSongList.isEmpty()) {
+            return;
+        }
+
+        Song song;
+        int positon = mPlayPos + 1;
+
+        if (positon < 0 || positon > mSongList.size() - 1) {
+            song = mSongList.get(0);
+        } else {
+            song = mSongList.get(positon);
+        }
+
+        Song songPre = mSongList.get(mPlayPos);
+        if (songPre.equals(song)) {
+            return;
+        }
+
+        play(mSongList.get(mPlayPos));
     }
 
     /**
      * 上一首
      */
     public void previous() {
-        LogUtils.e("上一首");
+        if (mSongList.isEmpty()) {
+            return;
+        }
+
+        int indexOf = mSongList.indexOf(mSongList.get(mPlayPos));
+        if (indexOf == mPlayPos) {
+            return;
+        }
+
+        Song song;
+        int positon = mPlayPos - 1;
+        if (positon < 0 || positon > mSongList.size() - 1) {
+            song = mSongList.get(0);
+        } else {
+            song = mSongList.get(positon);
+        }
+
+        Song songPre = mSongList.get(mPlayPos);
+        if (songPre.equals(song)) {
+            return;
+        }
+
+        play(song);
     }
 
-    private boolean isIdle() {
+    /**
+     * 设置当前的播放位置
+     *
+     * @param playPos
+     */
+    private void setPlayPos(int playPos) {
+        mPlayPos = playPos;
+        StorageUtils.putPlayPos(mPlayPos);
+    }
+
+    public boolean isIdle() {
         return mState == STATE_IDLE;
     }
 
-    private boolean isPrepare() {
+    public boolean isPrepare() {
         return mState == STATE_PREPARE;
     }
 
-    private boolean isPlay() {
+    public boolean isPlay() {
         return mState == STATE_PLAY;
     }
 
-    private boolean isPause() {
+    public boolean isPause() {
         return mState == STATE_PAUSE;
     }
 }

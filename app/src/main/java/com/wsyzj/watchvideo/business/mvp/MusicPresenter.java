@@ -88,6 +88,7 @@ public class MusicPresenter extends BasePresenter<MusicContract.View, MusicContr
                 Song song = (Song) data;
                 if (song != null) {
                     mView.setPlaySong(song);
+                    mView.setPlayMusic(bean);
                 }
                 mView.dismissProgress();
             }

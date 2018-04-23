@@ -24,12 +24,15 @@ public class Song {
         public int file_duration;
         public String file_link;
 
+
         @Override
-        public String toString() {
-            return "BitrateBean{" +
-                    "file_duration=" + file_duration +
-                    ", file_link='" + file_link + '\'' +
-                    '}';
+        public boolean equals(Object obj) {
+            if (!(obj instanceof BitrateBean)) {
+                return false;
+            }
+
+            BitrateBean bitrateBean = (BitrateBean) obj;
+            return this.file_link.equals(bitrateBean.file_link);
         }
     }
 }

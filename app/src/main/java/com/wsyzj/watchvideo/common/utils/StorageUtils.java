@@ -2,6 +2,9 @@ package com.wsyzj.watchvideo.common.utils;
 
 import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.business.BaseApp;
+import com.wsyzj.watchvideo.business.bean.Song;
+
+import java.util.List;
 
 /**
  * <pre>
@@ -29,4 +32,44 @@ public class StorageUtils {
         SPUtils.put(BaseApp.getApp(), COLOR_PRIMARY, colorPrimary);
     }
 
+    private static final String SONG_LIST = "song_list";
+
+    /**
+     * 将音乐加入缓存中
+     *
+     * @return
+     */
+    public static void putSongList(Song song) {
+        List<Song> list = getSongList();
+        if (list != null) {
+            list.add(song);
+        }
+        SPUtils.put(BaseApp.getApp(), SONG_LIST, GsonUtils.toJson(list));
+    }
+
+    /**
+     * @return
+     */
+    public static List<Song> getSongList() {
+        String songsJson = (String) SPUtils.get(BaseApp.getApp(), SONG_LIST, "[]");
+        return GsonUtils.gsonToList(songsJson, Song.class);
+    }
+
+    public static final String PLAY_POSITION = "play_position";
+
+    /**
+     * 记录当前音乐播放的位置
+     */
+    public static void putPlayPos(int playPos) {
+        SPUtils.put(BaseApp.getApp(), PLAY_POSITION, playPos);
+    }
+
+    /**
+     * 获取当前音乐播放的位置
+     *
+     * @return
+     */
+    public static int getPlayPos() {
+        return (int) SPUtils.get(BaseApp.getApp(), PLAY_POSITION, -1);
+    }
 }

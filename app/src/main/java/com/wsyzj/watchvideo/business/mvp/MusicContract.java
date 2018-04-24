@@ -2,6 +2,7 @@ package com.wsyzj.watchvideo.business.mvp;
 
 import com.wsyzj.watchvideo.business.bean.Music;
 import com.wsyzj.watchvideo.business.bean.Song;
+import com.wsyzj.watchvideo.business.service.PlayerService;
 import com.wsyzj.watchvideo.common.base.mvp.BaseIModel;
 import com.wsyzj.watchvideo.common.base.mvp.BaseIPresenter;
 import com.wsyzj.watchvideo.common.base.mvp.BaseIView;
@@ -27,9 +28,7 @@ public class MusicContract {
 
         void setLoadMoreByPageCount(int listSize, int pageCount);
 
-        void setPlaySong(Song song);
-
-        void setPlayMusic(Music.SongListBean music);
+        void addAndPlay(Music.SongListBean songListBean);
     }
 
     public interface Model extends BaseIModel {
@@ -39,6 +38,8 @@ public class MusicContract {
     }
 
     interface Presenter extends BaseIPresenter<View> {
+        void getPreMusic(PlayerService playerService);
+
         void getMusicList(boolean refreshing);
 
         void getMusicPlayPath(int position);

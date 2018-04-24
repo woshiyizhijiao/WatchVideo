@@ -57,5 +57,7 @@ public class Music {
         public String song_id;
         public String ting_uid;
         public String title;
+        public String file_link;
+        public int file_duration;
     }
 }

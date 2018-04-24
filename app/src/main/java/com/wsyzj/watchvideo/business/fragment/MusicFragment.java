@@ -17,7 +17,7 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.business.adapter.MusicAdapter;
 import com.wsyzj.watchvideo.business.bean.Music;
-import com.wsyzj.watchvideo.business.bean.Song;
+import com.wsyzj.watchvideo.business.listener.OnPlayerEventListener;
 import com.wsyzj.watchvideo.business.mvp.MusicContract;
 import com.wsyzj.watchvideo.business.mvp.MusicPresenter;
 import com.wsyzj.watchvideo.business.service.PlayerService;
@@ -39,7 +39,7 @@ import butterknife.OnClick;
  *     desc   :
  * </pre>
  */
-public class MusicFragment extends BaseFragment implements MusicContract.View, OnRefreshLoadMoreListener {
+public class MusicFragment extends BaseFragment implements MusicContract.View, OnRefreshLoadMoreListener, OnPlayerEventListener {
 
     @BindView(R.id.pull_to_refresh)
     BasePullToRefreshView pull_to_refresh;
@@ -91,6 +91,7 @@ public class MusicFragment extends BaseFragment implements MusicContract.View, O
     public void bindPlayerService() {
         Intent intent = new Intent(mActivity, PlayerService.class);
         mActivity.bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+
     }
 
     private ServiceConnection mConnection = new ServiceConnection() {
@@ -99,6 +100,8 @@ public class MusicFragment extends BaseFragment implements MusicContract.View, O
         public void onServiceConnected(ComponentName name, IBinder service) {
             PlayerService.PlayerBinder playerBinder = (PlayerService.PlayerBinder) service;
             mPlayerService = playerBinder.getService();
+//            mPresenter.getPreMusic(mPlayerService);
+            mPlayerService.addOnPlayerEventListener(MusicFragment.this);
         }
 
         @Override
@@ -176,7 +179,7 @@ public class MusicFragment extends BaseFragment implements MusicContract.View, O
                 play();
                 break;
             case R.id.iv_play_next:
-                next();
+                mPlayerService.next();
                 break;
             case R.id.iv_catalogue:
                 break;
@@ -188,25 +191,11 @@ public class MusicFragment extends BaseFragment implements MusicContract.View, O
     /**
      * 播放音乐
      *
-     * @param song
+     * @param songListBean
      */
     @Override
-    public void setPlaySong(Song song) {
-        mPlayerService.play(song);
-        iv_play.setImageResource(R.drawable.ic_play_bar_btn_pause);
-
-    }
-
-    /**
-     * 设置音乐信息
-     *
-     * @param music
-     */
-    @Override
-    public void setPlayMusic(Music.SongListBean music) {
-        ImageLoader.with(mActivity, music.pic_big, R.drawable.default_cover, R.drawable.default_cover, iv_conver);
-        tv_name.setText(music.title);
-        tv_desc.setText(music.artist_name);
+    public void addAndPlay(Music.SongListBean songListBean) {
+        mPlayerService.addAndPlay(songListBean);
     }
 
     /**
@@ -215,17 +204,38 @@ public class MusicFragment extends BaseFragment implements MusicContract.View, O
     private void play() {
         if (mPlayerService.isPlay()) {
             mPlayerService.pause();
-            iv_play.setImageResource(R.drawable.ic_play_bar_btn_play);
         } else {
             mPlayerService.start();
-            iv_play.setImageResource(R.drawable.ic_play_bar_btn_pause);
         }
     }
 
     /**
-     * 下一首
+     * @param songListBean
      */
-    private void next() {
-        mPlayerService.next();
+    @Override
+    public void onPlayerChanged(Music.SongListBean songListBean) {
+        if (songListBean == null) {
+            return;
+        }
+        iv_play.setImageResource(R.drawable.ic_play_bar_btn_pause);
+        tv_name.setText(songListBean.title);
+        tv_desc.setText(songListBean.artist_name);
+        ImageLoader.with(mActivity, songListBean.pic_big, R.drawable.default_cover, R.drawable.default_cover, iv_conver);
+    }
+
+    @Override
+    public void onPlayerStart() {
+        iv_play.setImageResource(R.drawable.ic_play_bar_btn_pause);
+    }
+
+    @Override
+    public void onPlayerPasue() {
+        iv_play.setImageResource(R.drawable.ic_play_bar_btn_play);
+    }
+
+    @Override
+    public void onPlayerProgress(int progress) {
+        pb_song.setMax(mPlayerService.getDuration());
+        pb_song.setProgress(progress);
     }
 }

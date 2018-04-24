@@ -2,6 +2,7 @@ package com.wsyzj.watchvideo.business.mvp;
 
 import com.wsyzj.watchvideo.business.bean.Music;
 import com.wsyzj.watchvideo.business.bean.Song;
+import com.wsyzj.watchvideo.business.service.PlayerService;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
 import com.wsyzj.watchvideo.common.http.BaseTSubscriber;
 import com.wsyzj.watchvideo.common.widget.BaseState;
@@ -27,6 +28,19 @@ public class MusicPresenter extends BasePresenter<MusicContract.View, MusicContr
     public MusicPresenter(MusicContract.View view) {
         mView = view;
         mModel = new MusicModel();
+    }
+
+    /**
+     * 获取关闭程序时播放的音乐
+     *
+     * @param playerService
+     */
+    @Override
+    public void getPreMusic(PlayerService playerService) {
+        if (playerService != null) {
+            Music.SongListBean song = playerService.getPlaySong();
+//            mView.setPlaySong(song);
+        }
     }
 
     /**
@@ -87,8 +101,9 @@ public class MusicPresenter extends BasePresenter<MusicContract.View, MusicContr
             public void onSuccess(Object data) {
                 Song song = (Song) data;
                 if (song != null) {
-                    mView.setPlaySong(song);
-                    mView.setPlayMusic(bean);
+                    bean.file_link = song.bitrate.file_link;
+                    bean.file_duration = song.bitrate.file_duration;
+                    mView.addAndPlay(bean);
                 }
                 mView.dismissProgress();
             }

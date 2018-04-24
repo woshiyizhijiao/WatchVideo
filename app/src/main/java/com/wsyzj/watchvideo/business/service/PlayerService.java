@@ -4,11 +4,14 @@ import android.app.Service;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Binder;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.support.annotation.Nullable;
 
 import com.blankj.utilcode.util.ToastUtils;
-import com.wsyzj.watchvideo.business.bean.Song;
+import com.wsyzj.watchvideo.business.bean.Music;
+import com.wsyzj.watchvideo.business.listener.OnPlayerEventListener;
 import com.wsyzj.watchvideo.common.utils.StorageUtils;
 
 import java.io.IOException;
@@ -23,29 +26,37 @@ import java.util.List;
  *     desc   : 音乐播放器服务，晒特，
  * </pre>
  */
-public class PlayerService extends Service implements MediaPlayer.OnPreparedListener {
+public class PlayerService extends Service implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener {
 
-    private final static int STATE_IDLE = 0;
-    private final static int STATE_PREPARE = 1;
-    private final static int STATE_PLAY = 2;
-    private final static int STATE_PAUSE = 3;
+    private static final int STATE_IDLE = 0;
+    private static final int STATE_PREPARE = 1;
+    private static final int STATE_PLAY = 2;
+    private static final int STATE_PAUSE = 3;
+    private static final int UPDATE_PROGRESS_TIME = 1000;
 
     private int mState = STATE_IDLE;
-    private int mPlayPos = -1;          // 当前播放的位置
+    private int mPlayPos;          // 当前播放的位置
 
-    private List<Song> mSongList;
+    private List<Music.SongListBean> mSongList;
+    private List<OnPlayerEventListener> mOnPlayerEventListeners;
+
+    private Handler mHandler;
     private MediaPlayer mMediaPlayer;
+
 
     @Override
     public void onCreate() {
         super.onCreate();
+        mHandler = new Handler(Looper.getMainLooper());
         mMediaPlayer = new MediaPlayer();
         mSongList = new ArrayList<>();
+        mOnPlayerEventListeners = new ArrayList<>();
 
         mPlayPos = StorageUtils.getPlayPos();
         mSongList = StorageUtils.getSongList();
 
         mMediaPlayer.setOnPreparedListener(this);
+        mMediaPlayer.setOnCompletionListener(this);
     }
 
     @Override
@@ -61,6 +72,7 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
 
     private PlayerBinder mPlayerBinder = new PlayerBinder();
 
+
     public class PlayerBinder extends Binder {
 
         public PlayerService getService() {
@@ -69,22 +81,47 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
     }
 
     /**
-     * 播放
+     * @param onPlayerEventListener
      */
-    public void play(Song song) {
-        boolean contains = mSongList.contains(song);
+    public void addOnPlayerEventListener(OnPlayerEventListener onPlayerEventListener) {
+        if (!mOnPlayerEventListeners.contains(onPlayerEventListener)) {
+            mOnPlayerEventListeners.add(onPlayerEventListener);
+        }
+    }
 
-        if (mSongList.contains(song)) {
+    public void removeOnPlayerEventListener(OnPlayerEventListener onPlayerEventListener) {
+        mOnPlayerEventListeners.remove(onPlayerEventListener);
+    }
+
+    /**
+     * 添加到播放列表并且播放
+     */
+    public void addAndPlay(Music.SongListBean song) {
+        if (mSongList == null) {
+            return;
+        }
+        if (!mSongList.contains(song)) {
             mSongList.add(song);
             mPlayPos = mSongList.size() - 1;
-        } else {
-            mPlayPos = mSongList.indexOf(song);
+            setPlayPos();
+            StorageUtils.putSongList(song);
         }
+        play(song);
+    }
 
+    /**
+     * 播放
+     */
+    public void play(Music.SongListBean songListBean) {
         try {
             mMediaPlayer.reset();
-            mMediaPlayer.setDataSource(song.bitrate.file_link);
+            mMediaPlayer.setDataSource(songListBean.file_link);
             mMediaPlayer.prepareAsync();
+            mState = STATE_PREPARE;
+
+            for (OnPlayerEventListener onPlayerEventListener : mOnPlayerEventListeners) {
+                onPlayerEventListener.onPlayerChanged(songListBean);
+            }
         } catch (IOException e) {
             e.printStackTrace();
             ToastUtils.showShort("播放错误");
@@ -98,12 +135,21 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
      */
     @Override
     public void onPrepared(MediaPlayer mp) {
-        mMediaPlayer.start();
-        mState = STATE_PLAY;
+        start();
     }
 
     /**
-     * 开始
+     * 播放完成的监听
+     *
+     * @param mp
+     */
+    @Override
+    public void onCompletion(MediaPlayer mp) {
+        next();
+    }
+
+    /**
+     * 重新播放
      */
     public void start() {
         if (!isPrepare() && !isPause()) {
@@ -111,7 +157,27 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
         }
         mMediaPlayer.start();
         mState = STATE_PLAY;
+        mHandler.post(mProgressRun);
+
+        for (OnPlayerEventListener onPlayerEventListener : mOnPlayerEventListeners) {
+            onPlayerEventListener.onPlayerStart();
+        }
     }
+
+    /**
+     * 更新音乐进度
+     */
+    private Runnable mProgressRun = new Runnable() {
+        @Override
+        public void run() {
+            if (isPlay()) {
+                for (OnPlayerEventListener onPlayerEventListener : mOnPlayerEventListeners) {
+                    onPlayerEventListener.onPlayerProgress(mMediaPlayer.getCurrentPosition());
+                }
+            }
+            mHandler.postDelayed(this, UPDATE_PROGRESS_TIME);
+        }
+    };
 
     /**
      * 暂停
@@ -122,6 +188,11 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
         }
         mMediaPlayer.pause();
         mState = STATE_PAUSE;
+        mHandler.removeCallbacks(mProgressRun);
+
+        for (OnPlayerEventListener onPlayerEventListener : mOnPlayerEventListeners) {
+            onPlayerEventListener.onPlayerPasue();
+        }
     }
 
     /**
@@ -144,21 +215,22 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
             return;
         }
 
-        Song song;
-        int positon = mPlayPos + 1;
+        Music.SongListBean preSong = mSongList.get(mPlayPos);
+        int position = mPlayPos + 1;
 
-        if (positon < 0 || positon > mSongList.size() - 1) {
-            song = mSongList.get(0);
+        if (position > mSongList.size() - 1) {
+            mPlayPos = 0;
         } else {
-            song = mSongList.get(positon);
+            mPlayPos = position;
         }
 
-        Song songPre = mSongList.get(mPlayPos);
-        if (songPre.equals(song)) {
+        Music.SongListBean song = mSongList.get(mPlayPos);
+        if (preSong.file_link.equals(song.file_link)) {
             return;
         }
 
-        play(mSongList.get(mPlayPos));
+        setPlayPos();
+        play(song);
     }
 
     /**
@@ -169,35 +241,65 @@ public class PlayerService extends Service implements MediaPlayer.OnPreparedList
             return;
         }
 
-        int indexOf = mSongList.indexOf(mSongList.get(mPlayPos));
-        if (indexOf == mPlayPos) {
-            return;
-        }
+        Music.SongListBean preSong = mSongList.get(mPlayPos);
+        int position = mPlayPos - 1;
 
-        Song song;
-        int positon = mPlayPos - 1;
-        if (positon < 0 || positon > mSongList.size() - 1) {
-            song = mSongList.get(0);
+        if (position < 0 || position > mSongList.size() - 1) {
+            mPlayPos = 0;
         } else {
-            song = mSongList.get(positon);
+            mPlayPos = position;
         }
 
-        Song songPre = mSongList.get(mPlayPos);
-        if (songPre.equals(song)) {
+        Music.SongListBean song = mSongList.get(mPlayPos);
+        if (preSong.file_link.equals(song.file_link)) {
             return;
         }
 
+        setPlayPos();
         play(song);
     }
 
     /**
      * 设置当前的播放位置
-     *
-     * @param playPos
      */
-    private void setPlayPos(int playPos) {
-        mPlayPos = playPos;
+    private void setPlayPos() {
+        if (mPlayPos < 0 || mPlayPos > mSongList.size() - 1) {
+            mPlayPos = 0;
+        }
         StorageUtils.putPlayPos(mPlayPos);
+    }
+
+    /**
+     * 获取当前播放的位置
+     *
+     * @return
+     */
+    public int getPlayPos() {
+        return StorageUtils.getPlayPos();
+    }
+
+    /**
+     * 获取当前播放的音乐
+     *
+     * @return
+     */
+    public Music.SongListBean getPlaySong() {
+        if (mSongList.isEmpty()) {
+            return null;
+        }
+        if (mPlayPos >= 0 && mPlayPos < mSongList.size()) {
+            return mSongList.get(mPlayPos);
+        }
+        return null;
+    }
+
+    /**
+     * 音频长度
+     *
+     * @return
+     */
+    public int getDuration() {
+        return mMediaPlayer.getDuration();
     }
 
     public boolean isIdle() {

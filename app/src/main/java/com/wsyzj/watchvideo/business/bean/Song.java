@@ -23,16 +23,15 @@ public class Song {
 
         public int file_duration;
         public String file_link;
+    }
 
-
-        @Override
-        public boolean equals(Object obj) {
-            if (!(obj instanceof BitrateBean)) {
-                return false;
-            }
-
-            BitrateBean bitrateBean = (BitrateBean) obj;
-            return this.file_link.equals(bitrateBean.file_link);
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Song)) {
+            return false;
         }
+
+        Song song = (Song) obj;
+        return bitrate.file_link.equals(song.bitrate.file_link);
     }
 }

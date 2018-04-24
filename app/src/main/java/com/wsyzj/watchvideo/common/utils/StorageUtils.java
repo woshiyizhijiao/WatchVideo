@@ -1,8 +1,10 @@
 package com.wsyzj.watchvideo.common.utils;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.business.BaseApp;
-import com.wsyzj.watchvideo.business.bean.Song;
+import com.wsyzj.watchvideo.business.bean.Music;
 
 import java.util.List;
 
@@ -15,6 +17,8 @@ import java.util.List;
  * </pre>
  */
 public class StorageUtils {
+
+    private static final Gson GSON = new Gson();
 
     private static final String COLOR_PRIMARY = "color_primary";
 
@@ -39,20 +43,21 @@ public class StorageUtils {
      *
      * @return
      */
-    public static void putSongList(Song song) {
-        List<Song> list = getSongList();
+    public static void putSongList(Music.SongListBean song) {
+        List<Music.SongListBean> list = getSongList();
         if (list != null) {
             list.add(song);
         }
-        SPUtils.put(BaseApp.getApp(), SONG_LIST, GsonUtils.toJson(list));
+        SPUtils.put(BaseApp.getApp(), SONG_LIST, GSON.toJson(list));
     }
 
     /**
      * @return
      */
-    public static List<Song> getSongList() {
+    public static List<Music.SongListBean> getSongList() {
         String songsJson = (String) SPUtils.get(BaseApp.getApp(), SONG_LIST, "[]");
-        return GsonUtils.gsonToList(songsJson, Song.class);
+        return GSON.fromJson(songsJson, new TypeToken<List<Music.SongListBean>>() {
+        }.getType());
     }
 
     public static final String PLAY_POSITION = "play_position";

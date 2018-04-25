@@ -9,6 +9,7 @@ import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.business.activity.ChannelManagerActivity;
 import com.wsyzj.watchvideo.business.activity.MainActivity;
 import com.wsyzj.watchvideo.business.activity.MeiRiYiWenActivity;
+import com.wsyzj.watchvideo.business.activity.PlayerCatalogueActivity;
 import com.wsyzj.watchvideo.business.activity.PreviewLargeActivity;
 import com.wsyzj.watchvideo.business.activity.TestActivity;
 import com.wsyzj.watchvideo.business.activity.WebViewActivity;
@@ -129,5 +130,12 @@ public class IntentUtils {
         Intent intent = new Intent();
         intent.putExtra("isMoved", isMoved);
         setResult(activity, intent);
+    }
+
+    /**
+     * 音乐目录
+     */
+    public static void playerCatalogue(Activity activity) {
+        startActivity(activity, PlayerCatalogueActivity.class);
     }
 }

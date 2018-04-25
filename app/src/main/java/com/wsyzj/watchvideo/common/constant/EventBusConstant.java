@@ -6,5 +6,5 @@ package com.wsyzj.watchvideo.common.constant;
  * @Description: EventBus 事件相关
  */
 public class EventBusConstant {
-
+    public static final int EVENT_DOWN_MUSIC = 100;  // 下载音乐
 }

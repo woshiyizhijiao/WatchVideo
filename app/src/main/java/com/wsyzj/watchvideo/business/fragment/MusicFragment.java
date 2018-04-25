@@ -24,9 +24,13 @@ import com.wsyzj.watchvideo.business.mvp.MusicContract;
 import com.wsyzj.watchvideo.business.mvp.MusicPresenter;
 import com.wsyzj.watchvideo.business.service.PlayerManager;
 import com.wsyzj.watchvideo.business.service.PlayerService;
+import com.wsyzj.watchvideo.business.utils.IntentUtils;
+import com.wsyzj.watchvideo.common.base.BaseEventBus;
 import com.wsyzj.watchvideo.common.base.BaseFragment;
 import com.wsyzj.watchvideo.common.base.mvp.BaseIPresenter;
+import com.wsyzj.watchvideo.common.constant.EventBusConstant;
 import com.wsyzj.watchvideo.common.http.ImageLoader;
+import com.wsyzj.watchvideo.common.utils.EventBusUtils;
 import com.wsyzj.watchvideo.common.widget.BasePullToRefreshView;
 
 import java.util.List;
@@ -164,7 +168,7 @@ public class MusicFragment extends BaseFragment implements MusicContract.View, O
         builder.setItems(mItems, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+                EventBusUtils.sendEvent(new BaseEventBus<>(EventBusConstant.EVENT_DOWN_MUSIC, mPresenter.mMusicList.get(position)));
             }
         });
         builder.show();
@@ -219,6 +223,7 @@ public class MusicFragment extends BaseFragment implements MusicContract.View, O
                 PlayerManager.get().next();
                 break;
             case R.id.iv_catalogue:
+                IntentUtils.playerCatalogue(mActivity);
                 break;
             default:
                 break;

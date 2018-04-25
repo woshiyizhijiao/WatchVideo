@@ -3,6 +3,7 @@ package com.wsyzj.watchvideo.business;
 import android.app.Application;
 
 import com.blankj.utilcode.util.Utils;
+import com.liulishuo.filedownloader.FileDownloader;
 
 import org.litepal.LitePal;
 
@@ -16,15 +17,28 @@ public class BaseApp extends Application {
     public static boolean isDebug = false;
     private static BaseApp baseApp;
 
+    /**
+     * 获取全局Context
+     *
+     * @return
+     */
+    public static BaseApp getApp() {
+        return baseApp;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
         baseApp = this;
-        Utils.init(baseApp);
-        LitePal.initialize(baseApp);
+        initLib();
     }
 
-    public static BaseApp getApp() {
-        return baseApp;
+    /**
+     * 第三方库，SDK，初始化
+     */
+    private void initLib() {
+        Utils.init(baseApp);
+        LitePal.initialize(baseApp);
+        FileDownloader.setup(baseApp);
     }
 }

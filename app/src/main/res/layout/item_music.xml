@@ -44,9 +44,9 @@
         android:id="@+id/iv_more_action"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
+        android:layout_alignEnd="@+id/view"
+        android:layout_alignRight="@+id/view"
         android:layout_centerVertical="true"
-        android:layout_marginRight="15dp"
         android:src="@drawable/ic_music_list_icon_more"/>
 
     <View
@@ -55,6 +55,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="70dp"
         android:layout_marginRight="15dp"
-        android:background="@color/c999999"/>
+        android:background="@color/c999999"
+        android:id="@+id/view"/>
 
 </RelativeLayout>

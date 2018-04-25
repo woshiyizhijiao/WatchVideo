@@ -28,6 +28,8 @@ public class MusicContract {
 
         void setLoadMoreByPageCount(int listSize, int pageCount);
 
+        void setPlaySong(Music.SongListBean songListBean);
+
         void addAndPlay(Music.SongListBean songListBean);
     }
 
@@ -38,7 +40,6 @@ public class MusicContract {
     }
 
     interface Presenter extends BaseIPresenter<View> {
-        void getPreMusic(PlayerService playerService);
 
         void getMusicList(boolean refreshing);
 

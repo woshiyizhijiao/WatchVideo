@@ -34,5 +34,6 @@ public class MusicAdapter extends BaseQuickAdapter<Music.SongListBean, BaseViewH
         ImageLoader.with(mContext, item.pic_big, R.drawable.default_cover, R.drawable.default_cover, (ImageView) helper.getView(R.id.iv_conver));
         helper.setText(R.id.tv_name, item.title);
         helper.setText(R.id.tv_desc, item.artist_name + "  " + item.album_title);
+        helper.addOnClickListener(R.id.iv_more_action);
     }
 }

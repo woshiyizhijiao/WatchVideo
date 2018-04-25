@@ -2,9 +2,11 @@ package com.wsyzj.watchvideo.business.fragment;
 
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.ImageView;
@@ -20,6 +22,7 @@ import com.wsyzj.watchvideo.business.bean.Music;
 import com.wsyzj.watchvideo.business.listener.OnPlayerEventListener;
 import com.wsyzj.watchvideo.business.mvp.MusicContract;
 import com.wsyzj.watchvideo.business.mvp.MusicPresenter;
+import com.wsyzj.watchvideo.business.service.PlayerManager;
 import com.wsyzj.watchvideo.business.service.PlayerService;
 import com.wsyzj.watchvideo.common.base.BaseFragment;
 import com.wsyzj.watchvideo.common.base.mvp.BaseIPresenter;
@@ -100,8 +103,8 @@ public class MusicFragment extends BaseFragment implements MusicContract.View, O
         public void onServiceConnected(ComponentName name, IBinder service) {
             PlayerService.PlayerBinder playerBinder = (PlayerService.PlayerBinder) service;
             mPlayerService = playerBinder.getService();
-//            mPresenter.getPreMusic(mPlayerService);
-            mPlayerService.addOnPlayerEventListener(MusicFragment.this);
+            setPlaySong(PlayerManager.get().getPlaySong());
+            PlayerManager.get().addOnPlayerEventListener(MusicFragment.this);
         }
 
         @Override
@@ -109,6 +112,14 @@ public class MusicFragment extends BaseFragment implements MusicContract.View, O
 
         }
     };
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mConnection != null) {
+            mActivity.unbindService(mConnection);
+        }
+    }
 
     /**
      * 设置音乐列表
@@ -131,6 +142,32 @@ public class MusicFragment extends BaseFragment implements MusicContract.View, O
                 mPresenter.getMusicPlayPath(position);
             }
         });
+
+        mMusicAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                showMoreAction(position);
+            }
+
+        });
+    }
+
+    private static final String[] mItems = {"下载"};
+
+    /**
+     * 设置更多按钮
+     */
+    private void showMoreAction(int position) {
+        Music.SongListBean songListBean = mPresenter.mMusicList.get(position);
+        AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+        builder.setTitle(songListBean.title);
+        builder.setItems(mItems, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        builder.show();
     }
 
     /**
@@ -179,7 +216,7 @@ public class MusicFragment extends BaseFragment implements MusicContract.View, O
                 play();
                 break;
             case R.id.iv_play_next:
-                mPlayerService.next();
+                PlayerManager.get().next();
                 break;
             case R.id.iv_catalogue:
                 break;
@@ -195,18 +232,30 @@ public class MusicFragment extends BaseFragment implements MusicContract.View, O
      */
     @Override
     public void addAndPlay(Music.SongListBean songListBean) {
-        mPlayerService.addAndPlay(songListBean);
+        PlayerManager.get().addAndPlay(songListBean);
+    }
+
+    /**
+     * 设置播放音乐的信息
+     *
+     * @param songListBean
+     */
+    @Override
+    public void setPlaySong(Music.SongListBean songListBean) {
+        if (songListBean == null) {
+            return;
+        }
+        iv_play.setImageResource(R.drawable.ic_play_bar_btn_play);
+        tv_name.setText(songListBean.title);
+        tv_desc.setText(songListBean.artist_name);
+        ImageLoader.with(mActivity, songListBean.pic_big, R.drawable.default_cover, R.drawable.default_cover, iv_conver);
     }
 
     /**
      * 播放或者暂停
      */
     private void play() {
-        if (mPlayerService.isPlay()) {
-            mPlayerService.pause();
-        } else {
-            mPlayerService.start();
-        }
+        PlayerManager.get().playPause();
     }
 
     /**
@@ -214,13 +263,7 @@ public class MusicFragment extends BaseFragment implements MusicContract.View, O
      */
     @Override
     public void onPlayerChanged(Music.SongListBean songListBean) {
-        if (songListBean == null) {
-            return;
-        }
-        iv_play.setImageResource(R.drawable.ic_play_bar_btn_pause);
-        tv_name.setText(songListBean.title);
-        tv_desc.setText(songListBean.artist_name);
-        ImageLoader.with(mActivity, songListBean.pic_big, R.drawable.default_cover, R.drawable.default_cover, iv_conver);
+        setPlaySong(songListBean);
     }
 
     @Override
@@ -235,7 +278,7 @@ public class MusicFragment extends BaseFragment implements MusicContract.View, O
 
     @Override
     public void onPlayerProgress(int progress) {
-        pb_song.setMax(mPlayerService.getDuration());
+        pb_song.setMax(PlayerManager.get().getDuration());
         pb_song.setProgress(progress);
     }
 }

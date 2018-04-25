@@ -23,24 +23,11 @@ public class MusicPresenter extends BasePresenter<MusicContract.View, MusicContr
     private MusicContract.Model mModel;
 
     private int mPage = 1;
-    private List<Music.SongListBean> mMusicList;
+    public List<Music.SongListBean> mMusicList;
 
     public MusicPresenter(MusicContract.View view) {
         mView = view;
         mModel = new MusicModel();
-    }
-
-    /**
-     * 获取关闭程序时播放的音乐
-     *
-     * @param playerService
-     */
-    @Override
-    public void getPreMusic(PlayerService playerService) {
-        if (playerService != null) {
-            Music.SongListBean song = playerService.getPlaySong();
-//            mView.setPlaySong(song);
-        }
     }
 
     /**
@@ -104,6 +91,7 @@ public class MusicPresenter extends BasePresenter<MusicContract.View, MusicContr
                     bean.file_link = song.bitrate.file_link;
                     bean.file_duration = song.bitrate.file_duration;
                     mView.addAndPlay(bean);
+                    mView.setPlaySong(bean);
                 }
                 mView.dismissProgress();
             }

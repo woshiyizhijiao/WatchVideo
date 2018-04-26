@@ -1,6 +1,8 @@
 package com.wsyzj.watchvideo.business.service;
 
 import android.content.Context;
+import android.content.IntentFilter;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.Looper;
@@ -8,6 +10,7 @@ import android.os.Looper;
 import com.blankj.utilcode.util.ToastUtils;
 import com.wsyzj.watchvideo.business.bean.Music;
 import com.wsyzj.watchvideo.business.listener.OnPlayerEventListener;
+import com.wsyzj.watchvideo.business.receiver.NoisyAudioStreamReceiver;
 import com.wsyzj.watchvideo.common.utils.StorageUtils;
 
 import java.io.IOException;
@@ -32,11 +35,15 @@ public class PlayerManager implements MediaPlayer.OnPreparedListener, MediaPlaye
     private Context mContext;
     private int mState = STATE_IDLE;
     private int mPlayPos;          // 当前播放的位置
+
     private List<Music.SongListBean> mSongList;
     private List<OnPlayerEventListener> mOnPlayerEventListeners;
+
     private Handler mHandler;
     private MediaPlayer mMediaPlayer;
-
+    private AudioFocusManager mAudioFocusManager;
+    private IntentFilter mNoisyFilter;
+    private NoisyAudioStreamReceiver mNoisyAudioStreamReceiver;
 
     private PlayerManager() {
 
@@ -54,13 +61,17 @@ public class PlayerManager implements MediaPlayer.OnPreparedListener, MediaPlaye
     public void init(Context context) {
         mContext = context;
 
-        mHandler = new Handler(Looper.getMainLooper());
-        mMediaPlayer = new MediaPlayer();
+        mPlayPos = StorageUtils.getPlayPos();
+        mSongList = StorageUtils.getSongList();
+
         mSongList = new ArrayList<>();
         mOnPlayerEventListeners = new ArrayList<>();
 
-        mPlayPos = StorageUtils.getPlayPos();
-        mSongList = StorageUtils.getSongList();
+        mHandler = new Handler(Looper.getMainLooper());
+        mMediaPlayer = new MediaPlayer();
+        mAudioFocusManager = new AudioFocusManager(context);
+        mNoisyFilter = new IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY);
+        mNoisyAudioStreamReceiver = new NoisyAudioStreamReceiver();
 
         mMediaPlayer.setOnPreparedListener(this);
         mMediaPlayer.setOnCompletionListener(this);
@@ -161,12 +172,16 @@ public class PlayerManager implements MediaPlayer.OnPreparedListener, MediaPlaye
         if (!isPrepare() && !isPause()) {
             return;
         }
-        mMediaPlayer.start();
-        mState = STATE_PLAY;
-        mHandler.post(mProgressRun);
 
-        for (OnPlayerEventListener onPlayerEventListener : mOnPlayerEventListeners) {
-            onPlayerEventListener.onPlayerStart();
+        if (mAudioFocusManager.requestAudioFocus()) {
+            mMediaPlayer.start();
+            mState = STATE_PLAY;
+            mHandler.post(mProgressRun);
+            mContext.registerReceiver(mNoisyAudioStreamReceiver, mNoisyFilter);
+
+            for (OnPlayerEventListener listener : mOnPlayerEventListeners) {
+                listener.onPlayerStart();
+            }
         }
     }
 
@@ -177,8 +192,8 @@ public class PlayerManager implements MediaPlayer.OnPreparedListener, MediaPlaye
         @Override
         public void run() {
             if (isPlay()) {
-                for (OnPlayerEventListener onPlayerEventListener : mOnPlayerEventListeners) {
-                    onPlayerEventListener.onPlayerProgress(mMediaPlayer.getCurrentPosition());
+                for (OnPlayerEventListener listener : mOnPlayerEventListeners) {
+                    listener.onPlayerProgress(mMediaPlayer.getCurrentPosition());
                 }
             }
             mHandler.postDelayed(this, UPDATE_PROGRESS_TIME);
@@ -189,15 +204,30 @@ public class PlayerManager implements MediaPlayer.OnPreparedListener, MediaPlaye
      * 暂停
      */
     public void pause() {
+        pause(true);
+    }
+
+    /**
+     * 暂停
+     *
+     * @param abandonAudioFocus 放弃音频焦点
+     */
+    public void pause(boolean abandonAudioFocus) {
         if (!isPlay()) {
             return;
         }
+
+        if (abandonAudioFocus) {
+            mAudioFocusManager.abandonAudioFocus();
+        }
+
         mMediaPlayer.pause();
         mState = STATE_PAUSE;
         mHandler.removeCallbacks(mProgressRun);
+        mContext.unregisterReceiver(mNoisyAudioStreamReceiver);
 
-        for (OnPlayerEventListener onPlayerEventListener : mOnPlayerEventListeners) {
-            onPlayerEventListener.onPlayerPasue();
+        for (OnPlayerEventListener listener : mOnPlayerEventListeners) {
+            listener.onPlayerPasue();
         }
     }
 
@@ -297,6 +327,10 @@ public class PlayerManager implements MediaPlayer.OnPreparedListener, MediaPlaye
             return mSongList.get(mPlayPos);
         }
         return null;
+    }
+
+    public MediaPlayer getMediaPlayer() {
+        return mMediaPlayer;
     }
 
     /**

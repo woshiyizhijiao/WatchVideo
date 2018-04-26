@@ -225,7 +225,9 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
             if (UiUtils.isShouldHideKeyboard(v, ev)) {
                 InputMethodManager imm =
                         (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                if (imm == null) return super.dispatchTouchEvent(ev);
+                if (imm == null) {
+                    return super.dispatchTouchEvent(ev);
+                }
                 imm.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
             }
         }

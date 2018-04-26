@@ -74,7 +74,7 @@ public class HomePresenter extends BasePresenter<HomeContract.View, HomeContract
                     }
 
                     @Override
-                    public void onFailure() {
+                    public void onFailure(Throwable throwable) {
 
                     }
                 });
@@ -131,7 +131,7 @@ public class HomePresenter extends BasePresenter<HomeContract.View, HomeContract
                     }
 
                     @Override
-                    public void onFailure() {
+                    public void onFailure(Throwable throwable) {
 
                     }
                 });

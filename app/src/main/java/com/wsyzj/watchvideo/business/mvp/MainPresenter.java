@@ -60,7 +60,7 @@ public class MainPresenter extends BasePresenter<MainContract.View, MainContract
                         }
 
                         @Override
-                        public void onFailure() {
+                        public void onFailure(Throwable throwable) {
 
                         }
                     });

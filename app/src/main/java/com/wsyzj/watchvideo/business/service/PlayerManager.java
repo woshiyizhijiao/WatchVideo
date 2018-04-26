@@ -64,7 +64,6 @@ public class PlayerManager implements MediaPlayer.OnPreparedListener, MediaPlaye
         mPlayPos = StorageUtils.getPlayPos();
         mSongList = StorageUtils.getSongList();
 
-        mSongList = new ArrayList<>();
         mOnPlayerEventListeners = new ArrayList<>();
 
         mHandler = new Handler(Looper.getMainLooper());
@@ -329,6 +328,11 @@ public class PlayerManager implements MediaPlayer.OnPreparedListener, MediaPlaye
         return null;
     }
 
+    /**
+     * 获取音频媒体
+     *
+     * @return
+     */
     public MediaPlayer getMediaPlayer() {
         return mMediaPlayer;
     }

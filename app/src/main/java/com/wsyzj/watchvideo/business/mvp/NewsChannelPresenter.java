@@ -80,7 +80,7 @@ public class NewsChannelPresenter extends BasePresenter<NewsChannelContract.View
             }
 
             @Override
-            public void onFailure() {
+            public void onFailure(Throwable throwable) {
 
             }
         });

@@ -37,6 +37,7 @@ public abstract class BaseTSubscriber<T> extends DisposableSubscriber<T> {
         } else {
             errorMsg = throwable.getMessage();
         }
+        onFailure(throwable);
         ToastUtils.showShort(errorMsg);
     }
 
@@ -47,5 +48,5 @@ public abstract class BaseTSubscriber<T> extends DisposableSubscriber<T> {
 
     public abstract void onSuccess(Object data);
 
-    public abstract void onFailure();
+    public abstract void onFailure(Throwable throwable);
 }

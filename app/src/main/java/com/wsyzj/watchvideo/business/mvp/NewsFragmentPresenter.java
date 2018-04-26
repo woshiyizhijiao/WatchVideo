@@ -81,7 +81,7 @@ public class NewsFragmentPresenter extends BasePresenter<NewsFragmentContract.Vi
                     }
 
                     @Override
-                    public void onFailure() {
+                    public void onFailure(Throwable throwable) {
 
                     }
                 });

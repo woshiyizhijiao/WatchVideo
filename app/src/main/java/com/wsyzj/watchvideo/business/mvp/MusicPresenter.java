@@ -1,8 +1,10 @@
 package com.wsyzj.watchvideo.business.mvp;
 
+import android.text.TextUtils;
+
 import com.wsyzj.watchvideo.business.bean.Music;
 import com.wsyzj.watchvideo.business.bean.Song;
-import com.wsyzj.watchvideo.business.service.PlayerService;
+import com.wsyzj.watchvideo.business.service.PlayerManager;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
 import com.wsyzj.watchvideo.common.http.BaseTSubscriber;
 import com.wsyzj.watchvideo.common.widget.BaseState;
@@ -66,7 +68,7 @@ public class MusicPresenter extends BasePresenter<MusicContract.View, MusicContr
             }
 
             @Override
-            public void onFailure() {
+            public void onFailure(Throwable throwable) {
                 mView.setPageState(BaseState.STATE_ERROR);
             }
         });
@@ -81,8 +83,14 @@ public class MusicPresenter extends BasePresenter<MusicContract.View, MusicContr
      */
     @Override
     public void getMusicPlayPath(int position) {
-        mView.showProgress();
         Music.SongListBean bean = mMusicList.get(position);
+        Music.SongListBean playSong = PlayerManager.get().getPlaySong();
+        // 是否和现在播放的是同一首
+        if (playSong != null && TextUtils.equals(bean.song_id, playSong.song_id)) {
+            return;
+        }
+
+        mView.showProgress();
         BaseTSubscriber<Song> subscriber = mModel.getMusicPlayPath(bean.song_id).subscribeWith(new BaseTSubscriber<Song>() {
             @Override
             public void onSuccess(Object data) {
@@ -97,7 +105,7 @@ public class MusicPresenter extends BasePresenter<MusicContract.View, MusicContr
             }
 
             @Override
-            public void onFailure() {
+            public void onFailure(Throwable throwable) {
                 mView.dismissProgress();
             }
         });

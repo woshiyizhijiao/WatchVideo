@@ -59,6 +59,9 @@
         // 音乐目录
         <service android:name=".business.service.PlayerService"/>
 
+        // 音乐下载服务
+        <service android:name=".business.service.MusicDownLoaderService"/>
+
         // 广播相关
         ----------
 

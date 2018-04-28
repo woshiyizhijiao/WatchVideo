@@ -38,23 +38,23 @@ public class AudioFocusManager implements AudioManager.OnAudioFocusChangeListene
             case AudioManager.AUDIOFOCUS_GAIN:
                 if (isPausedByFocusLossTransient) {
                     // 通话结束，恢复播放
-                    PlayerManager.get().start();
+                    PlayerManager.getInstance().start();
                 }
-                PlayerManager.get().getMediaPlayer().setVolume(1f, 1f);
+                PlayerManager.getInstance().getMediaPlayer().setVolume(1f, 1f);
                 isPausedByFocusLossTransient = false;
                 break;
             // 永久失去焦点，被其他播放器抢占
             case AudioManager.AUDIOFOCUS_LOSS:
-                PlayerManager.get().pause();
+                PlayerManager.getInstance().pause();
                 break;
             // 短暂失去焦点，如来电
             case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
-                PlayerManager.get().pause(false);
+                PlayerManager.getInstance().pause(false);
                 isPausedByFocusLossTransient = true;
                 break;
             // 瞬间失去焦点，如通知
             case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
-                PlayerManager.get().getMediaPlayer().setVolume(0.5f, 0.5f);
+                PlayerManager.getInstance().getMediaPlayer().setVolume(0.5f, 0.5f);
                 break;
             default:
                 break;

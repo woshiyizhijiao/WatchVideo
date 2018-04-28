@@ -27,6 +27,6 @@ public class HomeDouBanAdapter extends BaseQuickAdapter<DouBan.SubjectsBean, Bas
 
     @Override
     protected void convert(BaseViewHolder helper, DouBan.SubjectsBean item) {
-        ImageLoader.with(mContext, item.images.medium, (ImageView) helper.getView(R.id.iv_conver));
+        ImageLoader.with(mContext, item.images.medium, R.drawable.icon_default_error, R.drawable.icon_default_error, (ImageView) helper.getView(R.id.iv_conver));
     }
 }

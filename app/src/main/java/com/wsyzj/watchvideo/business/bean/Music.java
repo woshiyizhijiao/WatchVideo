@@ -1,5 +1,6 @@
 package com.wsyzj.watchvideo.business.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -37,7 +38,7 @@ public class Music {
         public String update_date;
     }
 
-    public static class SongListBean {
+    public static class SongListBean implements Serializable {
         /**
          * album_title : 无法长大
          * artist_name : 赵雷

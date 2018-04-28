@@ -2,6 +2,10 @@ package com.wsyzj.watchvideo.business.mvp;
 
 import android.text.TextUtils;
 
+import com.blankj.utilcode.util.LogUtils;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.request.GetRequest;
+import com.lzy.okserver.OkDownload;
 import com.wsyzj.watchvideo.business.bean.Music;
 import com.wsyzj.watchvideo.business.bean.Song;
 import com.wsyzj.watchvideo.business.service.PlayerManager;
@@ -9,6 +13,7 @@ import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
 import com.wsyzj.watchvideo.common.http.BaseTSubscriber;
 import com.wsyzj.watchvideo.common.widget.BaseState;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -84,7 +89,7 @@ public class MusicPresenter extends BasePresenter<MusicContract.View, MusicContr
     @Override
     public void getMusicPlayPath(int position) {
         Music.SongListBean bean = mMusicList.get(position);
-        Music.SongListBean playSong = PlayerManager.get().getPlaySong();
+        Music.SongListBean playSong = PlayerManager.getInstance().getPlaySong();
         // 是否和现在播放的是同一首
         if (playSong != null && TextUtils.equals(bean.song_id, playSong.song_id)) {
             return;
@@ -110,5 +115,56 @@ public class MusicPresenter extends BasePresenter<MusicContract.View, MusicContr
             }
         });
         mView.addDisposable(subscriber);
+    }
+
+    /**
+     * 下载音乐(先查看有没有下载链接)
+     *
+     * @param position
+     */
+    @Override
+    public void downMusic(int position) {
+        Music.SongListBean songListBean = mMusicList.get(position);
+
+        if (!TextUtils.isEmpty(songListBean.file_link)) {
+            addDownloaderList(songListBean);
+            return;
+        }
+
+        mView.showProgress();
+        BaseTSubscriber<Song> subscriber = mModel.getMusicPlayPath(songListBean.song_id).subscribeWith(new BaseTSubscriber<Song>() {
+            @Override
+            public void onSuccess(Object data) {
+                Song song = (Song) data;
+                if (song != null) {
+                    mMusicList.get(position).file_link = song.bitrate.file_link;
+                    mMusicList.get(position).file_duration = song.bitrate.file_duration;
+                    addDownloaderList(mMusicList.get(position));
+                }
+                mView.dismissProgress();
+            }
+
+            @Override
+            public void onFailure(Throwable throwable) {
+                mView.dismissProgress();
+            }
+        });
+        mView.addDisposable(subscriber);
+    }
+
+    /**
+     * 加入下载列表
+     */
+    private void addDownloaderList(Music.SongListBean songListBean) {
+        if (OkDownload.getInstance().getTask(songListBean.file_link) != null) {
+            mView.showToast("已在队列");
+            return;
+        }
+        LogUtils.e(songListBean.file_link);
+        GetRequest<File> request = OkGo.<File>get(songListBean.file_link);
+        OkDownload.request(songListBean.file_link, request)
+                .extra1(songListBean)
+                .save()
+                .start();
     }
 }

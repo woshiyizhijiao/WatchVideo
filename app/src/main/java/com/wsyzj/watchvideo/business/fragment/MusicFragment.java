@@ -1,10 +1,12 @@
 package com.wsyzj.watchvideo.business.fragment;
 
+import android.Manifest;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Build;
 import android.os.IBinder;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,6 +18,7 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.business.adapter.MusicAdapter;
 import com.wsyzj.watchvideo.business.bean.Music;
@@ -25,18 +28,17 @@ import com.wsyzj.watchvideo.business.mvp.MusicPresenter;
 import com.wsyzj.watchvideo.business.service.PlayerManager;
 import com.wsyzj.watchvideo.business.service.PlayerService;
 import com.wsyzj.watchvideo.business.utils.IntentUtils;
-import com.wsyzj.watchvideo.common.base.BaseEventBus;
 import com.wsyzj.watchvideo.common.base.BaseFragment;
 import com.wsyzj.watchvideo.common.base.mvp.BaseIPresenter;
-import com.wsyzj.watchvideo.common.constant.EventBusConstant;
 import com.wsyzj.watchvideo.common.http.ImageLoader;
-import com.wsyzj.watchvideo.common.utils.EventBusUtils;
 import com.wsyzj.watchvideo.common.widget.BasePullToRefreshView;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
 
 /**
  * <pre>
@@ -47,6 +49,10 @@ import butterknife.OnClick;
  * </pre>
  */
 public class MusicFragment extends BaseFragment implements MusicContract.View, OnRefreshLoadMoreListener, OnPlayerEventListener {
+
+    private final static String[] REQUEST_PERMISSION = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
     @BindView(R.id.pull_to_refresh)
     BasePullToRefreshView pull_to_refresh;
@@ -107,8 +113,8 @@ public class MusicFragment extends BaseFragment implements MusicContract.View, O
         public void onServiceConnected(ComponentName name, IBinder service) {
             PlayerService.PlayerBinder playerBinder = (PlayerService.PlayerBinder) service;
             mPlayerService = playerBinder.getService();
-            setPlaySong(PlayerManager.get().getPlaySong());
-            PlayerManager.get().addOnPlayerEventListener(MusicFragment.this);
+            setPlaySong(PlayerManager.getInstance().getPlaySong());
+            PlayerManager.getInstance().addOnPlayerEventListener(MusicFragment.this);
         }
 
         @Override
@@ -168,10 +174,31 @@ public class MusicFragment extends BaseFragment implements MusicContract.View, O
         builder.setItems(mItems, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                EventBusUtils.sendEvent(new BaseEventBus<>(EventBusConstant.EVENT_DOWN_MUSIC, mPresenter.mMusicList.get(position)));
+                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+                    requestPermissions(position);
+                } else {
+                    mPresenter.downMusic(position);
+                }
             }
         });
         builder.show();
+    }
+
+    /**
+     * 获取用户权限
+     */
+    public void requestPermissions(int position) {
+        new RxPermissions(mActivity).request(REQUEST_PERMISSION)
+                .subscribe(new Consumer<Boolean>() {
+                    @Override
+                    public void accept(@NonNull Boolean aBoolean) throws Exception {
+                        if (aBoolean) {
+                            mPresenter.downMusic(position);
+                        } else {
+                            showToast("");
+                        }
+                    }
+                });
     }
 
     /**
@@ -220,7 +247,7 @@ public class MusicFragment extends BaseFragment implements MusicContract.View, O
                 play();
                 break;
             case R.id.iv_play_next:
-                PlayerManager.get().next();
+                PlayerManager.getInstance().next();
                 break;
             case R.id.iv_catalogue:
                 IntentUtils.playerCatalogue(mActivity);
@@ -237,7 +264,7 @@ public class MusicFragment extends BaseFragment implements MusicContract.View, O
      */
     @Override
     public void addAndPlay(Music.SongListBean songListBean) {
-        PlayerManager.get().addAndPlay(songListBean);
+        PlayerManager.getInstance().addAndPlay(songListBean);
     }
 
     /**
@@ -260,7 +287,7 @@ public class MusicFragment extends BaseFragment implements MusicContract.View, O
      * 播放或者暂停
      */
     private void play() {
-        PlayerManager.get().playPause();
+        PlayerManager.getInstance().playPause();
     }
 
     /**
@@ -283,7 +310,7 @@ public class MusicFragment extends BaseFragment implements MusicContract.View, O
 
     @Override
     public void onPlayerProgress(int progress) {
-        pb_song.setMax(PlayerManager.get().getDuration());
+        pb_song.setMax(PlayerManager.getInstance().getDuration());
         pb_song.setProgress(progress);
     }
 }

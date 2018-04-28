@@ -2,7 +2,6 @@ package com.wsyzj.watchvideo.business.mvp;
 
 import com.wsyzj.watchvideo.business.bean.Music;
 import com.wsyzj.watchvideo.business.bean.Song;
-import com.wsyzj.watchvideo.business.service.PlayerService;
 import com.wsyzj.watchvideo.common.base.mvp.BaseIModel;
 import com.wsyzj.watchvideo.common.base.mvp.BaseIPresenter;
 import com.wsyzj.watchvideo.common.base.mvp.BaseIView;
@@ -44,5 +43,7 @@ public class MusicContract {
         void getMusicList(boolean refreshing);
 
         void getMusicPlayPath(int position);
+
+        void downMusic(int position);
     }
 }

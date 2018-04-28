@@ -84,7 +84,8 @@ dependencies {
     compile "com.scwang.smartrefresh:SmartRefreshLayout:1.0.5.1"                               // 下拉刷新，加载更多
     compile 'de.hdodenhof:circleimageview:2.2.0'                                               // 圆头像
     compile 'org.litepal.android:core:1.6.1'                                                   // 数据库
-    compile 'com.liulishuo.filedownloader:library:1.7.3'                                           // 多任务下载
+    compile 'com.lzy.net:okgo:3.0.4'                                                           // 网络请求库，用这个多任务下载
+    compile 'com.lzy.net:okserver:2.0.5'                                                       // 多任务下载
 
     /**
      * jar aar

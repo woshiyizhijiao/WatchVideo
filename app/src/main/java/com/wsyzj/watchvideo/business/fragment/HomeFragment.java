@@ -143,7 +143,7 @@ public class HomeFragment extends BaseFragment implements HomeContract.View, OnR
 
         if (mHeadView != null) {
             RecyclerView rv_news = (RecyclerView) mHeadView.findViewById(R.id.rv_news);
-            NewsTitleAdapter adapter = new NewsTitleAdapter(R.layout.item_news_title, Arrays.asList(titles), resId);
+            NewsTitleAdapter adapter = new NewsTitleAdapter(Arrays.asList(titles), resId);
             rv_news.setLayoutManager(new GridLayoutManager(mActivity, 3));
             rv_news.setAdapter(adapter);
 

@@ -19,7 +19,7 @@ public class PlayerService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        PlayerManager.get().init(this);
+        PlayerManager.getInstance().init(this);
     }
 
     @Override

@@ -53,7 +53,7 @@ public class PlayerManager implements MediaPlayer.OnPreparedListener, MediaPlaye
         private static PlayerManager sInstance = new PlayerManager();
     }
 
-    public static PlayerManager get() {
+    public static PlayerManager getInstance() {
         return SingletonHolder.sInstance;
     }
 

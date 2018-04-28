@@ -120,6 +120,15 @@ public class BaseStateLayout extends FrameLayout {
     }
 
     /**
+     * 设置空数据文本描述
+     */
+    public void setEmptyDataText(CharSequence charSequence) {
+        if (tv_empty != null) {
+            tv_empty.setText(charSequence);
+        }
+    }
+
+    /**
      * 判断是否有网
      */
     private void setNetState() {

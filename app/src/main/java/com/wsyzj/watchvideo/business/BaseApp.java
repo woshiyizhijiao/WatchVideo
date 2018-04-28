@@ -3,7 +3,7 @@ package com.wsyzj.watchvideo.business;
 import android.app.Application;
 
 import com.blankj.utilcode.util.Utils;
-import com.liulishuo.filedownloader.FileDownloader;
+import com.lzy.okgo.OkGo;
 
 import org.litepal.LitePal;
 
@@ -39,6 +39,6 @@ public class BaseApp extends Application {
     private void initLib() {
         Utils.init(baseApp);
         LitePal.initialize(baseApp);
-        FileDownloader.setup(baseApp);
+        OkGo.getInstance().init(this);
     }
 }

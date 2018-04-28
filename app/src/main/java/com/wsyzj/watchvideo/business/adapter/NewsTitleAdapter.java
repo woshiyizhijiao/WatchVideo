@@ -1,6 +1,5 @@
 package com.wsyzj.watchvideo.business.adapter;
 
-import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.widget.TextView;
 
@@ -20,8 +19,8 @@ public class NewsTitleAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
 
     private int[] mResId;
 
-    public NewsTitleAdapter(@LayoutRes int layoutResId, @Nullable List<String> data, int[] resId) {
-        super(layoutResId, data);
+    public NewsTitleAdapter(@Nullable List<String> data, int[] resId) {
+        super(R.layout.item_news_title, data);
         mResId = resId;
     }
 

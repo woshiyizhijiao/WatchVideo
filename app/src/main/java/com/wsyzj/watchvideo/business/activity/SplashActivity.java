@@ -59,7 +59,7 @@ public class SplashActivity extends BaseActivity {
     protected void onRestart() {
         super.onRestart();
         if (isToAuthorize) {
-            getPermissions();
+            requestPermissions();
         }
     }
 
@@ -114,7 +114,7 @@ public class SplashActivity extends BaseActivity {
      */
     private void enterMain() {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
-            getPermissions();
+            requestPermissions();
         } else {
             showBanner();
         }
@@ -123,7 +123,7 @@ public class SplashActivity extends BaseActivity {
     /**
      * 获取用户权限
      */
-    public void getPermissions() {
+    public void requestPermissions() {
         new RxPermissions(this).request(REQUEST_PERMISSION)
                 .subscribe(new Consumer<Boolean>() {
                     @Override

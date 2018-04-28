@@ -27,6 +27,6 @@ public class HomeAdapter extends BaseQuickAdapter<Gank.ResultsBean, BaseViewHold
 
     @Override
     protected void convert(BaseViewHolder helper, Gank.ResultsBean item) {
-        ImageLoader.with(mContext, item.url, (ImageView) helper.getView(R.id.iv_meizhi));
+        ImageLoader.with(mContext, item.url, R.drawable.icon_default_error, R.drawable.icon_default_error, (ImageView) helper.getView(R.id.iv_meizhi));
     }
 }

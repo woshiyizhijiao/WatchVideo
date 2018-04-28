@@ -18,6 +18,6 @@ public class NoisyAudioStreamReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        PlayerManager.get().playPause();
+        PlayerManager.getInstance().playPause();
     }
 }

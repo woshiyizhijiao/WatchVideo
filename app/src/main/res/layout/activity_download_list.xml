@@ -2,8 +2,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="@color/white"
+              android:background="@color/cf5f5f5"
               android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_start_pause"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:drawableLeft="@drawable/minibar_btn_play_normal"
+        android:gravity="left|center_vertical"
+        android:padding="10dp"
+        android:text="全部开始"
+        android:textSize="14sp"/>
 
     <com.wsyzj.watchvideo.common.widget.BasePullToRefreshView
         android:id="@+id/pull_to_refresh"

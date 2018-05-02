@@ -2,7 +2,6 @@ package com.wsyzj.watchvideo.business.mvp;
 
 import android.text.TextUtils;
 
-import com.blankj.utilcode.util.LogUtils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.request.GetRequest;
 import com.lzy.okserver.OkDownload;
@@ -90,6 +89,7 @@ public class MusicPresenter extends BasePresenter<MusicContract.View, MusicContr
     public void getMusicPlayPath(int position) {
         Music.SongListBean bean = mMusicList.get(position);
         Music.SongListBean playSong = PlayerManager.getInstance().getPlaySong();
+
         // 是否和现在播放的是同一首
         if (playSong != null && TextUtils.equals(bean.song_id, playSong.song_id)) {
             return;
@@ -160,9 +160,9 @@ public class MusicPresenter extends BasePresenter<MusicContract.View, MusicContr
             mView.showToast("已在队列");
             return;
         }
-        LogUtils.e(songListBean.file_link);
         GetRequest<File> request = OkGo.<File>get(songListBean.file_link);
         OkDownload.request(songListBean.file_link, request)
+                .fileName(songListBean.title)
                 .extra1(songListBean)
                 .save()
                 .start();

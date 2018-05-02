@@ -51,8 +51,8 @@
         // 频道管理界面
         <activity android:name=".business.activity.ChannelManagerActivity"/>
 
-        // 音乐目录
-        <activity android:name=".business.activity.PlayerCatalogueActivity"/>
+        // 下载目录
+        <activity android:name=".business.activity.DownloadListActivity"/>
 
         // 服务相关
         ----------

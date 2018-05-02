@@ -15,7 +15,7 @@ import java.util.List;
  *     desc   :
  * </pre>
  */
-public class PlayerCatalogueContract {
+public class DownloadListContract {
     public interface View extends BaseIView {
         void setDownloadList(List<DownloadTask> downloadList);
 

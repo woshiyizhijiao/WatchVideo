@@ -113,7 +113,7 @@ public class SplashActivity extends BaseActivity {
      * 6.0以上需要申请权限，6.0
      */
     private void enterMain() {
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions();
         } else {
             showBanner();

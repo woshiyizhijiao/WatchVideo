@@ -174,7 +174,7 @@ public class MusicFragment extends BaseFragment implements MusicContract.View, O
         builder.setItems(mItems, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     requestPermissions(position);
                 } else {
                     mPresenter.downMusic(position);
@@ -250,7 +250,7 @@ public class MusicFragment extends BaseFragment implements MusicContract.View, O
                 PlayerManager.getInstance().next();
                 break;
             case R.id.iv_catalogue:
-                IntentUtils.playerCatalogue(mActivity);
+                IntentUtils.downloadList(mActivity);
                 break;
             default:
                 break;

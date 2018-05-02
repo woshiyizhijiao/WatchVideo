@@ -7,9 +7,9 @@ import android.provider.Settings;
 
 import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.business.activity.ChannelManagerActivity;
+import com.wsyzj.watchvideo.business.activity.DownloadListActivity;
 import com.wsyzj.watchvideo.business.activity.MainActivity;
 import com.wsyzj.watchvideo.business.activity.MeiRiYiWenActivity;
-import com.wsyzj.watchvideo.business.activity.PlayerCatalogueActivity;
 import com.wsyzj.watchvideo.business.activity.PreviewLargeActivity;
 import com.wsyzj.watchvideo.business.activity.TestActivity;
 import com.wsyzj.watchvideo.business.activity.WebViewActivity;
@@ -135,7 +135,7 @@ public class IntentUtils {
     /**
      * 音乐目录
      */
-    public static void playerCatalogue(Activity activity) {
-        startActivity(activity, PlayerCatalogueActivity.class);
+    public static void downloadList(Activity activity) {
+        startActivity(activity, DownloadListActivity.class);
     }
 }

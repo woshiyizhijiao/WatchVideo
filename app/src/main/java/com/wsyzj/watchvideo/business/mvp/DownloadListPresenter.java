@@ -15,14 +15,14 @@ import java.util.List;
  *     desc   :
  * </pre>
  */
-public class PlayerCataloguePresenter extends BasePresenter<PlayerCatalogueContract.View, PlayerCatalogueContract.Model> implements
-        PlayerCatalogueContract.Presenter {
+public class DownloadListPresenter extends BasePresenter<DownloadListContract.View, DownloadListContract.Model> implements
+        DownloadListContract.Presenter {
 
     private List<DownloadTask> mDownloadList;
 
-    public PlayerCataloguePresenter(PlayerCatalogueContract.View view) {
+    public DownloadListPresenter(DownloadListContract.View view) {
         mView = view;
-        mModel = new PlayerCatalogueModel();
+        mModel = new DownloadListModel();
     }
 
     @Override

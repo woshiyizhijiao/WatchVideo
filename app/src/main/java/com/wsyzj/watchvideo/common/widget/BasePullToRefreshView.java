@@ -57,6 +57,20 @@ public class BasePullToRefreshView extends LinearLayout {
     }
 
     /**
+     * 禁用下拉刷新
+     */
+    public void setEnableRefresh(boolean enabled) {
+        smart_refresh.setEnableRefresh(enabled);
+    }
+
+    /**
+     * 禁用加载更多
+     */
+    public void setEnableLoadMore(boolean enabled) {
+        smart_refresh.setEnableLoadMore(enabled);
+    }
+
+    /**
      * 设置适配器
      *
      * @param adapter

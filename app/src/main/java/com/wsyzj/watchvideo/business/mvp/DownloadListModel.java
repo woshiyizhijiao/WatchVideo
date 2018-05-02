@@ -8,6 +8,6 @@ package com.wsyzj.watchvideo.business.mvp;
  *     desc   :
  * </pre>
  */
-public class PlayerCatalogueModel implements PlayerCatalogueContract.Model {
+public class DownloadListModel implements DownloadListContract.Model {
 
 }

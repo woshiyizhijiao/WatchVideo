@@ -79,6 +79,10 @@
 -dontwarn javax.annotation.**
 -keepnames class okhttp3.internal.publicsuffix.PublicSuffixDatabase
 
+#okio
+-dontwarn okio.**
+-keep class okio.**{*;}
+
 # retrofit-gson
 -keep class com.wsyzj.watchvideo.business.bean.**{*;} # 自定义数据模型的bean目录
 

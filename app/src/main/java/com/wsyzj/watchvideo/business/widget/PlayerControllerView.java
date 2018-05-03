@@ -68,11 +68,10 @@ public class PlayerControllerView extends LinearLayout implements OnPlayerEventL
         View view = LayoutInflater.from(context).inflate(R.layout.widget_player_controller, null);
         ButterKnife.bind(this, view);
 
-        PlayerManager.getInstance().addOnPlayerEventListener(this);
         addView(view);
     }
 
-    @OnClick({R.id.iv_play, R.id.iv_play_next})
+    @OnClick({R.id.iv_play, R.id.iv_play_next, R.id.iv_catalogue})
     public void bkOnClick(View view) {
         switch (view.getId()) {
             case R.id.iv_play:
@@ -86,6 +85,15 @@ public class PlayerControllerView extends LinearLayout implements OnPlayerEventL
             default:
                 break;
         }
+    }
+
+    /**
+     * 添加并且播放
+     *
+     * @param songListBean
+     */
+    public void addAndPlay(Music.SongListBean songListBean) {
+        PlayerManager.getInstance().addAndPlay(songListBean);
     }
 
     /**

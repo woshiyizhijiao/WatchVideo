@@ -23,6 +23,7 @@ import com.wsyzj.watchvideo.business.mvp.MusicContract;
 import com.wsyzj.watchvideo.business.mvp.MusicPresenter;
 import com.wsyzj.watchvideo.business.service.PlayerManager;
 import com.wsyzj.watchvideo.business.service.PlayerService;
+import com.wsyzj.watchvideo.business.widget.PlayerControllerView;
 import com.wsyzj.watchvideo.common.base.BaseFragment;
 import com.wsyzj.watchvideo.common.base.mvp.BaseIPresenter;
 import com.wsyzj.watchvideo.common.widget.BasePullToRefreshView;
@@ -50,8 +51,8 @@ public class MusicFragment extends BaseFragment implements MusicContract.View, O
     @BindView(R.id.pull_to_refresh)
     BasePullToRefreshView pull_to_refresh;
 
-//    @BindView(R.id.player_controller)
-//    PlayerControllerView player_controller;
+    @BindView(R.id.player_controller)
+    PlayerControllerView player_controller;
 
     private MusicPresenter mPresenter;
     private MusicAdapter mMusicAdapter;
@@ -79,6 +80,12 @@ public class MusicFragment extends BaseFragment implements MusicContract.View, O
         mPresenter.getMusicList(true);
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        PlayerManager.getInstance().removeOnPlayerEventListener(player_controller);
+    }
+
     /**
      * 初始化音乐服务
      */
@@ -94,6 +101,8 @@ public class MusicFragment extends BaseFragment implements MusicContract.View, O
         public void onServiceConnected(ComponentName name, IBinder service) {
             PlayerService.PlayerBinder playerBinder = (PlayerService.PlayerBinder) service;
             mPlayerService = playerBinder.getService();
+            PlayerManager.getInstance().addOnPlayerEventListener(player_controller);
+            player_controller.setPlaySong(PlayerManager.getInstance().getPlaySong());
         }
 
         @Override

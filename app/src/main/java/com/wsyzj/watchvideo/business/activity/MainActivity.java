@@ -103,12 +103,12 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
 
     @Override
     protected int contentView() {
-        mNavigationView.hide();
         return R.layout.activity_main;
     }
 
     @Override
     protected void initView() {
+        mNavigationView.hide();
         setSupportActionBar(toolbar);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer_layout.addDrawerListener(toggle);
@@ -189,7 +189,8 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
     public void bkOnClick(View view) {
         switch (view.getId()) {
             case R.id.fl_channel_manager:
-                IntentUtils.channelManager(this, CODE_CHANNEL_MANAGER);
+                IntentUtils.test(this);
+//                IntentUtils.channelManager(this, CODE_CHANNEL_MANAGER);
                 break;
             default:
                 break;

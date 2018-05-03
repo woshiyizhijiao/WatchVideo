@@ -56,11 +56,18 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         registerEventBus();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        UiUtils.hideSoftInput(this);
+    }
+
     /**
      * 基本配置
      */
     private void basicConfig() {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);  // 固定竖屏
+        UiUtils.hideSoftInput(this);
     }
 
     /**
@@ -218,6 +225,12 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
 
     protected abstract void initData(Bundle savedInstanceState);       // 初始化数据
 
+    /**
+     * 点击键盘意外区域关闭掉键盘
+     *
+     * @param ev
+     * @return
+     */
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         if (ev.getAction() == MotionEvent.ACTION_DOWN) {

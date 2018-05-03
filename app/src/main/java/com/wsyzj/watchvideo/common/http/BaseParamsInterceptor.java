@@ -1,9 +1,13 @@
 package com.wsyzj.watchvideo.common.http;
 
+import com.blankj.utilcode.util.LogUtils;
+
 import java.io.IOException;
 
+import okhttp3.FormBody;
 import okhttp3.Interceptor;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 /**
@@ -16,31 +20,15 @@ public class BaseParamsInterceptor implements Interceptor {
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request oldRequest = chain.request();
-//        ArrayMap<String, String> params = BaseApp.getAppContext().getRequestParams();
-//        if (params != null) {
-//            Request.Builder newRequestBuilder = oldRequest.newBuilder();
-//            if ("GET".equalsIgnoreCase(oldRequest.method())) {
-//                HttpUrl.Builder httpUrlBuilder = oldRequest.url().newBuilder();
-//                for (String key : params.keySet()) {
-//                    httpUrlBuilder.addQueryParameter(key, params.get(key));
-//                }
-//                newRequestBuilder.url(httpUrlBuilder.build());
-//            } else {
-//                if (oldRequest.body() instanceof FormBody) {
-//                    FormBody.Builder formBodyBuilder = new FormBody.Builder();
-//                    for (String key : params.keySet()) {
-//                        formBodyBuilder.add(key, params.get(key));
-//                    }
-//                    FormBody oldFormBody = (FormBody) oldRequest.body();
-//                    int size = oldFormBody.size();
-//                    for (int i = 0; i < size; i++) {
-//                        formBodyBuilder.add(oldFormBody.name(i), oldFormBody.value(i));
-//                    }
-//                    newRequestBuilder.post(formBodyBuilder.build());
-//                }
-//            }
-//            return chain.proceed(newRequestBuilder.build());
-//        }
+        RequestBody body = oldRequest.body();
+
+        LogUtils.e(body.contentLength() + " --- ");
+        if (body instanceof FormBody) {
+            FormBody formBody = (FormBody) body;
+            for (int i = 0; i < formBody.size(); i++) {
+                LogUtils.e(formBody.encodedName(i), formBody.encodedValue(i));
+            }
+        }
         return chain.proceed(oldRequest);
     }
 }

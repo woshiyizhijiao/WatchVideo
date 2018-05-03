@@ -31,6 +31,7 @@ public class BaseRetrofit {
             interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
             builder.addInterceptor(interceptor);
         }
+        builder.addInterceptor(new BaseParamsInterceptor());
         builder.connectTimeout(12, TimeUnit.SECONDS);
         builder.writeTimeout(12, TimeUnit.SECONDS);
         builder.readTimeout(12, TimeUnit.SECONDS);

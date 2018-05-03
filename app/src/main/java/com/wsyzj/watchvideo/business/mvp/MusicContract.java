@@ -27,8 +27,6 @@ public class MusicContract {
 
         void setLoadMoreByPageCount(int listSize, int pageCount);
 
-        void setPlaySong(Music.SongListBean songListBean);
-
         void addAndPlay(Music.SongListBean songListBean);
     }
 

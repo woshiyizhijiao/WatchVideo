@@ -104,7 +104,6 @@ public class MusicPresenter extends BasePresenter<MusicContract.View, MusicContr
                     bean.file_link = song.bitrate.file_link;
                     bean.file_duration = song.bitrate.file_duration;
                     mView.addAndPlay(bean);
-                    mView.setPlaySong(bean);
                 }
                 mView.dismissProgress();
             }

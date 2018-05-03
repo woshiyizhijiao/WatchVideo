@@ -2,17 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
+              android:background="@color/white"
               android:orientation="vertical">
 
     <com.wsyzj.watchvideo.common.widget.BasePullToRefreshView
         android:id="@+id/pull_to_refresh"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
-
-    <com.wsyzj.watchvideo.business.widget.PlayerControllerView
-        android:id="@+id/player_controller"
-        android:layout_width="match_parent"
-        android:layout_height="65dp"/>
+        android:layout_height="match_parent"/>
 
 </LinearLayout>

@@ -1,5 +1,6 @@
 package com.wsyzj.watchvideo.common.utils;
 
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.view.MotionEvent;
 import android.view.View;
@@ -15,6 +16,10 @@ import com.wsyzj.watchvideo.business.BaseApp;
  * @comment: Ui工具类
  */
 public class UiUtils {
+
+    public static Resources getResources() {
+        return BaseApp.getApp().getResources();
+    }
 
     /**
      * @param resource
@@ -33,7 +38,7 @@ public class UiUtils {
      * @return 返回一个drawable
      */
     public static Drawable getDrawable(int id) {
-        return BaseApp.getApp().getResources().getDrawable(id);
+        return getResources().getDrawable(id);
     }
 
     /**
@@ -41,7 +46,16 @@ public class UiUtils {
      * @return 返回颜色值
      */
     public static int getColor(int colorId) {
-        return BaseApp.getApp().getResources().getColor(colorId);
+        return getResources().getColor(colorId);
+    }
+
+    /**
+     * 获取字符串数组
+     *
+     * @return
+     */
+    public static String[] getStringArray(int id) {
+        return getResources().getStringArray(id);
     }
 
     /**

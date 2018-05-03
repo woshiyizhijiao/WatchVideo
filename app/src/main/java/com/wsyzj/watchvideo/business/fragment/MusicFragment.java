@@ -11,9 +11,6 @@ import android.os.IBinder;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -22,21 +19,17 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.business.adapter.MusicAdapter;
 import com.wsyzj.watchvideo.business.bean.Music;
-import com.wsyzj.watchvideo.business.listener.OnPlayerEventListener;
 import com.wsyzj.watchvideo.business.mvp.MusicContract;
 import com.wsyzj.watchvideo.business.mvp.MusicPresenter;
 import com.wsyzj.watchvideo.business.service.PlayerManager;
 import com.wsyzj.watchvideo.business.service.PlayerService;
-import com.wsyzj.watchvideo.business.utils.IntentUtils;
 import com.wsyzj.watchvideo.common.base.BaseFragment;
 import com.wsyzj.watchvideo.common.base.mvp.BaseIPresenter;
-import com.wsyzj.watchvideo.common.http.ImageLoader;
 import com.wsyzj.watchvideo.common.widget.BasePullToRefreshView;
 
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 
@@ -48,7 +41,7 @@ import io.reactivex.functions.Consumer;
  *     desc   :
  * </pre>
  */
-public class MusicFragment extends BaseFragment implements MusicContract.View, OnRefreshLoadMoreListener, OnPlayerEventListener {
+public class MusicFragment extends BaseFragment implements MusicContract.View, OnRefreshLoadMoreListener {
 
     private final static String[] REQUEST_PERMISSION = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -57,20 +50,8 @@ public class MusicFragment extends BaseFragment implements MusicContract.View, O
     @BindView(R.id.pull_to_refresh)
     BasePullToRefreshView pull_to_refresh;
 
-    @BindView(R.id.iv_conver)
-    ImageView iv_conver;
-
-    @BindView(R.id.tv_name)
-    TextView tv_name;
-
-    @BindView(R.id.tv_desc)
-    TextView tv_desc;
-
-    @BindView(R.id.iv_play)
-    ImageView iv_play;
-
-    @BindView(R.id.pb_song)
-    ProgressBar pb_song;
+//    @BindView(R.id.player_controller)
+//    PlayerControllerView player_controller;
 
     private MusicPresenter mPresenter;
     private MusicAdapter mMusicAdapter;
@@ -113,8 +94,6 @@ public class MusicFragment extends BaseFragment implements MusicContract.View, O
         public void onServiceConnected(ComponentName name, IBinder service) {
             PlayerService.PlayerBinder playerBinder = (PlayerService.PlayerBinder) service;
             mPlayerService = playerBinder.getService();
-            setPlaySong(PlayerManager.getInstance().getPlaySong());
-            PlayerManager.getInstance().addOnPlayerEventListener(MusicFragment.this);
         }
 
         @Override
@@ -158,7 +137,6 @@ public class MusicFragment extends BaseFragment implements MusicContract.View, O
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 showMoreAction(position);
             }
-
         });
     }
 
@@ -240,23 +218,6 @@ public class MusicFragment extends BaseFragment implements MusicContract.View, O
         mPresenter.getMusicList(true);
     }
 
-    @OnClick({R.id.iv_play, R.id.iv_play_next, R.id.iv_catalogue})
-    public void bkOnClick(View view) {
-        switch (view.getId()) {
-            case R.id.iv_play:
-                play();
-                break;
-            case R.id.iv_play_next:
-                PlayerManager.getInstance().next();
-                break;
-            case R.id.iv_catalogue:
-                IntentUtils.downloadList(mActivity);
-                break;
-            default:
-                break;
-        }
-    }
-
     /**
      * 播放音乐
      *
@@ -265,52 +226,5 @@ public class MusicFragment extends BaseFragment implements MusicContract.View, O
     @Override
     public void addAndPlay(Music.SongListBean songListBean) {
         PlayerManager.getInstance().addAndPlay(songListBean);
-    }
-
-    /**
-     * 设置播放音乐的信息
-     *
-     * @param songListBean
-     */
-    @Override
-    public void setPlaySong(Music.SongListBean songListBean) {
-        if (songListBean == null) {
-            return;
-        }
-        iv_play.setImageResource(R.drawable.ic_play_bar_btn_play);
-        tv_name.setText(songListBean.title);
-        tv_desc.setText(songListBean.artist_name);
-        ImageLoader.with(mActivity, songListBean.pic_big, R.drawable.default_cover, R.drawable.default_cover, iv_conver);
-    }
-
-    /**
-     * 播放或者暂停
-     */
-    private void play() {
-        PlayerManager.getInstance().playPause();
-    }
-
-    /**
-     * @param songListBean
-     */
-    @Override
-    public void onPlayerChanged(Music.SongListBean songListBean) {
-        setPlaySong(songListBean);
-    }
-
-    @Override
-    public void onPlayerStart() {
-        iv_play.setImageResource(R.drawable.ic_play_bar_btn_pause);
-    }
-
-    @Override
-    public void onPlayerPasue() {
-        iv_play.setImageResource(R.drawable.ic_play_bar_btn_play);
-    }
-
-    @Override
-    public void onPlayerProgress(int progress) {
-        pb_song.setMax(PlayerManager.getInstance().getDuration());
-        pb_song.setProgress(progress);
     }
 }

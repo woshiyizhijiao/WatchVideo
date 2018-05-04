@@ -113,7 +113,9 @@ public class DownloadListActivity extends BaseActivity implements DownloadListCo
     }
 
     @OnClick(R.id.tv_start_pause)
+    @Override
     public void bkOnClick(View view) {
+        super.bkOnClick(view);
         switch (view.getId()) {
             case R.id.tv_start_pause:
                 if (isAllPause) {

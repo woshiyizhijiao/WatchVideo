@@ -88,6 +88,7 @@ public class PreviewLargeActivity extends BaseActivity implements ViewPager.OnPa
     }
 
     @OnClick(R.id.fl_back)
+    @Override
     public void bkOnClick(View view) {
         switch (view.getId()) {
             case R.id.fl_back:

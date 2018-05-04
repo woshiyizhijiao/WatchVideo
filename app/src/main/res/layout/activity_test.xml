@@ -35,6 +35,11 @@
             android:layout_height="wrap_content"
             android:text="右边图片"/>
 
+        <Button
+            android:id="@+id/btn5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="右边图片"/>
 
     </LinearLayout>
 

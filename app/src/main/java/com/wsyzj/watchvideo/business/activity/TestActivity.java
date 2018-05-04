@@ -39,6 +39,7 @@ public class TestActivity extends BaseActivity {
     }
 
     @OnClick({R.id.btn1, R.id.btn2, R.id.btn3, R.id.btn4})
+    @Override
     public void bkOnClick(View view) {
         switch (view.getId()) {
             case R.id.btn1:
@@ -55,4 +56,5 @@ public class TestActivity extends BaseActivity {
                 break;
         }
     }
+
 }

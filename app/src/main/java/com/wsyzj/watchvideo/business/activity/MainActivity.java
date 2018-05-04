@@ -186,6 +186,7 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
     }
 
     @OnClick({R.id.fl_channel_manager})
+    @Override
     public void bkOnClick(View view) {
         switch (view.getId()) {
             case R.id.fl_channel_manager:

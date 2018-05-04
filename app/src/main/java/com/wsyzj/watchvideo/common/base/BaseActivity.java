@@ -29,6 +29,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import io.reactivex.disposables.Disposable;
 
 
@@ -245,5 +246,10 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
             }
         }
         return super.dispatchTouchEvent(ev);
+    }
+
+    @OnClick()
+    protected void bkOnClick(View view) {
+
     }
 }

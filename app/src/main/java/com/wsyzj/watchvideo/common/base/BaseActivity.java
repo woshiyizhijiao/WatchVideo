@@ -193,7 +193,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     @Override
     public void setPageState(BaseState baseState) {
         if (mStateLayout != null) {
-            mStateLayout.setState(baseState);
+            mStateLayout.setPageState(baseState);
         }
     }
 

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -14,6 +15,10 @@ import com.blankj.utilcode.util.NetworkUtils;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.common.utils.UiUtils;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * <pre>
@@ -28,15 +33,22 @@ public class BaseStateLayout extends FrameLayout {
     // 判断网络状态时，有个默认的加载动画
     private static final int NO_NETWORK_ANIM_TIME = 300;
 
-    private ProgressBar pb_loading;
-    private TextView tv_error;
-    private TextView tv_empty;
+    @BindView(R.id.pb_loading)
+    ProgressBar pb_loading;
+
+    @BindView(R.id.tv_error)
+    TextView tv_error;
+
+    @BindView(R.id.tv_empty)
+    TextView tv_empty;
+
+    private Context mContext;
+    private boolean isSuccess;      // 防止出现，界面加载成功，再次加载时没有网络，又显示异常
     private View mStateView;
 
     private OnStateErrorListener mOnStateErrorListener;
     private OnStateEmptyListener mOnStateEmptyListener;
 
-    private boolean isSuccess;      // 防止出现，界面加载成功，再次加载时没有网络，又显示异常
 
     public void setOnStateErrorListener(OnStateErrorListener onStateErrorListener) {
         mOnStateErrorListener = onStateErrorListener;
@@ -63,22 +75,19 @@ public class BaseStateLayout extends FrameLayout {
 
     private void init(Context context) {
         mStateView = UiUtils.inflate(R.layout.widget_base_state_layout);
-        pb_loading = (ProgressBar) mStateView.findViewById(R.id.pb_loading);
-        tv_error = (TextView) mStateView.findViewById(R.id.tv_error);
-        tv_empty = (TextView) mStateView.findViewById(R.id.tv_empty);
 
+        ButterKnife.bind(this, mStateView);
         addView(mStateView, new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ScreenUtils.getScreenHeight()));
-        setNetState();
+        setErrorNetState();
+    }
 
-        /**
-         * 点击异常状态回调(需有网络回调)
-         */
-        tv_error.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setState(BaseState.STATE_LOADING);
-                boolean connected = NetworkUtils.isConnected();
+    @OnClick({R.id.tv_error, R.id.tv_empty})
+    public void bkOnClick(View view) {
+        setPageState(BaseState.STATE_LOADING);
+        boolean connected = NetworkUtils.isConnected();
 
+        switch (view.getId()) {
+            case R.id.tv_error:
                 if (mOnStateErrorListener != null && connected) {
                     mOnStateErrorListener.onStateError();
                 }
@@ -87,22 +96,12 @@ public class BaseStateLayout extends FrameLayout {
                     tv_error.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            setState(BaseState.STATE_ERROR);
+                            setPageState(BaseState.STATE_ERROR);
                         }
                     }, NO_NETWORK_ANIM_TIME);
                 }
-            }
-        });
-
-        /**
-         * 点击空界面回调(需有网络)
-         */
-        tv_empty.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setState(BaseState.STATE_LOADING);
-                boolean connected = NetworkUtils.isConnected();
-
+                break;
+            case R.id.tv_empty:
                 if (mOnStateEmptyListener != null && connected) {
                     mOnStateEmptyListener.onStateEmpty();
                 }
@@ -111,12 +110,14 @@ public class BaseStateLayout extends FrameLayout {
                     tv_empty.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            setState(BaseState.STATE_EMPTY);
+                            setPageState(BaseState.STATE_EMPTY);
                         }
                     }, NO_NETWORK_ANIM_TIME);
                 }
-            }
-        });
+                break;
+            default:
+                break;
+        }
     }
 
     /**
@@ -129,11 +130,42 @@ public class BaseStateLayout extends FrameLayout {
     }
 
     /**
-     * 判断是否有网
+     * 空界面与顶部的距离
      */
-    private void setNetState() {
+    public void setEmptyTopMargin(int px) {
+        if (tv_empty != null) {
+            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, Gravity.CENTER_HORIZONTAL);
+            params.topMargin = px;
+            tv_empty.setLayoutParams(params);
+        }
+    }
+
+    /**
+     * 设置异常文本
+     */
+    public void setErrorDataText(CharSequence charSequence) {
+        if (tv_error != null) {
+            tv_error.setText(charSequence);
+        }
+    }
+
+    /**
+     * 异常界面与顶部的距离
+     */
+    public void setErrorTopMargin(int px) {
+        if (tv_error != null) {
+            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, Gravity.CENTER_HORIZONTAL);
+            params.topMargin = px;
+            tv_error.setLayoutParams(params);
+        }
+    }
+
+    /**
+     * 设置异常网络状态
+     */
+    private void setErrorNetState() {
         if (!NetworkUtils.isConnected()) {
-            setState(BaseState.STATE_ERROR);
+            setPageState(BaseState.STATE_ERROR);
         }
     }
 
@@ -142,39 +174,64 @@ public class BaseStateLayout extends FrameLayout {
      *
      * @param baseState
      */
-    public void setState(BaseState baseState) {
+    public void setPageState(BaseState baseState) {
         switch (baseState) {
             case STATE_LOADING:
-                pb_loading.setVisibility(View.VISIBLE);
-                tv_error.setVisibility(View.INVISIBLE);
-                tv_empty.setVisibility(View.INVISIBLE);
+                showLoadingPage();
                 break;
             case STATE_ERROR:
-                if (isSuccess) {
-                    return;
-                }
-                pb_loading.setVisibility(View.INVISIBLE);
-                tv_error.setVisibility(View.VISIBLE);
-                tv_empty.setVisibility(View.INVISIBLE);
+                showErrorPage();
                 break;
             case STATE_EMPTY:
-                if (isSuccess) {
-                    return;
-                }
-                pb_loading.setVisibility(View.INVISIBLE);
-                tv_error.setVisibility(View.INVISIBLE);
-                tv_empty.setVisibility(View.VISIBLE);
+                showEmptyPage();
                 break;
             case STATE_SUCCESS:
-                isSuccess = true;
-                pb_loading.setVisibility(View.INVISIBLE);
-                tv_error.setVisibility(View.INVISIBLE);
-                tv_empty.setVisibility(View.INVISIBLE);
-                mStateView.setVisibility(View.GONE);
+                showSuccessPage();
                 break;
             default:
                 break;
         }
+    }
+
+    /**
+     * 加载中
+     */
+    private void showLoadingPage() {
+        pb_loading.setVisibility(View.VISIBLE);
+        tv_error.setVisibility(View.INVISIBLE);
+        tv_empty.setVisibility(View.INVISIBLE);
+    }
+
+    /**
+     * 异常界面
+     */
+    private void showErrorPage() {
+        if (isSuccess) {
+            return;
+        }
+        pb_loading.setVisibility(View.INVISIBLE);
+        tv_error.setVisibility(View.VISIBLE);
+        tv_empty.setVisibility(View.INVISIBLE);
+    }
+
+    /**
+     * 空界面
+     */
+    private void showEmptyPage() {
+        pb_loading.setVisibility(View.INVISIBLE);
+        tv_error.setVisibility(View.INVISIBLE);
+        tv_empty.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * 成功状态
+     */
+    private void showSuccessPage() {
+        isSuccess = true;
+        pb_loading.setVisibility(View.INVISIBLE);
+        tv_error.setVisibility(View.INVISIBLE);
+        tv_empty.setVisibility(View.INVISIBLE);
+        mStateView.setVisibility(View.GONE);
     }
 
     public interface OnStateErrorListener {

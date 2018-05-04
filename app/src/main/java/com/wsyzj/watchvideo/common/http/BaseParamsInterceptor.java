@@ -22,7 +22,6 @@ public class BaseParamsInterceptor implements Interceptor {
         Request oldRequest = chain.request();
         RequestBody body = oldRequest.body();
 
-        LogUtils.e(body.contentLength() + " --- ");
         if (body instanceof FormBody) {
             FormBody formBody = (FormBody) body;
             for (int i = 0; i < formBody.size(); i++) {

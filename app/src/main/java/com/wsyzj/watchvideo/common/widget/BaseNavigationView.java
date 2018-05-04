@@ -13,8 +13,10 @@ import android.widget.TextView;
 
 import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.common.base.BaseActivity;
-import com.wsyzj.watchvideo.common.utils.StorageUtils;
-import com.wsyzj.watchvideo.common.utils.UiUtils;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 
 /**
@@ -22,16 +24,36 @@ import com.wsyzj.watchvideo.common.utils.UiUtils;
  * @date: 2017-03-18 10:38
  * @comment: 统一的标题布局
  */
-public class BaseNavigationView extends LinearLayout implements View.OnClickListener {
+public class BaseNavigationView extends LinearLayout {
+
+    @BindView(R.id.rl_navigation)
+    RelativeLayout rl_navigation;
+
+    @BindView(R.id.fl_navigation)
+    FrameLayout fl_navigation;
+
+    @BindView(R.id.iv_navigation)
+    ImageView iv_navigation;
+
+    @BindView(R.id.tv_navigation)
+    TextView tv_navigation;
+
+    @BindView(R.id.tv_title)
+    TextView tv_title;
+
+    @BindView(R.id.tv_negative)
+    TextView tv_negative;
+
+    @BindView(R.id.fl_negative)
+    FrameLayout fl_negative;
+
+    @BindView(R.id.iv_negative)
+    ImageView iv_negative;
 
     private Context mContext;
     private View base_root;
-    private RelativeLayout rl_navigation;
-    private FrameLayout fl_navigation;
-    private ImageView iv_navigation;
 
     private OnClickListener mNavigationOnClickListener;
-    private TextView tv_title;
 
     public BaseNavigationView(Context context) {
         super(context);
@@ -51,14 +73,8 @@ public class BaseNavigationView extends LinearLayout implements View.OnClickList
     private void init(Context context) {
         mContext = context;
         base_root = LayoutInflater.from(mContext).inflate(R.layout.widget_base_navigation, null);
-        rl_navigation = (RelativeLayout) base_root.findViewById(R.id.rl_navigation);
-        fl_navigation = (FrameLayout) base_root.findViewById(R.id.fl_navigation);
-        iv_navigation = (ImageView) base_root.findViewById(R.id.iv_navigation);
-        tv_title = (TextView) base_root.findViewById(R.id.tv_title);
 
-        setNavigationBackgroundColor(UiUtils.getColor(StorageUtils.getColorPrimary()));
-
-        fl_navigation.setOnClickListener(this);
+        ButterKnife.bind(this, base_root);
         setOrientation(LinearLayout.VERTICAL);
         addView(base_root);
     }
@@ -85,12 +101,27 @@ public class BaseNavigationView extends LinearLayout implements View.OnClickList
     /**
      * 设置导航的图标
      *
-     * @param drawabeId
+     * @param resId
      * @return
      */
-    public ImageView setNavigationIcon(int drawabeId) {
-        iv_navigation.setImageResource(drawabeId);
+    public ImageView setNavigationIcon(int resId) {
+        iv_navigation.setImageResource(resId);
+        fl_navigation.setVisibility(View.VISIBLE);
+        tv_navigation.setVisibility(View.GONE);
         return iv_navigation;
+    }
+
+    /**
+     * 设置导航文字
+     *
+     * @param charSequence
+     * @return
+     */
+    public TextView setNavigationText(CharSequence charSequence) {
+        tv_navigation.setText(charSequence);
+        tv_navigation.setVisibility(View.VISIBLE);
+        fl_navigation.setVisibility(View.GONE);
+        return tv_navigation;
     }
 
     /**
@@ -102,6 +133,31 @@ public class BaseNavigationView extends LinearLayout implements View.OnClickList
     }
 
     /**
+     * 设置右边文字
+     *
+     * @return
+     */
+    public TextView setNegativeText(CharSequence charSequence) {
+        tv_negative.setText(charSequence);
+        tv_negative.setVisibility(View.VISIBLE);
+        fl_negative.setVisibility(View.GONE);
+        return tv_negative;
+    }
+
+    /**
+     * 设置右边图片
+     *
+     * @param resId
+     * @return
+     */
+    public ImageView setNegativeImageResource(int resId) {
+        iv_negative.setImageResource(resId);
+        fl_negative.setVisibility(View.VISIBLE);
+        tv_negative.setVisibility(View.GONE);
+        return iv_negative;
+    }
+
+    /**
      * 返回按键事件
      *
      * @param navigationOnClickListener
@@ -110,8 +166,8 @@ public class BaseNavigationView extends LinearLayout implements View.OnClickList
         mNavigationOnClickListener = navigationOnClickListener;
     }
 
-    @Override
-    public void onClick(View v) {
+    @OnClick(R.id.fl_navigation)
+    public void bkOnClick(View v) {
         switch (v.getId()) {
             case R.id.fl_navigation:
                 if (mNavigationOnClickListener != null) {

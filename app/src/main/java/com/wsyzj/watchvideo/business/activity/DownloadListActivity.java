@@ -60,7 +60,7 @@ public class DownloadListActivity extends BaseActivity implements DownloadListCo
     @Override
     protected void initView() {
         mNavigationView.setTitle("下载列表");
-        mStateLayout.setState(BaseState.STATE_SUCCESS);
+        setPageState(BaseState.STATE_SUCCESS);
         pull_to_refresh.setEnableRefresh(false);
         pull_to_refresh.setEnableLoadMore(false);
         mOkDownload = OkDownload.getInstance();
@@ -106,9 +106,9 @@ public class DownloadListActivity extends BaseActivity implements DownloadListCo
         BaseStateLayout baseStateLayout = pull_to_refresh.getBaseStateLalyout();
         if (downloadList.isEmpty()) {
             baseStateLayout.setEmptyDataText("还没有下载音乐哦");
-            baseStateLayout.setState(BaseState.STATE_EMPTY);
+            baseStateLayout.setPageState(BaseState.STATE_EMPTY);
         } else {
-            baseStateLayout.setState(BaseState.STATE_SUCCESS);
+            baseStateLayout.setPageState(BaseState.STATE_SUCCESS);
         }
     }
 

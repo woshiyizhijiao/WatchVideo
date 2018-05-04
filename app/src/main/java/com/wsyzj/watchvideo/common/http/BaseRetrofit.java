@@ -78,7 +78,7 @@ public class BaseRetrofit {
      * @return
      */
     public static BaseRetrofitApi musicApi() {
-        return getBaseRetrofitApi(Constant.MUSIC_URL);
+        return BaseMusicRetrofit.getInstance().getService();
     }
 
     /**

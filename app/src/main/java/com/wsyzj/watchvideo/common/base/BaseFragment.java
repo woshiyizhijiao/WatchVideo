@@ -133,7 +133,7 @@ public abstract class BaseFragment<P extends BaseIPresenter> extends Fragment im
     @Override
     public void setPageState(BaseState baseState) {
         if (mStateLayout != null) {
-            mStateLayout.setState(baseState);
+            mStateLayout.setPageState(baseState);
         }
     }
 

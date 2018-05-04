@@ -1,7 +1,7 @@
 package com.wsyzj.watchvideo.business.activity;
 
 import android.os.Bundle;
-import android.widget.EditText;
+import android.view.View;
 
 import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.common.base.BaseActivity;
@@ -9,7 +9,7 @@ import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
 import com.wsyzj.watchvideo.common.utils.UiUtils;
 import com.wsyzj.watchvideo.common.widget.BaseState;
 
-import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * @author 焦洋
@@ -17,9 +17,6 @@ import butterknife.BindView;
  * @Description: $desc$
  */
 public class TestActivity extends BaseActivity {
-
-    @BindView(R.id.editText)
-    EditText editText;
 
     @Override
     protected BasePresenter presenter() {
@@ -39,5 +36,23 @@ public class TestActivity extends BaseActivity {
     @Override
     protected void initData(Bundle savedInstanceState) {
         UiUtils.showSoftInput(this);
+    }
+
+    @OnClick({R.id.btn1, R.id.btn2, R.id.btn3, R.id.btn4})
+    public void bkOnClick(View view) {
+        switch (view.getId()) {
+            case R.id.btn1:
+                mNavigationView.setNavigationIcon(R.drawable.default_cover);
+                break;
+            case R.id.btn2:
+                mNavigationView.setNavigationText("左边");
+                break;
+            case R.id.btn3:
+                mNavigationView.setNegativeText("右边");
+                break;
+            case R.id.btn4:
+                mNavigationView.setNegativeImageResource(R.drawable.default_cover);
+                break;
+        }
     }
 }

@@ -53,7 +53,10 @@ public class BaseNavigationView extends LinearLayout {
     private Context mContext;
     private View base_root;
 
-    private OnClickListener mNavigationOnClickListener;
+    private OnClickListener mClickNavigationIconListener;
+    private OnClickListener mClickNavigationTextListener;
+    private OnClickListener mClickNegativeResListener;
+    private OnClickListener mClickNegativeTextListener;
 
     public BaseNavigationView(Context context) {
         super(context);
@@ -158,25 +161,72 @@ public class BaseNavigationView extends LinearLayout {
     }
 
     /**
-     * 返回按键事件
+     * 导航图片时间
      *
-     * @param navigationOnClickListener
+     * @param listener
      */
-    public void setNavigationOnClickListener(OnClickListener navigationOnClickListener) {
-        mNavigationOnClickListener = navigationOnClickListener;
+    public void setClickNavigationIconListener(OnClickListener listener) {
+        mClickNavigationIconListener = listener;
     }
 
-    @OnClick(R.id.fl_navigation)
+    /**
+     * 导航文字
+     *
+     * @param listener
+     */
+    public void setClickNavigationTextListener(OnClickListener listener) {
+        mClickNavigationTextListener = listener;
+    }
+
+    /**
+     * 导航图片
+     *
+     * @param listener
+     */
+    public void setClickNegativeResListener(OnClickListener listener) {
+        mClickNegativeResListener = listener;
+    }
+
+    /**
+     * 导航文字
+     *
+     * @param listener
+     */
+    public void setClickNegativeTextListener(OnClickListener listener) {
+        mClickNegativeTextListener = listener;
+    }
+
+    @OnClick({R.id.fl_navigation, R.id.tv_navigation, R.id.fl_negative, R.id.tv_negative})
     public void bkOnClick(View v) {
         switch (v.getId()) {
             case R.id.fl_navigation:
-                if (mNavigationOnClickListener != null) {
-                    mNavigationOnClickListener.onClick(v);
+                if (mClickNavigationIconListener != null) {
+                    mClickNavigationIconListener.onClick(v);
                 } else {
                     if (mContext instanceof BaseActivity) {
                         BaseActivity activity = (BaseActivity) mContext;
                         activity.finish();
                     }
+                }
+                break;
+            case R.id.tv_navigation:
+                if (mClickNavigationTextListener != null) {
+                    mClickNavigationTextListener.onClick(v);
+                } else {
+                    if (mContext instanceof BaseActivity) {
+                        BaseActivity activity = (BaseActivity) mContext;
+                        activity.finish();
+                    }
+                }
+                break;
+            case R.id.fl_negative:
+                if (mClickNegativeResListener != null) {
+                    mClickNegativeResListener.onClick(v);
+                }
+                break;
+            case R.id.tv_negative:
+                if (mClickNegativeTextListener != null) {
+                    mClickNegativeTextListener.onClick(v);
                 }
                 break;
             default:

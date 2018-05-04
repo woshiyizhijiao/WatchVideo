@@ -51,7 +51,7 @@ public class ChannelManagerActivity extends BaseActivity implements ChannelManag
 
     @Override
     protected void initView() {
-        mNavigationView.setNavigationOnClickListener(new View.OnClickListener() {
+        mNavigationView.setClickNavigationIconListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 IntentUtils.setResultChannelManager(ChannelManagerActivity.this, mChannelManagerAdapter != null && mChannelManagerAdapter.putChannelData());

@@ -3,6 +3,7 @@ package com.wsyzj.watchvideo.business.activity;
 import android.os.Bundle;
 import android.view.View;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.common.base.BaseActivity;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
@@ -41,6 +42,8 @@ public class TestActivity extends BaseActivity {
     @OnClick({R.id.btn1, R.id.btn2, R.id.btn3, R.id.btn4})
     @Override
     public void bkOnClick(View view) {
+        super.bkOnClick(view);
+        LogUtils.e("传递下来的 " + view.getId());
         switch (view.getId()) {
             case R.id.btn1:
                 mNavigationView.setNavigationIcon(R.drawable.default_cover);
@@ -54,7 +57,8 @@ public class TestActivity extends BaseActivity {
             case R.id.btn4:
                 mNavigationView.setNegativeImageResource(R.drawable.default_cover);
                 break;
+            default:
+                break;
         }
     }
-
 }

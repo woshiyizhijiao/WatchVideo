@@ -12,12 +12,14 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.jaeger.library.StatusBarUtil;
 import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.common.base.mvp.BaseIView;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
 import com.wsyzj.watchvideo.common.http.BaseRetrofit;
+import com.wsyzj.watchvideo.common.utils.AntiShakeUtils;
 import com.wsyzj.watchvideo.common.utils.EventBusUtils;
 import com.wsyzj.watchvideo.common.utils.StorageUtils;
 import com.wsyzj.watchvideo.common.utils.UiUtils;
@@ -250,6 +252,10 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
 
     @OnClick()
     protected void bkOnClick(View view) {
-
+        if (AntiShakeUtils.check(view.getId())) {
+            LogUtils.e("返回" + view.getId() + " -- " + System.currentTimeMillis());
+            return;
+        }
+        LogUtils.e(view.getId() + " -- " + System.currentTimeMillis());
     }
 }

@@ -3,7 +3,6 @@ package com.wsyzj.watchvideo.common.widget;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -13,9 +12,8 @@ import android.widget.TextView;
 
 import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.common.base.BaseActivity;
+import com.wsyzj.watchvideo.common.utils.UiUtils;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
@@ -26,32 +24,17 @@ import butterknife.OnClick;
  */
 public class BaseNavigationView extends LinearLayout {
 
-    @BindView(R.id.rl_navigation)
-    RelativeLayout rl_navigation;
-
-    @BindView(R.id.fl_navigation)
-    FrameLayout fl_navigation;
-
-    @BindView(R.id.iv_navigation)
-    ImageView iv_navigation;
-
-    @BindView(R.id.tv_navigation)
-    TextView tv_navigation;
-
-    @BindView(R.id.tv_title)
-    TextView tv_title;
-
-    @BindView(R.id.tv_negative)
-    TextView tv_negative;
-
-    @BindView(R.id.fl_negative)
-    FrameLayout fl_negative;
-
-    @BindView(R.id.iv_negative)
-    ImageView iv_negative;
-
     private Context mContext;
     private View base_root;
+
+    private RelativeLayout rl_navigation;
+    private FrameLayout fl_navigation;
+    private ImageView iv_navigation;
+    private TextView tv_navigation;
+    private TextView tv_title;
+    private TextView tv_negative;
+    private FrameLayout fl_negative;
+    private ImageView iv_negative;
 
     private OnClickListener mClickNavigationIconListener;
     private OnClickListener mClickNavigationTextListener;
@@ -75,9 +58,16 @@ public class BaseNavigationView extends LinearLayout {
 
     private void init(Context context) {
         mContext = context;
-        base_root = LayoutInflater.from(mContext).inflate(R.layout.widget_base_navigation, null);
+        base_root = UiUtils.inflate(R.layout.widget_base_navigation);
+        rl_navigation = (RelativeLayout) base_root.findViewById(R.id.rl_navigation);
+        fl_navigation = (FrameLayout) base_root.findViewById(R.id.fl_navigation);
+        iv_navigation = (ImageView) base_root.findViewById(R.id.iv_navigation);
+        tv_navigation = (TextView) base_root.findViewById(R.id.tv_navigation);
+        tv_title = (TextView) base_root.findViewById(R.id.tv_title);
+        tv_negative = (TextView) base_root.findViewById(R.id.tv_negative);
+        fl_negative = (FrameLayout) base_root.findViewById(R.id.fl_negative);
+        iv_negative = (ImageView) base_root.findViewById(R.id.iv_negative);
 
-        ButterKnife.bind(this, base_root);
         setOrientation(LinearLayout.VERTICAL);
         addView(base_root);
     }

@@ -9,7 +9,6 @@ import java.util.concurrent.TimeUnit;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -27,9 +26,12 @@ public class BaseRetrofit {
     private static OkHttpClient getOkHttpClient() {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         if (BaseApp.isDebug) {
-            HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-            interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-            builder.addInterceptor(interceptor);
+//            HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+//            interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+//            builder.addInterceptor(interceptor);
+
+            BaseLogInterceptor logInterceptor = new BaseLogInterceptor();
+            builder.addInterceptor(logInterceptor);
         }
         builder.addInterceptor(new BaseParamsInterceptor());
         builder.connectTimeout(12, TimeUnit.SECONDS);

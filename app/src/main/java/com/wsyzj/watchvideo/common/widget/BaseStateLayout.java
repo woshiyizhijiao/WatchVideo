@@ -16,7 +16,6 @@ import com.blankj.utilcode.util.ScreenUtils;
 import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.common.utils.UiUtils;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -33,14 +32,9 @@ public class BaseStateLayout extends FrameLayout {
     // 判断网络状态时，有个默认的加载动画
     private static final int NO_NETWORK_ANIM_TIME = 300;
 
-    @BindView(R.id.pb_loading)
-    ProgressBar pb_loading;
-
-    @BindView(R.id.tv_error)
-    TextView tv_error;
-
-    @BindView(R.id.tv_empty)
-    TextView tv_empty;
+    private ProgressBar pb_loading;
+    private TextView tv_error;
+    private TextView tv_empty;
 
     private Context mContext;
     private boolean isSuccess;      // 防止出现，界面加载成功，再次加载时没有网络，又显示异常
@@ -76,6 +70,9 @@ public class BaseStateLayout extends FrameLayout {
     private void init(Context context) {
         mStateView = UiUtils.inflate(R.layout.widget_base_state_layout);
 
+        pb_loading = (ProgressBar) mStateView.findViewById(R.id.pb_loading);
+        tv_error = (TextView) mStateView.findViewById(R.id.tv_error);
+        tv_empty = (TextView) mStateView.findViewById(R.id.tv_empty);
         ButterKnife.bind(this, mStateView);
         addView(mStateView, new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ScreenUtils.getScreenHeight()));
         setErrorNetState();
@@ -123,7 +120,7 @@ public class BaseStateLayout extends FrameLayout {
     /**
      * 设置空数据文本描述
      */
-    public void setEmptyDataText(CharSequence charSequence) {
+    public void setEmptyText(CharSequence charSequence) {
         if (tv_empty != null) {
             tv_empty.setText(charSequence);
         }
@@ -143,7 +140,7 @@ public class BaseStateLayout extends FrameLayout {
     /**
      * 设置异常文本
      */
-    public void setErrorDataText(CharSequence charSequence) {
+    public void setErrorText(CharSequence charSequence) {
         if (tv_error != null) {
             tv_error.setText(charSequence);
         }

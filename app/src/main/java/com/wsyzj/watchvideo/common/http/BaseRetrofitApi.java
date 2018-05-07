@@ -22,15 +22,6 @@ import retrofit2.http.Query;
 public interface BaseRetrofitApi {
 
     /**
-     * 获取榜单列表
-     *
-     * @return
-     */
-    @GET("v1/restserver/ting/")
-    Flowable<Music> a();
-
-
-    /**
      * 获取歌曲列表
      *
      * @param userAgent

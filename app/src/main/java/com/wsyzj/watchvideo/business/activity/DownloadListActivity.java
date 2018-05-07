@@ -105,7 +105,7 @@ public class DownloadListActivity extends BaseActivity implements DownloadListCo
     public void setPageState(List<DownloadTask> downloadList) {
         BaseStateLayout baseStateLayout = pull_to_refresh.getBaseStateLalyout();
         if (downloadList.isEmpty()) {
-            baseStateLayout.setEmptyDataText("还没有下载音乐哦");
+            baseStateLayout.setEmptyText("还没有下载音乐哦");
             baseStateLayout.setPageState(BaseState.STATE_EMPTY);
         } else {
             baseStateLayout.setPageState(BaseState.STATE_SUCCESS);

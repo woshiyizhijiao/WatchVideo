@@ -14,7 +14,7 @@ import org.litepal.LitePal;
  */
 public class BaseApp extends Application {
 
-    public static boolean isDebug = true;
+    public static boolean isDebug = false;
     private static BaseApp baseApp;
 
     /**

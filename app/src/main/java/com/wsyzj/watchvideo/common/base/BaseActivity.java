@@ -31,7 +31,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import io.reactivex.disposables.Disposable;
 
 
@@ -250,12 +249,15 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         return super.dispatchTouchEvent(ev);
     }
 
-    @OnClick()
     protected void bkOnClick(View view) {
-        if (AntiShakeUtils.check(view.getId())) {
-            LogUtils.e("返回" + view.getId() + " -- " + System.currentTimeMillis());
-            return;
+        LogUtils.e("Base : bkOnClick ==" + view.getId());
+        if (!AntiShakeUtils.check(view.getId())) {
+            testOnClick(view);
         }
-        LogUtils.e(view.getId() + " -- " + System.currentTimeMillis());
+    }
+
+
+    protected void testOnClick(View view) {
+        LogUtils.e("Base : testOnClick ==" + view.getId());
     }
 }

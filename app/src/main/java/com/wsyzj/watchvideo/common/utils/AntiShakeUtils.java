@@ -35,7 +35,7 @@ public class AntiShakeUtils {
 
 class OneClick {
     private String methodName;
-    private static final int CLICK_DELAY_TIME = 1000;
+    private static final int CLICK_DELAY_TIME = 2000;
     private long lastClickTime = 0;
 
     public OneClick(String methodName) {

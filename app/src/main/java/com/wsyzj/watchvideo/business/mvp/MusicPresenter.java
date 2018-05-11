@@ -2,9 +2,6 @@ package com.wsyzj.watchvideo.business.mvp;
 
 import android.text.TextUtils;
 
-import com.lzy.okgo.OkGo;
-import com.lzy.okgo.request.GetRequest;
-import com.lzy.okserver.OkDownload;
 import com.wsyzj.watchvideo.business.bean.Music;
 import com.wsyzj.watchvideo.business.bean.Song;
 import com.wsyzj.watchvideo.business.service.PlayerManager;
@@ -12,7 +9,6 @@ import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
 import com.wsyzj.watchvideo.common.http.BaseTSubscriber;
 import com.wsyzj.watchvideo.common.widget.BaseState;
 
-import java.io.File;
 import java.util.List;
 
 /**
@@ -155,15 +151,15 @@ public class MusicPresenter extends BasePresenter<MusicContract.View, MusicContr
      * 加入下载列表
      */
     private void addDownloaderList(Music.SongListBean songListBean) {
-        if (OkDownload.getInstance().getTask(songListBean.file_link) != null) {
-            mView.showToast("已在队列");
-            return;
-        }
-        GetRequest<File> request = OkGo.<File>get(songListBean.file_link);
-        OkDownload.request(songListBean.file_link, request)
-                .fileName(songListBean.title)
-                .extra1(songListBean)
-                .save()
-                .start();
+//        if (OkDownload.getInstance().getTask(songListBean.file_link) != null) {
+//            mView.showToast("已在队列");
+//            return;
+//        }
+//        GetRequest<File> request = OkGo.<File>get(songListBean.file_link);
+//        OkDownload.request(songListBean.file_link, request)
+//                .fileName(songListBean.title)
+//                .extra1(songListBean)
+//                .save()
+//                .start();
     }
 }

@@ -47,8 +47,8 @@ import com.wsyzj.watchvideo.common.constant.Constant;
 import com.wsyzj.watchvideo.common.http.ImageLoader;
 import com.wsyzj.watchvideo.common.utils.StorageUtils;
 import com.wsyzj.watchvideo.common.utils.UiUtils;
-import com.wsyzj.watchvideo.common.widget.BaseState;
 import com.wsyzj.watchvideo.common.widget.BaseStateLayout;
+import com.wsyzj.watchvideo.common.widget.StateLayout;
 
 import net.youmi.android.nm.sp.SpotManager;
 
@@ -235,7 +235,7 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
         } else {
             mVpAdapter.refreshData(fragments, channelList);
         }
-        setPageState(BaseState.STATE_SUCCESS);
+        setPageState(StateLayout.STATE_SUCCESS);
     }
 
     /**

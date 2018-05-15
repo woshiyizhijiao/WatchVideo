@@ -7,7 +7,7 @@ import com.wsyzj.watchvideo.business.bean.Song;
 import com.wsyzj.watchvideo.business.service.PlayerManager;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
 import com.wsyzj.watchvideo.common.http.BaseTSubscriber;
-import com.wsyzj.watchvideo.common.widget.BaseState;
+import com.wsyzj.watchvideo.common.widget.StateLayout;
 
 import java.util.List;
 
@@ -56,10 +56,10 @@ public class MusicPresenter extends BasePresenter<MusicContract.View, MusicContr
                     } else {
                         mMusicList.addAll(list);
                     }
-                    mView.setPageState(BaseState.STATE_SUCCESS);
+                    mView.setPageState(StateLayout.STATE_SUCCESS);
                     mView.setLoadMoreByPageCount(list.size(), 20);
                 } else {
-                    mView.setPageState(BaseState.STATE_EMPTY);
+                    mView.setPageState(StateLayout.STATE_EMPTY);
                     mView.setLoadMoreByPageCount(0, 20);
                 }
 
@@ -69,7 +69,7 @@ public class MusicPresenter extends BasePresenter<MusicContract.View, MusicContr
 
             @Override
             public void onFailure(Throwable throwable) {
-                mView.setPageState(BaseState.STATE_ERROR);
+                mView.setPageState(StateLayout.STATE_ERROR);
             }
         });
 

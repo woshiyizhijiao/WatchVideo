@@ -80,7 +80,7 @@ public class BaseStateLayout extends FrameLayout {
 
     @OnClick({R.id.tv_error, R.id.tv_empty})
     public void bkOnClick(View view) {
-        setPageState(BaseState.STATE_LOADING);
+        setPageState(StateLayout.STATE_LOADING);
         boolean connected = NetworkUtils.isConnected();
 
         switch (view.getId()) {
@@ -93,7 +93,7 @@ public class BaseStateLayout extends FrameLayout {
                     tv_error.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            setPageState(BaseState.STATE_ERROR);
+                            setPageState(StateLayout.STATE_ERROR);
                         }
                     }, NO_NETWORK_ANIM_TIME);
                 }
@@ -107,7 +107,7 @@ public class BaseStateLayout extends FrameLayout {
                     tv_empty.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            setPageState(BaseState.STATE_EMPTY);
+                            setPageState(StateLayout.STATE_EMPTY);
                         }
                     }, NO_NETWORK_ANIM_TIME);
                 }
@@ -162,7 +162,7 @@ public class BaseStateLayout extends FrameLayout {
      */
     private void setErrorNetState() {
         if (!NetworkUtils.isConnected()) {
-            setPageState(BaseState.STATE_ERROR);
+            setPageState(StateLayout.STATE_ERROR);
         }
     }
 
@@ -171,19 +171,19 @@ public class BaseStateLayout extends FrameLayout {
      *
      * @param baseState
      */
-    public void setPageState(BaseState baseState) {
+    public void setPageState(StateLayout baseState) {
         switch (baseState) {
             case STATE_LOADING:
-                showLoadingPage();
+                showLoading();
                 break;
             case STATE_ERROR:
-                showErrorPage();
+                showError();
                 break;
             case STATE_EMPTY:
-                showEmptyPage();
+                showEmpty();
                 break;
             case STATE_SUCCESS:
-                showSuccessPage();
+                showSuccess();
                 break;
             default:
                 break;
@@ -193,7 +193,7 @@ public class BaseStateLayout extends FrameLayout {
     /**
      * 加载中
      */
-    private void showLoadingPage() {
+    private void showLoading() {
         pb_loading.setVisibility(View.VISIBLE);
         tv_error.setVisibility(View.INVISIBLE);
         tv_empty.setVisibility(View.INVISIBLE);
@@ -202,7 +202,7 @@ public class BaseStateLayout extends FrameLayout {
     /**
      * 异常界面
      */
-    private void showErrorPage() {
+    private void showError() {
         if (isSuccess) {
             return;
         }
@@ -214,7 +214,7 @@ public class BaseStateLayout extends FrameLayout {
     /**
      * 空界面
      */
-    private void showEmptyPage() {
+    private void showEmpty() {
         pb_loading.setVisibility(View.INVISIBLE);
         tv_error.setVisibility(View.INVISIBLE);
         tv_empty.setVisibility(View.VISIBLE);
@@ -223,7 +223,7 @@ public class BaseStateLayout extends FrameLayout {
     /**
      * 成功状态
      */
-    private void showSuccessPage() {
+    private void showSuccess() {
         isSuccess = true;
         pb_loading.setVisibility(View.INVISIBLE);
         tv_error.setVisibility(View.INVISIBLE);

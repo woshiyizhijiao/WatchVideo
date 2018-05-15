@@ -15,8 +15,8 @@ import com.wsyzj.watchvideo.common.base.mvp.BaseIPresenter;
 import com.wsyzj.watchvideo.common.base.mvp.BaseIView;
 import com.wsyzj.watchvideo.common.http.BaseRetrofit;
 import com.wsyzj.watchvideo.common.utils.UiUtils;
-import com.wsyzj.watchvideo.common.widget.BaseState;
 import com.wsyzj.watchvideo.common.widget.BaseStateLayout;
+import com.wsyzj.watchvideo.common.widget.StateLayout;
 
 import butterknife.ButterKnife;
 import io.reactivex.disposables.Disposable;
@@ -131,7 +131,7 @@ public abstract class BaseFragment<P extends BaseIPresenter> extends Fragment im
     }
 
     @Override
-    public void setPageState(BaseState baseState) {
+    public void setPageState(StateLayout baseState) {
         if (mStateLayout != null) {
             mStateLayout.setPageState(baseState);
         }

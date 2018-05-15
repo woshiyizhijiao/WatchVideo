@@ -1,6 +1,6 @@
 package com.wsyzj.watchvideo.common.base.mvp;
 
-import com.wsyzj.watchvideo.common.widget.BaseState;
+import com.wsyzj.watchvideo.common.widget.StateLayout;
 
 import io.reactivex.disposables.Disposable;
 
@@ -11,7 +11,7 @@ import io.reactivex.disposables.Disposable;
  */
 public interface BaseIView {
 
-    void setPageState(BaseState baseState);
+    void setPageState(StateLayout baseState);
 
     void showProgress();
 

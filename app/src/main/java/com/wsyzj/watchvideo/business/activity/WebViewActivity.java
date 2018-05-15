@@ -15,7 +15,7 @@ import android.webkit.WebViewClient;
 import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.common.base.BaseActivity;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
-import com.wsyzj.watchvideo.common.widget.BaseState;
+import com.wsyzj.watchvideo.common.widget.StateLayout;
 
 import net.youmi.android.nm.cm.ErrorCode;
 import net.youmi.android.nm.sp.SpotListener;
@@ -110,7 +110,7 @@ public class WebViewActivity extends BaseActivity implements View.OnClickListene
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-                setPageState(BaseState.STATE_SUCCESS);
+                setPageState(StateLayout.STATE_SUCCESS);
             }
 
             @Override

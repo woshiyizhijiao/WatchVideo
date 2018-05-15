@@ -192,7 +192,7 @@ public class BasePullToRefreshView extends LinearLayout {
         return recycler_view;
     }
 
-    public void showPageState(BaseState baseState) {
+    public void showPageState(StateLayout baseState) {
         base_state_layout.setVisibility(View.VISIBLE);
         base_state_layout.setPageState(baseState);
     }

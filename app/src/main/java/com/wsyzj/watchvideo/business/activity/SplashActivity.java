@@ -15,7 +15,7 @@ import com.wsyzj.watchvideo.business.utils.IntentUtils;
 import com.wsyzj.watchvideo.common.base.BaseActivity;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
 import com.wsyzj.watchvideo.common.constant.Constant;
-import com.wsyzj.watchvideo.common.widget.BaseState;
+import com.wsyzj.watchvideo.common.widget.StateLayout;
 
 import net.youmi.android.AdManager;
 import net.youmi.android.nm.cm.ErrorCode;
@@ -82,7 +82,7 @@ public class SplashActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-        setPageState(BaseState.STATE_SUCCESS);
+        setPageState(StateLayout.STATE_SUCCESS);
     }
 
     @Override

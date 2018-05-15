@@ -1,11 +1,9 @@
 package com.wsyzj.watchvideo.business.activity;
 
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.LogUtils;
 import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.business.adapter.DownloadListAdapter;
 import com.wsyzj.watchvideo.business.mvp.DownloadListContract;
@@ -14,10 +12,7 @@ import com.wsyzj.watchvideo.common.base.BaseActivity;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
 import com.wsyzj.watchvideo.common.utils.DrawableUtils;
 import com.wsyzj.watchvideo.common.widget.BasePullToRefreshView;
-import com.wsyzj.watchvideo.common.widget.BaseState;
-import com.wsyzj.watchvideo.common.widget.BaseStateLayout;
-
-import java.util.List;
+import com.wsyzj.watchvideo.common.widget.StateLayout;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -57,7 +52,7 @@ public class DownloadListActivity extends BaseActivity implements DownloadListCo
     @Override
     protected void initView() {
         mNavigationView.setTitle("下载列表");
-        setPageState(BaseState.STATE_SUCCESS);
+        setPageState(StateLayout.STATE_SUCCESS);
         pull_to_refresh.setEnableRefresh(false);
         pull_to_refresh.setEnableLoadMore(false);
 //        mOkDownload = OkDownload.getInstance();
@@ -96,7 +91,7 @@ public class DownloadListActivity extends BaseActivity implements DownloadListCo
     /**
      * 根据列表显示对应状态
      *
-     * @param downloadList
+     * @param StateLayout
      */
 //    @Override
 //    public void setPageState(List<DownloadTask> downloadList) {

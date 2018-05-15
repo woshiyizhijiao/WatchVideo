@@ -24,8 +24,8 @@ import com.wsyzj.watchvideo.common.utils.EventBusUtils;
 import com.wsyzj.watchvideo.common.utils.StorageUtils;
 import com.wsyzj.watchvideo.common.utils.UiUtils;
 import com.wsyzj.watchvideo.common.widget.BaseNavigationView;
-import com.wsyzj.watchvideo.common.widget.BaseState;
 import com.wsyzj.watchvideo.common.widget.BaseStateLayout;
+import com.wsyzj.watchvideo.common.widget.StateLayout;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -193,7 +193,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     }
 
     @Override
-    public void setPageState(BaseState baseState) {
+    public void setPageState(StateLayout baseState) {
         if (mStateLayout != null) {
             mStateLayout.setPageState(baseState);
         }

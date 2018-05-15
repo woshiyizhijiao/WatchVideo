@@ -8,7 +8,7 @@ import com.blankj.utilcode.util.LogUtils;
 import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.common.base.BaseActivity;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
-import com.wsyzj.watchvideo.common.widget.BaseState;
+import com.wsyzj.watchvideo.common.widget.StateLayout;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -35,7 +35,7 @@ public class TestActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-        setPageState(BaseState.STATE_SUCCESS);
+        setPageState(StateLayout.STATE_SUCCESS);
     }
 
     @Override
@@ -59,10 +59,10 @@ public class TestActivity extends BaseActivity {
                 mNavigationView.setNavigationIcon(R.drawable.default_cover);
                 break;
             case R.id.btn2:
-                mNavigationView.setNavigationText("左边");
+                mNavigationView.setNavigationText("左边文字");
                 break;
             case R.id.btn3:
-                mNavigationView.setNegativeText("右边");
+                mNavigationView.setNegativeText("右边文本");
                 break;
             case R.id.btn4:
                 mNavigationView.setNegativeImageResource(R.drawable.default_cover);

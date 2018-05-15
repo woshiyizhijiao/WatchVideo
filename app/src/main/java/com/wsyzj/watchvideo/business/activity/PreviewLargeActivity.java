@@ -21,7 +21,7 @@ import com.wsyzj.watchvideo.common.base.BaseActivity;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
 import com.wsyzj.watchvideo.common.http.ImageLoader;
 import com.wsyzj.watchvideo.common.utils.UiUtils;
-import com.wsyzj.watchvideo.common.widget.BaseState;
+import com.wsyzj.watchvideo.common.widget.StateLayout;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -107,7 +107,7 @@ public class PreviewLargeActivity extends BaseActivity implements ViewPager.OnPa
         view_pager.setAdapter(adapter);
         view_pager.setCurrentItem(mCurrentPos);
         setCurrentCount(mCurrentPos);
-        setPageState(BaseState.STATE_SUCCESS);
+        setPageState(StateLayout.STATE_SUCCESS);
     }
 
     @Override

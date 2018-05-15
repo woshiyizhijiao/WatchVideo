@@ -87,7 +87,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
      */
     protected void setStatusBar() {
         int colorPrimary = StorageUtils.getColorPrimary();
-        StatusBarUtil.setColor(this, UiUtils.getColor(R.color.white));
+        StatusBarUtil.setColor(this, UiUtils.getColor(colorPrimary));
     }
 
     /**

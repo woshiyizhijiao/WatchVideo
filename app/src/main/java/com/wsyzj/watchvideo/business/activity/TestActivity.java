@@ -8,11 +8,7 @@ import com.blankj.utilcode.util.LogUtils;
 import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.common.base.BaseActivity;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
-import com.wsyzj.watchvideo.common.utils.UiUtils;
 import com.wsyzj.watchvideo.common.widget.BaseState;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -44,31 +40,7 @@ public class TestActivity extends BaseActivity {
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-        UiUtils.showSoftInput(this);
 
-        mNavigationView.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mNavigationView.setNegativeText("打发第三方大师傅大师傅大师傅阿斯蒂芬");
-            }
-        }, 5000);
-
-
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-                           @Override
-                           public void run() {
-                               LogUtils.e("TimerTask");
-                               TestActivity.this.runOnUiThread(new Runnable() {
-                                   @Override
-                                   public void run() {
-                                       LogUtils.e("到这里没有" + btn1.getId());
-                                       btn1.setText("打发第三方大师傅大师傅大师傅阿斯蒂芬");
-                                   }
-                               });
-                           }
-                       },
-                5000);
     }
 
     @Override

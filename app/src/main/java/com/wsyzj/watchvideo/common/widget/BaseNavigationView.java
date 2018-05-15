@@ -14,15 +14,13 @@ import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.common.base.BaseActivity;
 import com.wsyzj.watchvideo.common.utils.UiUtils;
 
-import butterknife.OnClick;
-
 
 /**
  * @author: wsyzj
  * @date: 2017-03-18 10:38
  * @comment: 统一的标题布局
  */
-public class BaseNavigationView extends LinearLayout {
+public class BaseNavigationView extends LinearLayout implements View.OnClickListener {
 
     private Context mContext;
     private View base_root;
@@ -67,6 +65,11 @@ public class BaseNavigationView extends LinearLayout {
         tv_negative = (TextView) base_root.findViewById(R.id.tv_negative);
         fl_negative = (FrameLayout) base_root.findViewById(R.id.fl_negative);
         iv_negative = (ImageView) base_root.findViewById(R.id.iv_negative);
+
+        fl_navigation.setOnClickListener(this);
+        tv_navigation.setOnClickListener(this);
+        fl_negative.setOnClickListener(this);
+        tv_negative.setOnClickListener(this);
 
         setOrientation(LinearLayout.VERTICAL);
         addView(base_root);
@@ -186,8 +189,8 @@ public class BaseNavigationView extends LinearLayout {
         mClickNegativeTextListener = listener;
     }
 
-    @OnClick({R.id.fl_navigation, R.id.tv_navigation, R.id.fl_negative, R.id.tv_negative})
-    public void bkOnClick(View v) {
+    @Override
+    public void onClick(View v) {
         switch (v.getId()) {
             case R.id.fl_navigation:
                 if (mClickNavigationIconListener != null) {

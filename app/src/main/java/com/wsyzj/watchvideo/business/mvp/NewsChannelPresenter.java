@@ -2,6 +2,7 @@ package com.wsyzj.watchvideo.business.mvp;
 
 import android.os.Bundle;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.wsyzj.watchvideo.business.bean.NewsDetails;
 import com.wsyzj.watchvideo.business.fragment.NewsChannelFragment;
 import com.wsyzj.watchvideo.common.base.BaseFragment;
@@ -46,6 +47,8 @@ public class NewsChannelPresenter extends BasePresenter<NewsChannelContract.View
         Bundle arguments = baseFragment.getArguments();
         mChannelId = arguments.getString(NewsChannelFragment.BUNDLE_CHANNEL_ID);
         mChannelName = arguments.getString(NewsChannelFragment.BUNDLE_CHANNEL_NAME);
+
+        LogUtils.e(mChannelId + " --- " + mChannelName);
     }
 
     @Override

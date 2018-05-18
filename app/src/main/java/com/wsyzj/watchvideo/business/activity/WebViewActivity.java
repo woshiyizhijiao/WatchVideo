@@ -110,7 +110,7 @@ public class WebViewActivity extends BaseActivity implements View.OnClickListene
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-                setPageState(StateLayout.STATE_SUCCESS);
+                setStateLayout(StateLayout.STATE_SUCCESS);
             }
 
             @Override

@@ -11,7 +11,7 @@ import io.reactivex.disposables.Disposable;
  */
 public interface BaseIView {
 
-    void setPageState(StateLayout baseState);
+    void setStateLayout(StateLayout baseState);
 
     void showProgress();
 

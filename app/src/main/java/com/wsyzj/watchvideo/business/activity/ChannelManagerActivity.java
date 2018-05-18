@@ -85,7 +85,7 @@ public class ChannelManagerActivity extends BaseActivity implements ChannelManag
             mChannelManagerAdapter.refreshData(myChannel, recommendChannel);
         }
 
-        setPageState(StateLayout.STATE_SUCCESS);
+        setStateLayout(StateLayout.STATE_SUCCESS);
 
         gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override

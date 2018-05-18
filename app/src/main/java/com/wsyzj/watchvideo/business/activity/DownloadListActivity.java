@@ -52,7 +52,7 @@ public class DownloadListActivity extends BaseActivity implements DownloadListCo
     @Override
     protected void initView() {
         mNavigationView.setTitle("下载列表");
-        setPageState(StateLayout.STATE_SUCCESS);
+        setStateLayout(StateLayout.STATE_SUCCESS);
         pull_to_refresh.setEnableRefresh(false);
         pull_to_refresh.setEnableLoadMore(false);
 //        mOkDownload = OkDownload.getInstance();
@@ -91,7 +91,7 @@ public class DownloadListActivity extends BaseActivity implements DownloadListCo
     /**
      * 根据列表显示对应状态
      *
-     * @param StateLayout
+     * @param setStateLayout
      */
 //    @Override
 //    public void setPageState(List<DownloadTask> downloadList) {

@@ -235,7 +235,7 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
         } else {
             mVpAdapter.refreshData(fragments, channelList);
         }
-        setPageState(StateLayout.STATE_SUCCESS);
+        setStateLayout(StateLayout.STATE_SUCCESS);
     }
 
     /**

@@ -82,7 +82,7 @@ public class SplashActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-        setPageState(StateLayout.STATE_SUCCESS);
+        setStateLayout(StateLayout.STATE_SUCCESS);
     }
 
     @Override

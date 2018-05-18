@@ -80,7 +80,7 @@ public class BaseStateLayout extends FrameLayout {
 
     @OnClick({R.id.tv_error, R.id.tv_empty})
     public void bkOnClick(View view) {
-        setPageState(StateLayout.STATE_LOADING);
+        setStateLayout(StateLayout.STATE_LOADING);
         boolean connected = NetworkUtils.isConnected();
 
         switch (view.getId()) {
@@ -93,7 +93,7 @@ public class BaseStateLayout extends FrameLayout {
                     tv_error.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            setPageState(StateLayout.STATE_ERROR);
+                            setStateLayout(StateLayout.STATE_ERROR);
                         }
                     }, NO_NETWORK_ANIM_TIME);
                 }
@@ -107,7 +107,7 @@ public class BaseStateLayout extends FrameLayout {
                     tv_empty.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            setPageState(StateLayout.STATE_EMPTY);
+                            setStateLayout(StateLayout.STATE_EMPTY);
                         }
                     }, NO_NETWORK_ANIM_TIME);
                 }
@@ -162,7 +162,7 @@ public class BaseStateLayout extends FrameLayout {
      */
     private void setErrorNetState() {
         if (!NetworkUtils.isConnected()) {
-            setPageState(StateLayout.STATE_ERROR);
+            setStateLayout(StateLayout.STATE_ERROR);
         }
     }
 
@@ -171,7 +171,7 @@ public class BaseStateLayout extends FrameLayout {
      *
      * @param baseState
      */
-    public void setPageState(StateLayout baseState) {
+    public void setStateLayout(StateLayout baseState) {
         switch (baseState) {
             case STATE_LOADING:
                 showLoading();

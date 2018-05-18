@@ -107,7 +107,7 @@ public class PreviewLargeActivity extends BaseActivity implements ViewPager.OnPa
         view_pager.setAdapter(adapter);
         view_pager.setCurrentItem(mCurrentPos);
         setCurrentCount(mCurrentPos);
-        setPageState(StateLayout.STATE_SUCCESS);
+        setStateLayout(StateLayout.STATE_SUCCESS);
     }
 
     @Override

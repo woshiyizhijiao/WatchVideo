@@ -70,7 +70,7 @@ public class HomePresenter extends BasePresenter<HomeContract.View, HomeContract
 
                             mView.setGankData(mGankData);
                         }
-                        mView.setPageState(StateLayout.STATE_SUCCESS);
+                        mView.setStateLayout(StateLayout.STATE_SUCCESS);
                     }
 
                     @Override
@@ -103,7 +103,7 @@ public class HomePresenter extends BasePresenter<HomeContract.View, HomeContract
                         @Override
                         public void run() {
                             mView.setMeiRiYiWenData(meiRiYiWen);
-                            mView.setPageState(StateLayout.STATE_SUCCESS);
+                            mView.setStateLayout(StateLayout.STATE_SUCCESS);
                         }
                     });
                 } catch (IOException e) {
@@ -126,7 +126,7 @@ public class HomePresenter extends BasePresenter<HomeContract.View, HomeContract
                         List<DouBan.SubjectsBean> subjects = douBan.subjects;
                         if (subjects != null) {
                             mView.setTheatersList(subjects);
-                            mView.setPageState(StateLayout.STATE_SUCCESS);
+                            mView.setStateLayout(StateLayout.STATE_SUCCESS);
                         }
                     }
 

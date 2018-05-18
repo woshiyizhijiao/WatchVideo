@@ -56,10 +56,10 @@ public class MusicPresenter extends BasePresenter<MusicContract.View, MusicContr
                     } else {
                         mMusicList.addAll(list);
                     }
-                    mView.setPageState(StateLayout.STATE_SUCCESS);
+                    mView.setStateLayout(StateLayout.STATE_SUCCESS);
                     mView.setLoadMoreByPageCount(list.size(), 20);
                 } else {
-                    mView.setPageState(StateLayout.STATE_EMPTY);
+                    mView.setStateLayout(StateLayout.STATE_EMPTY);
                     mView.setLoadMoreByPageCount(0, 20);
                 }
 
@@ -69,7 +69,7 @@ public class MusicPresenter extends BasePresenter<MusicContract.View, MusicContr
 
             @Override
             public void onFailure(Throwable throwable) {
-                mView.setPageState(StateLayout.STATE_ERROR);
+                mView.setStateLayout(StateLayout.STATE_ERROR);
             }
         });
 

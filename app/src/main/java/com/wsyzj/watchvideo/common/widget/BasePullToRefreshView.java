@@ -194,7 +194,7 @@ public class BasePullToRefreshView extends LinearLayout {
 
     public void showPageState(StateLayout baseState) {
         base_state_layout.setVisibility(View.VISIBLE);
-        base_state_layout.setPageState(baseState);
+        base_state_layout.setStateLayout(baseState);
     }
 
     public BaseStateLayout getBaseStateLalyout() {

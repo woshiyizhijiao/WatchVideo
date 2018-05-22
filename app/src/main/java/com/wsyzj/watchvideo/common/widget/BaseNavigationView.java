@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.common.base.BaseActivity;
+import com.wsyzj.watchvideo.common.utils.StorageUtils;
 import com.wsyzj.watchvideo.common.utils.UiUtils;
 
 
@@ -71,6 +72,7 @@ public class BaseNavigationView extends LinearLayout implements View.OnClickList
         fl_negative.setOnClickListener(this);
         tv_negative.setOnClickListener(this);
 
+        setNavigationBackgroundColor(StorageUtils.getColorPrimary());
         setOrientation(LinearLayout.VERTICAL);
         addView(base_root);
     }
@@ -90,7 +92,7 @@ public class BaseNavigationView extends LinearLayout implements View.OnClickList
      * @return
      */
     public RelativeLayout setNavigationBackgroundColor(int color) {
-        rl_navigation.setBackgroundColor(color);
+        rl_navigation.setBackgroundColor(UiUtils.getColor(color));
         return rl_navigation;
     }
 

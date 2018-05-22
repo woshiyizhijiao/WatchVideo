@@ -8,6 +8,8 @@ import android.view.View;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.wsyzj.watchvideo.R;
+import com.wsyzj.watchvideo.common.utils.StorageUtils;
+import com.wsyzj.watchvideo.common.utils.UiUtils;
 
 import java.util.List;
 
@@ -30,8 +32,10 @@ public class ColorPrimaryAdapter extends BaseQuickAdapter<Integer, BaseViewHolde
 
     @Override
     protected void convert(BaseViewHolder helper, Integer item) {
+        int primary = StorageUtils.getColorPrimary();
         View view_gradient = helper.getView(R.id.view_gradient);
-        view_gradient.setBackgroundDrawable(getGradientDrawable(mContext.getResources().getColor(item)));
+        view_gradient.setBackgroundDrawable(getGradientDrawable(item));
+        helper.setVisible(R.id.iv_current_color, primary == item);
     }
 
 
@@ -41,7 +45,7 @@ public class ColorPrimaryAdapter extends BaseQuickAdapter<Integer, BaseViewHolde
     private GradientDrawable getGradientDrawable(int color) {
         GradientDrawable gradientDrawable = new GradientDrawable();
         gradientDrawable.setCornerRadius(180);
-        gradientDrawable.setColor(color);
+        gradientDrawable.setColor(UiUtils.getColor(color));
 
         return gradientDrawable;
     }

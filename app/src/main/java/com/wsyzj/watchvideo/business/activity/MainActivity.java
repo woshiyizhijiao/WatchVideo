@@ -24,10 +24,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.CacheUtils;
+import com.blankj.utilcode.util.LogUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.google.gson.Gson;
 import com.pgyersdk.javabean.AppBean;
 import com.pgyersdk.update.PgyUpdateManager;
 import com.pgyersdk.update.UpdateManagerListener;
+import com.wsyzj.watchvideo.JiaYiToken;
 import com.wsyzj.watchvideo.R;
 import com.wsyzj.watchvideo.business.adapter.ColorPrimaryAdapter;
 import com.wsyzj.watchvideo.business.adapter.VpAdapter;
@@ -44,6 +47,10 @@ import com.wsyzj.watchvideo.common.base.BaseFragment;
 import com.wsyzj.watchvideo.common.base.BaseThreadManager;
 import com.wsyzj.watchvideo.common.base.mvp.BasePresenter;
 import com.wsyzj.watchvideo.common.constant.Constant;
+import com.wsyzj.watchvideo.common.http.BaseEntity;
+import com.wsyzj.watchvideo.common.http.BaseRetrofit;
+import com.wsyzj.watchvideo.common.http.BaseRxSchedulers;
+import com.wsyzj.watchvideo.common.http.BaseSubscriber;
 import com.wsyzj.watchvideo.common.http.ImageLoader;
 import com.wsyzj.watchvideo.common.utils.StorageUtils;
 import com.wsyzj.watchvideo.common.utils.UiUtils;
@@ -54,7 +61,9 @@ import net.youmi.android.nm.sp.SpotManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -134,6 +143,30 @@ public class MainActivity extends BaseActivity implements MainContract.View, Tab
         mPresenter.getNewsChannel(this);
         pgyUpdateApp();
         setNavHeaderBg();
+
+
+        Map<String, String> map = new HashMap<>();
+        map.put("laiaiNumber", "431063");
+        map.put("mobile", "15989896993");
+        map.put("nickName", "我是一坨");
+        map.put("userId", "399980");
+        map.put("userPic", "http://img.szaiaitie.com/APPFiles/AppHeadImage/2018/05/15258469936757476.png");
+
+        BaseRetrofit
+                .jingDongNewsChannel()
+                .laiaiapplogin(map)
+                .compose(BaseRxSchedulers.<BaseEntity<JiaYiToken>>io_main())
+                .subscribeWith(new BaseSubscriber<JiaYiToken>() {
+                    @Override
+                    public void onSuccess(JiaYiToken data) {
+                        LogUtils.e(data.toString() + "返回" + new Gson().toJson(data));
+                    }
+
+                    @Override
+                    public void onFailure(Throwable throwable) {
+
+                    }
+                });
     }
 
     @Override

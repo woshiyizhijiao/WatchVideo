@@ -1,5 +1,6 @@
 package com.wsyzj.watchvideo.common.http;
 
+import com.wsyzj.watchvideo.JiaYiToken;
 import com.wsyzj.watchvideo.business.bean.DouBan;
 import com.wsyzj.watchvideo.business.bean.Gank;
 import com.wsyzj.watchvideo.business.bean.Music;
@@ -8,7 +9,10 @@ import com.wsyzj.watchvideo.business.bean.NewsChannel;
 import com.wsyzj.watchvideo.business.bean.NewsDetails;
 import com.wsyzj.watchvideo.business.bean.Song;
 
+import java.util.Map;
+
 import io.reactivex.Flowable;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
@@ -100,4 +104,7 @@ public interface BaseRetrofitApi {
      */
     @POST("search_news")
     Flowable<NewsDetails> getNewsList(@Query("appkey") String appkey, @Query("channelId") String channelId, @Query("channelName") String channelName, @Query("title") String title, @Query("page") int page);
+
+    @POST("jiayi-member/api/jiayi/passport/laiaiapplogin")
+    Flowable<BaseEntity<JiaYiToken>> laiaiapplogin(@Body Map<String, String> params);
 }

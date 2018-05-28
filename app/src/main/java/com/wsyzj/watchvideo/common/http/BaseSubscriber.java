@@ -1,5 +1,7 @@
 package com.wsyzj.watchvideo.common.http;
 
+import android.text.TextUtils;
+
 import com.blankj.utilcode.util.ToastUtils;
 import com.wsyzj.watchvideo.common.constant.Constant;
 
@@ -19,10 +21,10 @@ public abstract class BaseSubscriber<T> extends DisposableSubscriber<BaseEntity<
 
     @Override
     public void onNext(BaseEntity<T> baseEntity) {
-        if (baseEntity.code == Constant.NetMessage.NET_CODE_SUCCESS) {
-            onSuccess(baseEntity.data);
+        if (TextUtils.equals("0000", baseEntity.getCode())) {
+            onSuccess(baseEntity.getData());
         } else {
-            ToastUtils.showShort(baseEntity.msg);
+            ToastUtils.showShort(baseEntity.getMsg());
         }
     }
 

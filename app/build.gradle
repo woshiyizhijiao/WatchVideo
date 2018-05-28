@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.getkeepsafe.dexcount'    // 查看方法数
+apply plugin: 'com.antfortune.freeline'
 
 android {
     compileSdkVersion compile_sdk_version
@@ -34,6 +35,7 @@ android {
             dirs 'libs'
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
